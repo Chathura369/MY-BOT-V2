@@ -3,838 +3,869 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Supreme MD Bot</title>
+<title>Supreme MD Bot — Control Panel</title>
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#080c10;
-  --bg1:#0d1117;
-  --bg2:#111820;
-  --bg3:#161d27;
-  --bg4:#1c2535;
-  --border:#ffffff0f;
-  --border2:#ffffff18;
-  --g1:#00e676;
-  --g2:#00b248;
-  --g3:#69f0ae;
-  --blue:#4fc3f7;
-  --purple:#ce93d8;
-  --orange:#ffb74d;
-  --red:#ef5350;
-  --text:#f0f6fc;
-  --text2:#8b949e;
-  --text3:#4a5568;
-  --sidebar:240px;
-  --header:60px;
-  --radius:12px;
-  --radius-sm:8px;
+  --bg:#070b0f;--bg1:#0c1118;--bg2:#10171f;--bg3:#161f2a;--bg4:#1d2836;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+  --g1:#00e676;--g2:#00c853;--g3:#69f0ae;
+  --blue:#40c4ff;--purple:#b388ff;--orange:#ffab40;--red:#ff5252;--pink:#f48fb1;
+  --text:#eaf0f8;--text2:#8899aa;--text3:#3d5166;
+  --sidebar-w:248px;--header-h:58px;
+  --r:12px;--r-sm:8px;--r-xs:6px;
 }
-
-html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:5px;height:5px}
+html{height:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;font-size:14px}
+::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:99px}
-::-webkit-scrollbar-thumb:hover{background:var(--g2)}
 
-/* ── LOGIN ── */
-#login-screen{
-  display:flex;align-items:center;justify-content:center;
-  min-height:100vh;
-  background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(0,230,118,.12),transparent),var(--bg);
+/* ═══════════════ LOGIN ═══════════════ */
+#login-page{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse 100% 80% at 50% -20%,rgba(0,230,118,.14) 0%,transparent 60%),var(--bg);
+  z-index:1000;
 }
-.login-wrap{width:400px}
-.login-logo{text-align:center;margin-bottom:32px}
-.login-logo .icon{
-  width:72px;height:72px;border-radius:20px;
-  background:linear-gradient(135deg,var(--g1),var(--g2));
-  display:inline-flex;align-items:center;justify-content:center;
-  font-size:34px;margin-bottom:16px;
-  box-shadow:0 0 40px rgba(0,230,118,.35);
+.login-card{
+  width:min(420px,94vw);
+  background:linear-gradient(145deg,var(--bg2),var(--bg1));
+  border:1px solid var(--border2);border-radius:20px;
+  padding:36px;box-shadow:0 40px 80px rgba(0,0,0,.5);
 }
-.login-logo h1{font-size:1.7rem;font-weight:800;letter-spacing:-.5px}
-.login-logo p{color:var(--text2);font-size:.9rem;margin-top:4px}
-.login-box{
-  background:var(--bg2);border:1px solid var(--border2);border-radius:18px;
-  padding:32px;backdrop-filter:blur(20px);
+.login-top{text-align:center;margin-bottom:28px}
+.login-logo{
+  width:68px;height:68px;border-radius:18px;margin:0 auto 14px;
+  background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 100%);
+  display:flex;align-items:center;justify-content:center;font-size:30px;
+  box-shadow:0 0 0 6px rgba(0,230,118,.12),0 0 40px rgba(0,230,118,.3);
 }
-.field{margin-bottom:16px}
-.field label{display:block;font-size:.78rem;font-weight:600;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.login-top h1{font-size:1.5rem;font-weight:800;letter-spacing:-.5px}
+.login-top p{color:var(--text2);font-size:.85rem;margin-top:4px}
+.lf{margin-bottom:14px}
+.lf label{display:block;font-size:.72rem;font-weight:700;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em}
 .inp{
-  width:100%;padding:11px 14px;background:var(--bg3);border:1px solid var(--border2);
-  border-radius:var(--radius-sm);color:var(--text);font-size:.92rem;font-family:inherit;
-  outline:none;transition:.2s;
+  width:100%;padding:11px 14px;background:var(--bg3);
+  border:1.5px solid var(--border);border-radius:var(--r-sm);
+  color:var(--text);font-family:inherit;font-size:.9rem;outline:none;transition:.2s;
 }
-.inp:focus{border-color:var(--g1);box-shadow:0 0 0 3px rgba(0,230,118,.12)}
+.inp:focus{border-color:var(--g1);box-shadow:0 0 0 3px rgba(0,230,118,.1)}
 .inp::placeholder{color:var(--text3)}
+.inp:disabled{opacity:.5;cursor:not-allowed}
 .btn-login{
-  width:100%;padding:12px;border-radius:var(--radius-sm);border:none;cursor:pointer;
+  width:100%;padding:12px;margin-top:6px;border-radius:var(--r-sm);border:none;cursor:pointer;
   background:linear-gradient(135deg,var(--g1),var(--g2));
-  color:#000;font-size:.95rem;font-weight:700;font-family:inherit;
-  transition:.2s;margin-top:4px;
+  color:#000;font-family:inherit;font-size:.92rem;font-weight:800;
+  letter-spacing:.02em;transition:.2s;
 }
-.btn-login:hover{opacity:.88;transform:translateY(-1px)}
-#l-err{color:var(--red);font-size:.82rem;margin-top:10px;text-align:center}
+.btn-login:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,230,118,.35)}
+.btn-login:active{transform:none}
+#l-err{color:var(--red);font-size:.8rem;margin-top:10px;text-align:center;min-height:18px}
 
-/* ── APP SHELL ── */
-#app{display:none;min-height:100vh}
+/* ═══════════════ APP ═══════════════ */
+#app{display:none;height:100vh;overflow:hidden}
 
-/* ── SIDEBAR ── */
+/* SIDEBAR */
 .sidebar{
-  position:fixed;top:0;left:0;height:100vh;width:var(--sidebar);
+  position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);
   background:var(--bg1);border-right:1px solid var(--border);
   display:flex;flex-direction:column;z-index:200;
-  transition:.3s;
+  transition:transform .28s cubic-bezier(.4,0,.2,1);
 }
-.sidebar-logo{
-  padding:20px 20px 16px;
-  display:flex;align-items:center;gap:11px;
-  border-bottom:1px solid var(--border);
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:none}
+  .overlay{display:block!important}
+  .main{margin-left:0!important}
 }
-.sidebar-logo .s-icon{
-  width:36px;height:36px;border-radius:10px;
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:199;backdrop-filter:blur(2px)}
+
+.sb-logo{
+  padding:18px 16px 14px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.sb-logo-icon{
+  width:34px;height:34px;border-radius:10px;flex-shrink:0;
   background:linear-gradient(135deg,var(--g1),var(--g2));
-  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:17px;
 }
-.sidebar-logo span{font-weight:800;font-size:1rem;letter-spacing:-.3px}
-.sidebar-logo small{display:block;font-size:.68rem;color:var(--g1);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.sb-logo-text{font-weight:800;font-size:.95rem;letter-spacing:-.3px}
+.sb-logo-sub{font-size:.65rem;color:var(--g1);font-weight:600;text-transform:uppercase;letter-spacing:.08em}
 
-.sidebar-status{
-  margin:12px 14px;padding:10px 12px;border-radius:var(--radius-sm);
+/* Connection status */
+.sb-conn{
+  margin:10px 12px;padding:10px 12px;border-radius:var(--r-sm);
   background:var(--bg3);border:1px solid var(--border);
-  display:flex;align-items:center;gap:8px;font-size:.8rem;
+  display:flex;align-items:center;gap:9px;cursor:pointer;transition:.2s;
 }
-.status-dot{width:9px;height:9px;border-radius:50%;background:var(--red);flex-shrink:0;transition:.3s}
-.status-dot.connected{background:var(--g1);box-shadow:0 0 8px var(--g1)}
-.status-dot.connecting{background:var(--orange);animation:pulse 1.2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.status-info{flex:1;overflow:hidden}
-.status-info .s-stat{font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.status-info .s-num{font-size:.7rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-conn:hover{border-color:var(--border2)}
+.conn-dot{
+  width:10px;height:10px;border-radius:50%;background:var(--red);
+  flex-shrink:0;transition:.3s;position:relative;
+}
+.conn-dot.connected{background:var(--g1);box-shadow:0 0 0 3px rgba(0,230,118,.2)}
+.conn-dot.connecting{background:var(--orange);animation:blink 1.1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.conn-info{flex:1;overflow:hidden}
+.conn-stat{font-weight:700;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conn-num{font-size:.7rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
 
-nav.sidebar-nav{flex:1;overflow-y:auto;padding:8px 10px}
-.nav-section{font-size:.65rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;padding:14px 8px 6px}
-.nav-item{
-  display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);
-  cursor:pointer;font-size:.85rem;color:var(--text2);transition:.15s;margin-bottom:2px;
-  border:none;background:none;width:100%;font-family:inherit;text-align:left;
+/* Nav */
+.sb-nav{flex:1;overflow-y:auto;padding:6px 8px}
+.nav-group{font-size:.62rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;padding:12px 8px 5px}
+.nav-btn{
+  display:flex;align-items:center;gap:9px;width:100%;padding:8px 10px;
+  border-radius:var(--r-sm);border:none;background:none;color:var(--text2);
+  font-family:inherit;font-size:.83rem;cursor:pointer;transition:.15s;text-align:left;
+  margin-bottom:1px;
 }
-.nav-item:hover{background:var(--bg3);color:var(--text)}
-.nav-item.active{background:rgba(0,230,118,.1);color:var(--g1);font-weight:600}
-.nav-item .ni{width:18px;text-align:center;font-size:1rem;flex-shrink:0}
-.nav-item .badge-count{margin-left:auto;background:var(--g2);color:#000;font-size:.65rem;font-weight:700;border-radius:99px;padding:1px 6px}
+.nav-btn:hover{background:var(--bg3);color:var(--text)}
+.nav-btn.active{background:rgba(0,230,118,.1);color:var(--g1);font-weight:600}
+.nav-icon{width:20px;text-align:center;font-size:.95rem;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--g2);color:#000;font-size:.6rem;font-weight:800;border-radius:99px;padding:1px 7px;min-width:18px;text-align:center}
 
-.sidebar-footer{
-  padding:14px;border-top:1px solid var(--border);
-  display:flex;align-items:center;gap:8px;
+/* Sidebar footer */
+.sb-foot{
+  padding:12px;border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:9px;
 }
-.sidebar-footer .avatar{
-  width:32px;height:32px;border-radius:50%;
+.sb-avatar{
+  width:30px;height:30px;border-radius:50%;flex-shrink:0;
   background:linear-gradient(135deg,#667eea,#764ba2);
-  display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:13px;
 }
-.sidebar-footer .uinfo{flex:1;font-size:.78rem}
-.sidebar-footer .uinfo b{display:block;color:var(--text)}
-.sidebar-footer .uinfo span{color:var(--text3);font-size:.7rem}
-.btn-icon{background:none;border:none;cursor:pointer;color:var(--text2);padding:4px;border-radius:6px;transition:.15s;font-size:1rem}
-.btn-icon:hover{color:var(--red);background:rgba(239,83,80,.1)}
+.sb-userinfo{flex:1}
+.sb-userinfo b{display:block;font-size:.8rem}
+.sb-userinfo span{font-size:.68rem;color:var(--text3)}
+.btn-logout{
+  background:none;border:none;cursor:pointer;color:var(--text3);
+  padding:5px;border-radius:6px;font-size:1rem;transition:.15s;
+}
+.btn-logout:hover{color:var(--red);background:rgba(255,82,82,.1)}
 
-/* ── MAIN CONTENT ── */
-.main{margin-left:var(--sidebar);min-height:100vh}
+/* ═══════════════ MAIN ═══════════════ */
+.main{margin-left:var(--sidebar-w);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
 .topbar{
-  height:var(--header);background:var(--bg1);border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;padding:0 24px;
-  position:sticky;top:0;z-index:100;
+  height:var(--header-h);background:var(--bg1);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0;
 }
-.topbar-title{font-size:1.05rem;font-weight:700}
-.topbar-title span{color:var(--text2);font-weight:400;font-size:.88rem;margin-left:6px}
+.hamburger{display:none;background:none;border:none;cursor:pointer;color:var(--text);font-size:1.2rem;padding:4px}
+@media(max-width:900px){.hamburger{display:block}}
+.topbar-title{font-size:1rem;font-weight:800;letter-spacing:-.3px;flex:1}
+.topbar-title small{font-weight:400;color:var(--text2);font-size:.78rem;margin-left:5px}
 .topbar-actions{display:flex;align-items:center;gap:8px}
-.tbtn{
-  padding:7px 16px;border-radius:var(--radius-sm);border:1px solid var(--border2);
-  background:var(--bg3);color:var(--text);cursor:pointer;font-size:.8rem;font-weight:600;
-  font-family:inherit;transition:.15s;display:flex;align-items:center;gap:6px;
+.tb-time{font-size:.72rem;color:var(--text2);font-variant-numeric:tabular-nums;display:flex;flex-direction:column;align-items:flex-end}
+.tb-btn{
+  padding:7px 14px;border-radius:var(--r-sm);border:1px solid var(--border2);
+  background:var(--bg3);color:var(--text2);font-family:inherit;font-size:.77rem;font-weight:600;
+  cursor:pointer;transition:.15s;display:flex;align-items:center;gap:5px;
 }
-.tbtn:hover{border-color:var(--g1);color:var(--g1)}
-.tbtn.danger:hover{border-color:var(--red);color:var(--red)}
+.tb-btn:hover{border-color:var(--g1);color:var(--g1)}
+.tb-btn.red:hover{border-color:var(--red);color:var(--red)}
 
-/* ── PAGES ── */
-.page{display:none;padding:24px}
+/* Content */
+.content{flex:1;overflow-y:auto;padding:20px}
+
+/* ═══════════════ PAGES ═══════════════ */
+.page{display:none}
 .page.active{display:block}
-.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
-.page-title{font-size:1.4rem;font-weight:800;letter-spacing:-.4px}
-.page-title span{color:var(--text2);font-size:.9rem;font-weight:400;margin-left:6px}
 
-/* ── CARDS ── */
-.card{
-  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
-  padding:20px;margin-bottom:18px;
+.ph{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px}
+.ph-title{font-size:1.25rem;font-weight:800;letter-spacing:-.4px}
+.ph-sub{color:var(--text2);font-size:.8rem;font-weight:400;margin-left:5px}
+.ph-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* ═══════════════ CARDS ═══════════════ */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:16px}
+.card-hd{font-size:.68rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-hd::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ═══════════════ STAT CARDS ═══════════════ */
+.grid-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.sc{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
+  padding:16px;position:relative;overflow:hidden;transition:.2s;cursor:default;
 }
-.card-title{font-size:.72rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.card-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.sc:hover{border-color:var(--border2);transform:translateY(-1px)}
+.sc-glow{position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;opacity:.06;background:var(--sc-color,var(--g1))}
+.sc-icon{font-size:1.2rem;margin-bottom:8px}
+.sc-val{font-size:1.7rem;font-weight:800;letter-spacing:-.5px;line-height:1.1}
+.sc-label{font-size:.68rem;color:var(--text2);margin-top:4px;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+.sc-bar{height:2px;background:var(--bg4);border-radius:99px;margin-top:10px}
+.sc-bar-fill{height:100%;border-radius:99px;background:var(--sc-color,var(--g1));transition:.5s}
 
-/* ── STATS GRID ── */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:20px}
-.stat-card{
-  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
-  padding:20px;position:relative;overflow:hidden;transition:.2s;
-}
-.stat-card:hover{border-color:var(--border2);transform:translateY(-2px)}
-.stat-card::before{
-  content:'';position:absolute;top:0;right:0;width:80px;height:80px;
-  border-radius:50%;background:var(--accent-color,rgba(0,230,118,.06));
-  transform:translate(25px,-25px);
-}
-.stat-card .sc-icon{font-size:1.4rem;margin-bottom:10px;display:block}
-.stat-card .sc-val{font-size:1.8rem;font-weight:800;letter-spacing:-.5px;line-height:1}
-.stat-card .sc-label{font-size:.72rem;color:var(--text2);margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
-.stat-card .sc-sub{font-size:.75rem;color:var(--text3);margin-top:8px}
-.stat-card .bar{height:3px;background:var(--bg4);border-radius:99px;margin-top:10px}
-.stat-card .bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--g2),var(--g1));transition:.5s}
+/* ═══════════════ CHARTS ═══════════════ */
+.grid-charts{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:16px}
+@media(max-width:700px){.grid-charts{grid-template-columns:1fr}}
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.chart-card h4{font-size:.68rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px}
+.net-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.nm{background:var(--bg3);border-radius:var(--r-sm);padding:10px;text-align:center}
+.nm-v{font-size:.95rem;font-weight:700}
+.nm-l{font-size:.62rem;color:var(--text2);margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
 
-/* ── CHARTS ── */
-.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
-.chart-card h4{font-size:.78rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}
-canvas{max-height:180px}
+/* ═══════════════ TABLE ═══════════════ */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r-sm)}
+table{width:100%;border-collapse:collapse}
+thead th{padding:9px 12px;text-align:left;font-size:.65rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid var(--border);white-space:nowrap;background:var(--bg3)}
+thead th:first-child{border-radius:var(--r-sm) 0 0 0}
+thead th:last-child{border-radius:0 var(--r-sm) 0 0}
+tbody td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:.83rem}
+tbody tr:last-child td{border-bottom:none}
+tbody tr{transition:.1s}
+tbody tr:hover td{background:rgba(255,255,255,.018)}
+.td-mono{font-family:'Courier New',monospace;color:var(--blue);font-size:.8rem}
+.empty-row{text-align:center;padding:40px!important;color:var(--text3);font-size:.85rem}
 
-/* ── TABLE ── */
-.tbl-wrap{overflow-x:auto}
-table.tbl{width:100%;border-collapse:collapse;font-size:.83rem}
-table.tbl th{padding:10px 14px;text-align:left;font-size:.7rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border);white-space:nowrap}
-table.tbl td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
-table.tbl tr:last-child td{border-bottom:none}
-table.tbl tbody tr{transition:.1s}
-table.tbl tbody tr:hover td{background:rgba(255,255,255,.02)}
-.td-mono{font-family:'Courier New',monospace;font-size:.8rem;color:var(--blue)}
-
-/* ── BADGES ── */
-.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:.69rem;font-weight:700;letter-spacing:.03em}
-.b-green{background:rgba(0,230,118,.12);color:var(--g1)}
-.b-red{background:rgba(239,83,80,.12);color:var(--red)}
-.b-orange{background:rgba(255,183,77,.12);color:var(--orange)}
-.b-blue{background:rgba(79,195,247,.12);color:var(--blue)}
-.b-purple{background:rgba(206,147,216,.12);color:var(--purple)}
+/* ═══════════════ BADGES ═══════════════ */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:99px;font-size:.67rem;font-weight:700;white-space:nowrap}
+.b-green{background:rgba(0,230,118,.1);color:var(--g1)}
+.b-red{background:rgba(255,82,82,.1);color:var(--red)}
+.b-orange{background:rgba(255,171,64,.1);color:var(--orange)}
+.b-blue{background:rgba(64,196,255,.1);color:var(--blue)}
+.b-purple{background:rgba(179,136,255,.1);color:var(--purple)}
 .b-gray{background:rgba(255,255,255,.06);color:var(--text2)}
+.b-pink{background:rgba(244,143,177,.1);color:var(--pink)}
 
-/* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-size:.83rem;font-weight:600;font-family:inherit;transition:.18s;white-space:nowrap}
-.btn-primary{background:linear-gradient(135deg,var(--g1),var(--g2));color:#000}
-.btn-primary:hover{opacity:.85;transform:translateY(-1px)}
-.btn-secondary{background:var(--bg3);border:1px solid var(--border2);color:var(--text)}
-.btn-secondary:hover{border-color:var(--g1);color:var(--g1)}
-.btn-danger{background:rgba(239,83,80,.12);border:1px solid rgba(239,83,80,.25);color:var(--red)}
-.btn-danger:hover{background:rgba(239,83,80,.22)}
-.btn-orange{background:rgba(255,183,77,.12);border:1px solid rgba(255,183,77,.25);color:var(--orange)}
-.btn-sm{padding:5px 12px;font-size:.75rem}
-.btn-icon-sm{padding:5px 8px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);cursor:pointer;font-size:.85rem;transition:.15s;font-family:inherit}
-.btn-icon-sm:hover{border-color:var(--red);color:var(--red)}
+/* ═══════════════ BUTTONS ═══════════════ */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--r-sm);border:none;cursor:pointer;font-family:inherit;font-size:.82rem;font-weight:700;transition:.18s;white-space:nowrap}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important}
+.btn-p{background:linear-gradient(135deg,var(--g1),var(--g2));color:#000}
+.btn-p:hover:not(:disabled){opacity:.85;transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,230,118,.3)}
+.btn-s{background:var(--bg3);border:1px solid var(--border2);color:var(--text)}
+.btn-s:hover:not(:disabled){border-color:var(--g1);color:var(--g1)}
+.btn-d{background:rgba(255,82,82,.08);border:1px solid rgba(255,82,82,.2);color:var(--red)}
+.btn-d:hover:not(:disabled){background:rgba(255,82,82,.15)}
+.btn-o{background:rgba(255,171,64,.08);border:1px solid rgba(255,171,64,.2);color:var(--orange)}
+.btn-sm{padding:5px 11px;font-size:.74rem}
+.btn-xs{padding:3px 8px;font-size:.68rem}
+.icon-btn{padding:5px 8px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);cursor:pointer;font-size:.85rem;transition:.15s;line-height:1}
+.icon-btn:hover{border-color:var(--red);color:var(--red);background:rgba(255,82,82,.07)}
+.icon-btn.edit:hover{border-color:var(--blue);color:var(--blue);background:rgba(64,196,255,.07)}
 
-/* ── FORM ── */
-.row-fields{display:flex;gap:12px;flex-wrap:wrap}
-.row-fields .field{flex:1;min-width:140px}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:.74rem;font-weight:600;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
-select.inp option{background:var(--bg2)}
+/* ═══════════════ FORM ═══════════════ */
+.field{margin-bottom:13px}
+.field label{display:block;font-size:.7rem;font-weight:700;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em}
 textarea.inp{resize:vertical;min-height:80px;line-height:1.5}
+select.inp option{background:var(--bg2);color:var(--text)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row .field{flex:1;min-width:140px}
+.check-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:13px}
+.check-item{display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--text2)}
+.check-item:hover{color:var(--text)}
+.check-item input[type=checkbox]{width:14px;height:14px;accent-color:var(--g1)}
 
-/* ── TOGGLE ── */
-.toggle{position:relative;display:inline-block;width:38px;height:21px}
-.toggle input{opacity:0;width:0;height:0}
-.slider{position:absolute;inset:0;background:var(--bg4);border-radius:99px;cursor:pointer;transition:.25s;border:1px solid var(--border2)}
-.slider::before{content:'';position:absolute;width:15px;height:15px;left:2px;bottom:2px;background:var(--text2);border-radius:50%;transition:.25s}
-input:checked+.slider{background:var(--g2);border-color:var(--g1)}
-input:checked+.slider::before{transform:translateX(17px);background:#fff}
+/* ═══════════════ TOGGLE ═══════════════ */
+.tg{position:relative;display:inline-block;width:36px;height:20px;flex-shrink:0}
+.tg input{opacity:0;width:0;height:0}
+.tg-slider{position:absolute;inset:0;background:var(--bg4);border-radius:99px;cursor:pointer;transition:.22s;border:1px solid var(--border2)}
+.tg-slider::before{content:'';position:absolute;width:14px;height:14px;left:2px;bottom:2px;background:var(--text3);border-radius:50%;transition:.22s}
+.tg input:checked~.tg-slider{background:var(--g2);border-color:var(--g1)}
+.tg input:checked~.tg-slider::before{transform:translateX(16px);background:#fff}
 
-/* ── QR SECTION ── */
-.qr-container{
+/* ═══════════════ QR PANEL ═══════════════ */
+.qr-panel{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:28px;gap:16px;
-  background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);
-  min-height:180px;
+  padding:24px;gap:14px;border-radius:var(--r);
+  background:var(--bg3);border:1px dashed var(--border2);min-height:200px;
+  position:relative;
 }
-#qr-img{width:200px;height:200px;border-radius:12px;border:3px solid var(--g1);display:none;box-shadow:0 0 30px rgba(0,230,118,.25)}
-.pair-code-big{font-size:2.4rem;font-weight:800;letter-spacing:.35em;color:var(--g1);font-family:'Courier New',monospace;text-shadow:0 0 20px rgba(0,230,118,.4)}
+#qr-img{width:210px;height:210px;border-radius:10px;border:3px solid var(--g1);display:none;box-shadow:0 0 0 6px rgba(0,230,118,.08),0 0 40px rgba(0,230,118,.2)}
+.qr-hint{text-align:center;color:var(--text2);font-size:.83rem}
+.qr-hint .icon{font-size:2.5rem;margin-bottom:8px;display:block}
+.pair-block{text-align:center}
+.pair-code{font-size:2.5rem;font-weight:900;letter-spacing:.4em;color:var(--g1);font-family:'Courier New',monospace;text-shadow:0 0 30px rgba(0,230,118,.5);margin:6px 0}
+.qr-timer{font-size:.72rem;color:var(--text3);margin-top:4px}
+.qr-refresh-btn{
+  position:absolute;top:10px;right:10px;background:var(--bg4);border:1px solid var(--border);
+  border-radius:6px;color:var(--text2);cursor:pointer;padding:4px 8px;font-size:.75rem;transition:.15s;
+}
+.qr-refresh-btn:hover{border-color:var(--g1);color:var(--g1)}
 
-/* ── SESSIONS GRID ── */
-.sess-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+/* ═══════════════ SESSIONS GRID ═══════════════ */
+.sess-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 .sess-card{
-  background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);
-  padding:18px;transition:.2s;
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:15px;
+  transition:.2s;
 }
 .sess-card:hover{border-color:var(--border2)}
-.sess-card .sc-name{font-weight:700;font-size:.95rem;margin-bottom:2px}
-.sess-card .sc-num{font-size:.78rem;color:var(--text2);margin-bottom:10px}
+.sess-name{font-weight:700;font-size:.9rem}
+.sess-num{font-size:.75rem;color:var(--text2);margin:3px 0 10px}
 
-/* ── LOGS ── */
+/* ═══════════════ LOGS ═══════════════ */
 #log-box{
-  background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);
-  padding:16px;height:420px;overflow-y:auto;
-  font-family:'Courier New',monospace;font-size:.77rem;line-height:1.7;
+  background:var(--bg);border:1px solid var(--border);border-radius:var(--r);
+  padding:14px;height:440px;overflow-y:auto;
+  font-family:'Courier New',monospace;font-size:.76rem;line-height:1.75;
 }
-.log-entry{display:flex;gap:10px;color:var(--text2);padding:1px 0}
-.log-entry .log-time{color:var(--text3);flex-shrink:0;white-space:nowrap}
-.log-entry .log-msg{word-break:break-all}
-.log-entry.log-err .log-msg{color:var(--red)}
-.log-entry.log-warn .log-msg{color:var(--orange)}
-.log-entry.log-ok .log-msg{color:var(--g1)}
+.le{display:flex;gap:8px;padding:1px 0;border-radius:4px}
+.le:hover{background:rgba(255,255,255,.02)}
+.le-t{color:var(--text3);white-space:nowrap;flex-shrink:0;user-select:none}
+.le-m{word-break:break-all;flex:1}
+.le.err .le-m{color:var(--red)}
+.le.warn .le-m{color:var(--orange)}
+.le.ok .le-m{color:var(--g1)}
+.le.info .le-m{color:var(--blue)}
 
-/* ── TOAST ── */
-#toast-c{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+/* ═══════════════ TOAST ═══════════════ */
+#toast-wrap{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:7px;pointer-events:none;max-width:320px}
 .toast{
-  padding:12px 18px;border-radius:10px;font-size:.83rem;font-weight:500;
-  display:flex;align-items:center;gap:10px;min-width:240px;max-width:340px;
+  display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:10px;
   background:var(--bg2);border:1px solid var(--border2);color:var(--text);
-  animation:tslide .25s ease;pointer-events:all;
-  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  font-size:.82rem;font-weight:500;pointer-events:all;
+  animation:tIn .22s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 8px 30px rgba(0,0,0,.45);
 }
-.toast.success{border-color:rgba(0,230,118,.3);background:rgba(0,230,118,.07)}
-.toast.error{border-color:rgba(239,83,80,.3);background:rgba(239,83,80,.07)}
-.toast.info{border-color:rgba(79,195,247,.3);background:rgba(79,195,247,.07)}
-.toast-icon{font-size:1.1rem}
-@keyframes tslide{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+.toast.success{border-color:rgba(0,230,118,.3);background:rgba(0,230,118,.06)}
+.toast.error{border-color:rgba(255,82,82,.3);background:rgba(255,82,82,.06)}
+.toast.info{border-color:rgba(64,196,255,.3);background:rgba(64,196,255,.06)}
+.toast.warn{border-color:rgba(255,171,64,.3);background:rgba(255,171,64,.06)}
+.toast-icon{font-size:1rem;flex-shrink:0}
+@keyframes tIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
 
-/* ── SEARCH ── */
-.search-bar{position:relative;width:220px}
-.search-bar input{padding-left:32px;font-size:.82rem}
-.search-bar::before{content:'🔍';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:.8rem;pointer-events:none}
+/* ═══════════════ SEARCH ═══════════════ */
+.search-wrap{position:relative}
+.search-wrap input{padding-left:30px;min-width:180px}
+.search-wrap::before{content:'🔍';position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:.75rem;pointer-events:none;opacity:.5}
 
-/* ── MISC ── */
-.divider{height:1px;background:var(--border);margin:16px 0}
-.empty-state{text-align:center;padding:48px 20px;color:var(--text3)}
-.empty-state .e-icon{font-size:2.5rem;margin-bottom:10px;opacity:.5}
-.empty-state p{font-size:.87rem}
-.tag-list{display:flex;flex-wrap:wrap;gap:5px}
-.glow-btn{box-shadow:0 0 20px rgba(0,230,118,.3)}
-.uptime-val{font-variant-numeric:tabular-nums}
-hr{border:none;border-top:1px solid var(--border);margin:18px 0}
+/* ═══════════════ MISC ═══════════════ */
+.divider{height:1px;background:var(--border);margin:14px 0}
+.text-muted{color:var(--text2)}
+.text-xs{font-size:.75rem}
+.text-sm{font-size:.82rem}
+.fw7{font-weight:700}
+.fw8{font-weight:800}
+.mt-1{margin-top:4px}
+.mt-2{margin-top:8px}
+.mt-3{margin-top:12px}
+.mb-1{margin-bottom:4px}
+.mb-2{margin-bottom:8px}
+.mb-3{margin-bottom:12px}
 .flex{display:flex}
+.flex-wrap{flex-wrap:wrap}
 .items-center{align-items:center}
+.gap-1{gap:4px}
 .gap-2{gap:8px}
 .gap-3{gap:12px}
 .ml-auto{margin-left:auto}
-.fw-6{font-weight:600}
-.text-xs{font-size:.74rem}
-.text-sm{font-size:.82rem}
-.text-muted{color:var(--text2)}
-.mt-2{margin-top:8px}
-.mt-3{margin-top:12px}
-.mb-2{margin-bottom:8px}
-.mb-3{margin-bottom:12px}
-
-/* ── NET CHART ── */
-.mini-stat{display:flex;gap:12px;margin-top:12px}
-.ms{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
-.ms .mv{font-size:1.1rem;font-weight:700}
-.ms .ml{font-size:.68rem;color:var(--text2);margin-top:2px;text-transform:uppercase}
-
-/* ── RESPONSIVE ── */
-@media(max-width:768px){
-  .sidebar{transform:translateX(-100%)}
-  .sidebar.open{transform:none}
-  .main{margin-left:0}
-  .charts-row{grid-template-columns:1fr}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-}
+.w-full{width:100%}
+.uptime-fmt{font-variant-numeric:tabular-nums;font-family:'Courier New',monospace;font-size:1.4rem!important;letter-spacing:.05em!important}
 </style>
 </head>
 <body>
 
-<!-- ══ LOGIN ══ -->
-<div id="login-screen">
-  <div class="login-wrap">
-    <div class="login-logo">
-      <div class="icon">🤖</div>
+<!-- ════ LOGIN ════ -->
+<div id="login-page">
+  <div class="login-card">
+    <div class="login-top">
+      <div class="login-logo">🤖</div>
       <h1>Supreme MD Bot</h1>
-      <p>Admin Control Panel</p>
+      <p>Admin Control Panel v2.0</p>
     </div>
-    <div class="login-box">
-      <div class="field"><label>Username</label><input class="inp" id="l-user" type="text" placeholder="admin" value="admin" autocomplete="username"/></div>
-      <div class="field"><label>Password</label><input class="inp" id="l-pass" type="password" placeholder="••••••••" autocomplete="current-password"/></div>
-      <button class="btn-login" onclick="doLogin()">Sign In →</button>
-      <div id="l-err"></div>
-    </div>
+    <div class="lf"><label>Username</label><input class="inp" id="l-u" type="text" value="admin" autocomplete="username"/></div>
+    <div class="lf"><label>Password</label><input class="inp" id="l-p" type="password" placeholder="••••••••" autocomplete="current-password"/></div>
+    <button class="btn-login" id="l-btn" onclick="doLogin()">Sign In →</button>
+    <div id="l-err"></div>
   </div>
 </div>
 
-<!-- ══ APP ══ -->
+<!-- ════ APP ════ -->
 <div id="app">
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <div class="s-icon">🤖</div>
+    <div class="sb-logo">
+      <div class="sb-logo-icon">🤖</div>
       <div>
-        <span>Supreme MD</span>
-        <small>Bot Dashboard</small>
+        <div class="sb-logo-text">Supreme MD</div>
+        <div class="sb-logo-sub">Control Panel</div>
       </div>
     </div>
 
-    <div class="sidebar-status" id="sb-status">
-      <div class="status-dot" id="sb-dot"></div>
-      <div class="status-info">
-        <div class="s-stat" id="sb-stat">Checking...</div>
-        <div class="s-num" id="sb-num">—</div>
+    <div class="sb-conn" onclick="showPage('sessions')">
+      <div class="conn-dot" id="conn-dot"></div>
+      <div class="conn-info">
+        <div class="conn-stat" id="conn-stat">Connecting...</div>
+        <div class="conn-num" id="conn-num">Tap to manage sessions</div>
       </div>
     </div>
 
-    <nav class="sidebar-nav">
-      <div class="nav-section">Main</div>
-      <button class="nav-item active" data-page="overview"><span class="ni">📊</span>Overview</button>
-      <button class="nav-item" data-page="sessions"><span class="ni">📱</span>Sessions</button>
+    <nav class="sb-nav">
+      <div class="nav-group">Dashboard</div>
+      <button class="nav-btn active" data-page="overview"><span class="nav-icon">📊</span>Overview</button>
+      <button class="nav-btn" data-page="sessions"><span class="nav-icon">📱</span>Sessions</button>
 
-      <div class="nav-section">Management</div>
-      <button class="nav-item" data-page="users"><span class="ni">👥</span>Users</button>
-      <button class="nav-item" data-page="groups"><span class="ni">🏘️</span>Groups</button>
-      <button class="nav-item" data-page="commands"><span class="ni">⚡</span>Commands</button>
+      <div class="nav-group">Management</div>
+      <button class="nav-btn" data-page="users"><span class="nav-icon">👥</span>Users</button>
+      <button class="nav-btn" data-page="groups"><span class="nav-icon">🏘️</span>Groups</button>
+      <button class="nav-btn" data-page="commands"><span class="nav-icon">⚡</span>Commands</button>
 
-      <div class="nav-section">Messaging</div>
-      <button class="nav-item" data-page="broadcast"><span class="ni">📢</span>Broadcast</button>
-      <button class="nav-item" data-page="autoreply"><span class="ni">💬</span>Auto-Reply</button>
-      <button class="nav-item" data-page="scheduler"><span class="ni">🕐</span>Scheduler</button>
+      <div class="nav-group">Messaging</div>
+      <button class="nav-btn" data-page="broadcast"><span class="nav-icon">📢</span>Broadcast</button>
+      <button class="nav-btn" data-page="autoreply"><span class="nav-icon">🔁</span>Auto-Reply</button>
+      <button class="nav-btn" data-page="scheduler"><span class="nav-icon">🕐</span>Scheduler</button>
 
-      <div class="nav-section">System</div>
-      <button class="nav-item" data-page="economy"><span class="ni">💰</span>Economy</button>
-      <button class="nav-item" data-page="files"><span class="ni">📁</span>Files</button>
-      <button class="nav-item" data-page="settings"><span class="ni">⚙️</span>Settings</button>
-      <button class="nav-item" data-page="logs"><span class="ni">📋</span>Logs</button>
+      <div class="nav-group">System</div>
+      <button class="nav-btn" data-page="economy"><span class="nav-icon">💰</span>Economy</button>
+      <button class="nav-btn" data-page="files"><span class="nav-icon">📁</span>Files</button>
+      <button class="nav-btn" data-page="settings"><span class="nav-icon">⚙️</span>Settings</button>
+      <button class="nav-btn" data-page="logs"><span class="nav-icon">📋</span>Logs</button>
     </nav>
 
-    <div class="sidebar-footer">
-      <div class="avatar">👤</div>
-      <div class="uinfo"><b id="sb-user">admin</b><span>Administrator</span></div>
-      <button class="btn-icon" onclick="doLogout()" title="Sign out">⏻</button>
+    <div class="sb-foot">
+      <div class="sb-avatar">👤</div>
+      <div class="sb-userinfo"><b id="sb-username">admin</b><span>Administrator</span></div>
+      <button class="btn-logout" onclick="doLogout()" title="Logout">⏻</button>
     </div>
   </aside>
 
   <!-- MAIN -->
   <div class="main">
     <div class="topbar">
-      <div class="flex items-center gap-2">
-        <div class="topbar-title" id="topbar-title">Overview <span>Dashboard</span></div>
-      </div>
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title" id="page-title">Overview <small>Dashboard</small></div>
       <div class="topbar-actions">
-        <div id="topbar-uptime" class="text-xs text-muted uptime-val"></div>
-        <button class="tbtn" onclick="restartBot()">↺ Restart Bot</button>
-        <button class="tbtn danger" onclick="doLogout()">Sign Out</button>
+        <div class="tb-time"><span id="tb-uptime" style="font-variant-numeric:tabular-nums">00:00:00</span><span style="font-size:.62rem;color:var(--text3)">UPTIME</span></div>
+        <button class="tb-btn" onclick="restartBot()">↺ Restart</button>
+        <button class="tb-btn red" onclick="doLogout()">Exit</button>
       </div>
     </div>
 
-    <!-- ── OVERVIEW ── -->
-    <div class="page active" id="page-overview">
-      <div class="stats-grid" id="stats-grid">
-        <div class="stat-card" style="--accent-color:rgba(0,230,118,.07)">
-          <span class="sc-icon">📡</span>
-          <div class="sc-val" id="ov-status">—</div>
-          <div class="sc-label">Connection</div>
-        </div>
-        <div class="stat-card" style="--accent-color:rgba(79,195,247,.07)">
-          <span class="sc-icon">📱</span>
-          <div class="sc-val" id="ov-number" style="font-size:1rem;padding-top:6px">—</div>
-          <div class="sc-label">Linked Number</div>
-        </div>
-        <div class="stat-card" style="--accent-color:rgba(255,183,77,.07)">
-          <span class="sc-icon">⏱️</span>
-          <div class="sc-val uptime-val" id="ov-uptime">—</div>
-          <div class="sc-label">Uptime</div>
-        </div>
-        <div class="stat-card" style="--accent-color:rgba(206,147,216,.07)">
-          <span class="sc-icon">👥</span>
-          <div class="sc-val" id="ov-users">—</div>
-          <div class="sc-label">Total Users</div>
-        </div>
-        <div class="stat-card" style="--accent-color:rgba(0,230,118,.07)">
-          <span class="sc-icon">📲</span>
-          <div class="sc-val" id="ov-sessions">—</div>
-          <div class="sc-label">Sessions</div>
-        </div>
-        <div class="stat-card" style="--accent-color:rgba(239,83,80,.07)">
-          <span class="sc-icon">📢</span>
-          <div class="sc-val" id="ov-broadcasts">—</div>
-          <div class="sc-label">Broadcasts</div>
-        </div>
-        <div class="stat-card" style="--accent-color:rgba(79,195,247,.07)">
-          <span class="sc-icon">🧠</span>
-          <div class="sc-val" id="ov-mem">—</div>
-          <div class="sc-label">Memory Used</div>
-          <div class="bar"><div class="bar-fill" id="ov-mem-bar" style="width:0%"></div></div>
-        </div>
-        <div class="stat-card" style="--accent-color:rgba(255,183,77,.07)">
-          <span class="sc-icon">⚙️</span>
-          <div class="sc-val" id="ov-cpu">—</div>
-          <div class="sc-label">CPU Load</div>
-        </div>
-        <div class="stat-card" style="--accent-color:rgba(0,230,118,.07)">
-          <span class="sc-icon">📂</span>
-          <div class="sc-val" id="ov-files">—</div>
-          <div class="sc-label">Cached Files</div>
-          <div class="sc-sub" id="ov-fsize"></div>
-        </div>
-        <div class="stat-card" style="--accent-color:rgba(79,195,247,.07)">
-          <span class="sc-icon">🌐</span>
-          <div class="sc-val" id="ov-platform">—</div>
-          <div class="sc-label">Platform</div>
-          <div class="sc-sub" id="ov-node"></div>
-        </div>
-      </div>
+    <div class="content">
 
-      <div class="charts-row">
-        <div class="chart-card">
-          <h4>📶 Network Speed</h4>
-          <canvas id="net-chart"></canvas>
-          <div class="mini-stat">
-            <div class="ms"><div class="mv" id="ov-rx">—</div><div class="ml">↓ Download</div></div>
-            <div class="ms"><div class="mv" id="ov-tx">—</div><div class="ml">↑ Upload</div></div>
-            <div class="ms"><div class="mv" id="ov-rxT" style="font-size:.85rem">—</div><div class="ml">Total ↓</div></div>
-            <div class="ms"><div class="mv" id="ov-txT" style="font-size:.85rem">—</div><div class="ml">Total ↑</div></div>
+      <!-- ── OVERVIEW ── -->
+      <div class="page active" id="page-overview">
+        <div class="grid-stats" id="stats-grid">
+          <div class="sc" style="--sc-color:var(--g1)"><div class="sc-glow"></div><div class="sc-icon">📡</div><div class="sc-val" id="s-status">—</div><div class="sc-label">Status</div></div>
+          <div class="sc" style="--sc-color:var(--blue)"><div class="sc-glow"></div><div class="sc-icon">📱</div><div class="sc-val" id="s-number" style="font-size:1rem;padding-top:4px">—</div><div class="sc-label">Linked Number</div></div>
+          <div class="sc" style="--sc-color:var(--orange)"><div class="sc-glow"></div><div class="sc-icon">⏱</div><div class="sc-val uptime-fmt" id="s-uptime">00:00:00</div><div class="sc-label">Uptime</div></div>
+          <div class="sc" style="--sc-color:var(--purple)"><div class="sc-glow"></div><div class="sc-icon">👥</div><div class="sc-val" id="s-users">0</div><div class="sc-label">Total Users</div></div>
+          <div class="sc" style="--sc-color:var(--g1)"><div class="sc-glow"></div><div class="sc-icon">📲</div><div class="sc-val" id="s-sess">0</div><div class="sc-label">Sessions</div></div>
+          <div class="sc" style="--sc-color:var(--pink)"><div class="sc-glow"></div><div class="sc-icon">📢</div><div class="sc-val" id="s-bc">0</div><div class="sc-label">Broadcasts</div></div>
+          <div class="sc" style="--sc-color:var(--blue)">
+            <div class="sc-glow"></div><div class="sc-icon">🧠</div>
+            <div class="sc-val" id="s-mem">0 MB</div><div class="sc-label">Memory</div>
+            <div class="sc-bar"><div class="sc-bar-fill" id="s-mem-bar" style="width:0%"></div></div>
+          </div>
+          <div class="sc" style="--sc-color:var(--orange)"><div class="sc-glow"></div><div class="sc-icon">⚙️</div><div class="sc-val" id="s-cpu">0.00</div><div class="sc-label">CPU Load</div></div>
+          <div class="sc" style="--sc-color:var(--g1)"><div class="sc-glow"></div><div class="sc-icon">📂</div><div class="sc-val" id="s-files">0</div><div class="sc-label">Cached Files</div><div class="sc-label" id="s-fsize" style="margin-top:2px"></div></div>
+          <div class="sc" style="--sc-color:var(--purple)"><div class="sc-glow"></div><div class="sc-icon">🌐</div><div class="sc-val" id="s-plat" style="font-size:1rem;padding-top:4px">—</div><div class="sc-label">Platform</div><div class="sc-label" id="s-node" style="margin-top:2px"></div></div>
+        </div>
+
+        <div class="grid-charts">
+          <div class="chart-card">
+            <h4>📶 Network Speed (Live)</h4>
+            <canvas id="net-chart" height="140"></canvas>
+            <div class="net-mini">
+              <div class="nm"><div class="nm-v" id="n-rx">—</div><div class="nm-l">↓ Speed</div></div>
+              <div class="nm"><div class="nm-v" id="n-tx">—</div><div class="nm-l">↑ Speed</div></div>
+              <div class="nm"><div class="nm-v" id="n-rxT" style="font-size:.8rem">—</div><div class="nm-l">Total ↓</div></div>
+              <div class="nm"><div class="nm-v" id="n-txT" style="font-size:.8rem">—</div><div class="nm-l">Total ↑</div></div>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h4>🧠 Memory Usage</h4>
+            <canvas id="mem-chart" height="180"></canvas>
           </div>
         </div>
-        <div class="chart-card">
-          <h4>🧠 Memory Usage</h4>
-          <canvas id="mem-chart"></canvas>
-        </div>
       </div>
-    </div>
 
-    <!-- ── SESSIONS ── -->
-    <div class="page" id="page-sessions">
-      <div class="page-header"><div class="page-title">Sessions</div></div>
+      <!-- ── SESSIONS ── -->
+      <div class="page" id="page-sessions">
+        <div class="ph"><div class="ph-title">Sessions</div><button class="btn btn-s btn-sm" onclick="loadSessions()">⟳ Refresh</button></div>
 
-      <div class="card" style="margin-bottom:18px">
-        <div class="card-title">🤖 Main Bot Connection</div>
-        <div id="main-info" class="text-sm text-muted mb-3"></div>
-        <div class="qr-container" id="qr-container">
-          <img id="qr-img" src="" alt="QR Code"/>
-          <div id="pair-code-wrap" style="display:none;text-align:center">
-            <div class="text-xs text-muted mb-2">PAIRING CODE</div>
-            <div class="pair-code-big" id="pair-code-val">— — — —</div>
-            <div class="text-xs text-muted mt-2">Enter this code in WhatsApp → Linked Devices → Link with Phone Number</div>
+        <div class="card">
+          <div class="card-hd">🤖 Main Bot</div>
+          <div id="main-info" class="text-sm text-muted mb-3">Loading...</div>
+          <div class="qr-panel" id="qr-panel">
+            <button class="qr-refresh-btn" onclick="loadMainQR()" title="Refresh QR">↺ Refresh</button>
+            <img id="qr-img" src="" alt="QR Code"/>
+            <div id="pair-show" style="display:none" class="pair-block">
+              <div class="text-xs text-muted mb-1">PAIRING CODE — valid for 60 seconds</div>
+              <div class="pair-code" id="pair-val">— — — —</div>
+              <div class="text-xs text-muted mt-1">WhatsApp → Linked Devices → Link with Phone Number</div>
+            </div>
+            <div id="qr-hint" class="qr-hint">
+              <span class="icon">📱</span>
+              <div>Click <b>QR Code</b> or <b>Pair Code</b> to connect</div>
+            </div>
+            <div id="qr-timer" class="qr-timer"></div>
           </div>
-          <div id="qr-placeholder" style="text-align:center;color:var(--text2)">
-            <div style="font-size:2.5rem;margin-bottom:8px">📱</div>
-            <div class="text-sm">Click a button below to connect</div>
-          </div>
-        </div>
-        <div class="flex gap-2 mt-3" style="flex-wrap:wrap">
-          <button class="btn btn-primary" onclick="loadMainQR()">🔄 Show QR Code</button>
-          <div class="flex gap-2" style="flex:1;min-width:260px">
-            <input class="inp" id="main-phone" type="text" placeholder="Phone number e.g. 94712345678" style="flex:1"/>
-            <button class="btn btn-secondary" onclick="reqMainPair()">🔑 Pair Code</button>
-          </div>
-          <button class="btn btn-danger" onclick="mainLogout()">⏻ Logout</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">📲 Multi-Sessions</div>
-        <div class="flex gap-2 mb-3" style="flex-wrap:wrap">
-          <input class="inp" id="ns-id" placeholder="Session ID (letters/numbers)" style="flex:1;min-width:180px"/>
-          <input class="inp" id="ns-phone" placeholder="Phone (leave empty for QR)" style="flex:1;min-width:180px"/>
-          <button class="btn btn-primary" onclick="createSession()">+ Add Session</button>
-        </div>
-        <div class="sess-grid" id="sess-grid">
-          <div class="empty-state"><div class="e-icon">📱</div><p>No extra sessions yet</p></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── USERS ── -->
-    <div class="page" id="page-users">
-      <div class="page-header">
-        <div class="page-title">Users <span id="users-count"></span></div>
-        <div class="search-bar"><input class="inp" id="usr-search" placeholder="Search number..." oninput="filterUsers()"/></div>
-      </div>
-      <div class="card">
-        <div class="tbl-wrap">
-          <table class="tbl">
-            <thead><tr><th>Number</th><th>Balance</th><th>Status</th><th>Banned</th><th>W/L</th><th>Last Seen</th><th>Actions</th></tr></thead>
-            <tbody id="users-tbody"><tr><td colspan="7" class="empty-state" style="padding:32px;text-align:center;color:var(--text3)">Loading...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── GROUPS ── -->
-    <div class="page" id="page-groups">
-      <div class="page-header">
-        <div class="page-title">Groups <span id="groups-count"></span></div>
-      </div>
-      <div class="card">
-        <div class="tbl-wrap">
-          <table class="tbl">
-            <thead><tr><th>Name</th><th>Members</th><th>Muted</th><th>Anti-Link</th><th>Anti-Spam</th><th>Welcome</th><th>NSFW</th></tr></thead>
-            <tbody id="groups-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── COMMANDS ── -->
-    <div class="page" id="page-commands">
-      <div class="page-header">
-        <div class="page-title">Commands <span id="cmds-count"></span></div>
-        <div class="flex gap-2">
-          <div class="search-bar"><input class="inp" id="cmd-search" placeholder="Search..." oninput="filterCmds()"/></div>
-          <button class="btn btn-secondary btn-sm" onclick="toggleAllCmds(true)">Enable All</button>
-          <button class="btn btn-danger btn-sm" onclick="toggleAllCmds(false)">Disable All</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="tbl-wrap">
-          <table class="tbl">
-            <thead><tr><th>Command</th><th>Category</th><th>Description</th><th>Access</th><th>Enabled</th></tr></thead>
-            <tbody id="cmds-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── BROADCAST ── -->
-    <div class="page" id="page-broadcast">
-      <div class="page-header"><div class="page-title">Broadcast</div></div>
-      <div class="card">
-        <div class="card-title">📢 New Broadcast</div>
-        <div class="field"><label>Message</label><textarea class="inp" id="bc-msg" placeholder="Type your message to broadcast to all users..."></textarea></div>
-        <div class="flex gap-2 items-center">
-          <button class="btn btn-primary glow-btn" onclick="sendBroadcast()">📢 Send to All Users</button>
-          <span class="text-xs text-muted">(Max 50 users per broadcast)</span>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">📜 History</div>
-        <div class="tbl-wrap">
-          <table class="tbl">
-            <thead><tr><th>Message</th><th>Sent</th><th>Failed</th><th>Status</th><th>Date</th></tr></thead>
-            <tbody id="bc-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── AUTO-REPLY ── -->
-    <div class="page" id="page-autoreply">
-      <div class="page-header"><div class="page-title">Auto-Reply Rules</div></div>
-      <div class="card">
-        <div class="card-title">➕ Add Rule</div>
-        <div class="row-fields">
-          <div class="field"><label>Trigger</label><input class="inp" id="ar-trig" placeholder="Keyword or phrase"/></div>
-          <div class="field"><label>Response</label><input class="inp" id="ar-resp" placeholder="Reply message"/></div>
-          <div class="field" style="max-width:160px"><label>Match Type</label>
-            <select class="inp" id="ar-match">
-              <option value="exact">Exact</option>
-              <option value="contains">Contains</option>
-              <option value="startsWith">Starts With</option>
-              <option value="regex">Regex</option>
-            </select>
+          <div class="flex gap-2 mt-3 flex-wrap">
+            <button class="btn btn-p" onclick="loadMainQR()">📷 Show QR Code</button>
+            <div class="flex gap-2" style="flex:1;min-width:250px">
+              <input class="inp" id="ph-input" type="tel" placeholder="Phone e.g. 94712345678" style="flex:1"/>
+              <button class="btn btn-s" onclick="reqPairCode()">🔑 Pair Code</button>
+            </div>
+            <button class="btn btn-d" onclick="mainLogout()">⏻ Logout</button>
           </div>
         </div>
-        <div class="flex gap-3 mb-3" style="flex-wrap:wrap">
-          <label class="flex items-center gap-2 text-sm" style="cursor:pointer"><input type="checkbox" id="ar-grp"/> Groups Only</label>
-          <label class="flex items-center gap-2 text-sm" style="cursor:pointer"><input type="checkbox" id="ar-pm"/> PM Only</label>
-          <label class="flex items-center gap-2 text-sm" style="cursor:pointer"><input type="checkbox" id="ar-case"/> Case Sensitive</label>
-        </div>
-        <button class="btn btn-primary" onclick="addAR()">+ Add Rule</button>
-      </div>
-      <div class="card">
-        <div class="card-title">📋 Rules</div>
-        <div class="tbl-wrap">
-          <table class="tbl">
-            <thead><tr><th>Trigger</th><th>Response</th><th>Match</th><th>Scope</th><th>On</th><th>Delete</th></tr></thead>
-            <tbody id="ar-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
 
-    <!-- ── SCHEDULER ── -->
-    <div class="page" id="page-scheduler">
-      <div class="page-header"><div class="page-title">Message Scheduler</div></div>
-      <div class="card">
-        <div class="card-title">⏰ Schedule a Message</div>
-        <div class="row-fields">
-          <div class="field" style="flex:2"><label>Message</label><textarea class="inp" id="sch-msg" style="min-height:60px"></textarea></div>
-          <div class="field"><label>Date & Time</label><input class="inp" id="sch-at" type="datetime-local"/></div>
-        </div>
-        <button class="btn btn-primary" onclick="addSched()">+ Schedule</button>
-      </div>
-      <div class="card">
-        <div class="card-title">📋 Scheduled Messages</div>
-        <div class="tbl-wrap">
-          <table class="tbl">
-            <thead><tr><th>Message</th><th>Scheduled At</th><th>Status</th><th>Delete</th></tr></thead>
-            <tbody id="sch-tbody"></tbody>
-          </table>
+        <div class="card">
+          <div class="card-hd">📲 Multi-Sessions</div>
+          <div class="flex gap-2 mb-3 flex-wrap">
+            <input class="inp" id="ns-id" placeholder="Session ID (e.g. bot2)" style="flex:1;min-width:150px"/>
+            <input class="inp" id="ns-ph" placeholder="Phone (optional, for pair mode)" style="flex:1;min-width:180px"/>
+            <button class="btn btn-p" onclick="createSess()">+ Add</button>
+          </div>
+          <div class="sess-grid" id="sess-grid">
+            <div class="text-muted text-sm">No sessions yet.</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- ── ECONOMY ── -->
-    <div class="page" id="page-economy">
-      <div class="page-header">
-        <div class="page-title">Economy</div>
-        <button class="btn btn-danger" onclick="resetEco()">⚠️ Reset All Balances</button>
-      </div>
-      <div class="card">
-        <div class="tbl-wrap">
-          <table class="tbl">
-            <thead><tr><th>Number</th><th>Balance</th><th>Premium</th><th>Wins</th><th>Set Balance</th></tr></thead>
-            <tbody id="eco-tbody"></tbody>
-          </table>
+      <!-- ── USERS ── -->
+      <div class="page" id="page-users">
+        <div class="ph">
+          <div class="ph-title">Users <span class="ph-sub" id="users-c"></span></div>
+          <div class="ph-actions">
+            <div class="search-wrap"><input class="inp" id="usr-q" placeholder="Search number..." oninput="filterUsers()"/></div>
+            <button class="btn btn-s btn-sm" onclick="loadUsers()">⟳ Refresh</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Number</th><th>Balance</th><th>Plan</th><th>Status</th><th>W / L</th><th>Last Seen</th><th>Actions</th></tr></thead>
+              <tbody id="users-tb"><tr><td colspan="7" class="empty-row">Loading...</td></tr></tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- ── FILES ── -->
-    <div class="page" id="page-files">
-      <div class="page-header"><div class="page-title">Downloaded Files</div></div>
-      <div class="card">
-        <div class="tbl-wrap">
-          <table class="tbl">
-            <thead><tr><th>File Name</th><th>Type</th><th>Size</th><th>Modified</th><th>Delete</th></tr></thead>
-            <tbody id="files-tbody"></tbody>
-          </table>
+      <!-- ── GROUPS ── -->
+      <div class="page" id="page-groups">
+        <div class="ph">
+          <div class="ph-title">Groups <span class="ph-sub" id="grp-c"></span></div>
+          <button class="btn btn-s btn-sm" onclick="loadGroups()">⟳ Refresh</button>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Name / JID</th><th>Members</th><th>Muted</th><th>Anti-Link</th><th>Anti-Spam</th><th>Welcome</th><th>NSFW</th></tr></thead>
+              <tbody id="grp-tb"><tr><td colspan="7" class="empty-row">Loading...</td></tr></tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- ── SETTINGS ── -->
-    <div class="page" id="page-settings">
-      <div class="page-header"><div class="page-title">Settings</div></div>
-      <div class="card">
-        <div class="card-title">🤖 Bot Configuration</div>
-        <div class="row-fields">
-          <div class="field"><label>Bot Name</label><input class="inp" id="st-name" type="text"/></div>
-          <div class="field" style="max-width:120px"><label>Prefix</label><input class="inp" id="st-prefix" type="text"/></div>
-          <div class="field"><label>Owner Number</label><input class="inp" id="st-owner" type="text" disabled/></div>
+      <!-- ── COMMANDS ── -->
+      <div class="page" id="page-commands">
+        <div class="ph">
+          <div class="ph-title">Commands <span class="ph-sub" id="cmd-c"></span></div>
+          <div class="ph-actions">
+            <div class="search-wrap"><input class="inp" id="cmd-q" placeholder="Search..." oninput="filterCmds()"/></div>
+            <button class="btn btn-s btn-sm" onclick="toggleAll(true)">Enable All</button>
+            <button class="btn btn-d btn-sm" onclick="toggleAll(false)">Disable All</button>
+          </div>
         </div>
-        <hr/>
-        <div class="flex gap-3" style="flex-wrap:wrap;margin-bottom:20px">
-          <label class="flex items-center gap-2 fw-6 text-sm" style="cursor:pointer">
-            <label class="toggle"><input type="checkbox" id="st-read"/><span class="slider"></span></label>
-            Auto Read Messages
-          </label>
-          <label class="flex items-center gap-2 fw-6 text-sm" style="cursor:pointer">
-            <label class="toggle"><input type="checkbox" id="st-typing"/><span class="slider"></span></label>
-            Auto Typing Indicator
-          </label>
-          <label class="flex items-center gap-2 fw-6 text-sm" style="cursor:pointer">
-            <label class="toggle"><input type="checkbox" id="st-nsfw"/><span class="slider"></span></label>
-            NSFW Commands Enabled
-          </label>
-        </div>
-        <button class="btn btn-primary" onclick="saveSettings()">💾 Save Settings</button>
-      </div>
-    </div>
-
-    <!-- ── LOGS ── -->
-    <div class="page" id="page-logs">
-      <div class="page-header">
-        <div class="page-title">Live Logs</div>
-        <div class="flex gap-2">
-          <button class="btn btn-secondary btn-sm" onclick="loadLogs()">⟳ Refresh</button>
-          <button class="btn btn-danger btn-sm" onclick="clearLogs()">🗑 Clear</button>
+        <div class="card">
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Command</th><th>Category</th><th>Description</th><th>Access</th><th>Uses</th><th>On/Off</th></tr></thead>
+              <tbody id="cmd-tb"></tbody>
+            </table>
+          </div>
         </div>
       </div>
-      <div id="log-box"></div>
-    </div>
 
+      <!-- ── BROADCAST ── -->
+      <div class="page" id="page-broadcast">
+        <div class="ph"><div class="ph-title">Broadcast</div></div>
+        <div class="card">
+          <div class="card-hd">📢 New Broadcast</div>
+          <div class="field"><label>Message</label><textarea class="inp" id="bc-msg" placeholder="Type message to send to all users..."></textarea></div>
+          <div class="flex gap-2 items-center flex-wrap">
+            <button class="btn btn-p" id="bc-btn" onclick="sendBC()">📢 Send to All Users</button>
+            <span class="text-xs text-muted">(Max 50 users per broadcast)</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd">📜 History</div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Message</th><th>✓ Sent</th><th>✗ Failed</th><th>Status</th><th>Date</th></tr></thead>
+              <tbody id="bc-tb"><tr><td colspan="5" class="empty-row">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── AUTO-REPLY ── -->
+      <div class="page" id="page-autoreply">
+        <div class="ph"><div class="ph-title">Auto-Reply Rules <span class="ph-sub" id="ar-c"></span></div></div>
+        <div class="card">
+          <div class="card-hd">➕ New Rule</div>
+          <div class="row">
+            <div class="field"><label>Trigger Keyword</label><input class="inp" id="ar-trig" placeholder="Hello, hi, help..."/></div>
+            <div class="field"><label>Bot Response</label><input class="inp" id="ar-resp" placeholder="Reply message"/></div>
+            <div class="field" style="flex:0 0 160px"><label>Match Type</label>
+              <select class="inp" id="ar-match">
+                <option value="exact">Exact Match</option>
+                <option value="contains">Contains</option>
+                <option value="startsWith">Starts With</option>
+                <option value="regex">Regex</option>
+              </select>
+            </div>
+          </div>
+          <div class="check-row">
+            <label class="check-item"><input type="checkbox" id="ar-grp"/> Groups Only</label>
+            <label class="check-item"><input type="checkbox" id="ar-pm"/> PM Only</label>
+            <label class="check-item"><input type="checkbox" id="ar-case"/> Case Sensitive</label>
+          </div>
+          <button class="btn btn-p" onclick="addAR()">+ Add Rule</button>
+        </div>
+        <div class="card">
+          <div class="card-hd">📋 Active Rules</div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Trigger</th><th>Response</th><th>Match</th><th>Scope</th><th>Enabled</th><th>Delete</th></tr></thead>
+              <tbody id="ar-tb"><tr><td colspan="6" class="empty-row">No rules yet</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SCHEDULER ── -->
+      <div class="page" id="page-scheduler">
+        <div class="ph"><div class="ph-title">Message Scheduler</div></div>
+        <div class="card">
+          <div class="card-hd">⏰ Schedule Message</div>
+          <div class="row">
+            <div class="field" style="flex:2"><label>Message</label><textarea class="inp" id="sch-msg" style="min-height:60px" placeholder="Scheduled message..."></textarea></div>
+            <div class="field"><label>Send At</label><input class="inp" id="sch-at" type="datetime-local"/></div>
+          </div>
+          <button class="btn btn-p" onclick="addSched()">+ Schedule</button>
+        </div>
+        <div class="card">
+          <div class="card-hd">📋 Scheduled Messages</div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Message</th><th>Scheduled At</th><th>Status</th><th>Delete</th></tr></thead>
+              <tbody id="sch-tb"><tr><td colspan="4" class="empty-row">No scheduled messages</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ECONOMY ── -->
+      <div class="page" id="page-economy">
+        <div class="ph">
+          <div class="ph-title">Economy</div>
+          <button class="btn btn-d" onclick="resetEco()">⚠️ Reset All Balances</button>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Number</th><th>Balance</th><th>Plan</th><th>Wins</th><th>Edit Balance</th></tr></thead>
+              <tbody id="eco-tb"><tr><td colspan="5" class="empty-row">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FILES ── -->
+      <div class="page" id="page-files">
+        <div class="ph">
+          <div class="ph-title">Files <span class="ph-sub" id="files-c"></span></div>
+          <button class="btn btn-s btn-sm" onclick="loadFiles()">⟳ Refresh</button>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>File Name</th><th>Type</th><th>Size</th><th>Modified</th><th>Delete</th></tr></thead>
+              <tbody id="files-tb"><tr><td colspan="5" class="empty-row">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SETTINGS ── -->
+      <div class="page" id="page-settings">
+        <div class="ph"><div class="ph-title">Settings</div></div>
+        <div class="card">
+          <div class="card-hd">🤖 Bot Configuration</div>
+          <div class="row">
+            <div class="field"><label>Bot Name</label><input class="inp" id="st-name" type="text"/></div>
+            <div class="field" style="flex:0 0 110px"><label>Prefix</label><input class="inp" id="st-prefix" type="text"/></div>
+            <div class="field"><label>Owner Number (read-only)</label><input class="inp" id="st-owner" type="text" disabled/></div>
+          </div>
+          <div class="divider"></div>
+          <div class="check-row" style="gap:28px">
+            <label class="check-item" style="gap:10px;font-size:.85rem">
+              <label class="tg"><input type="checkbox" id="st-read"/><span class="tg-slider"></span></label>
+              Auto Read Messages
+            </label>
+            <label class="check-item" style="gap:10px;font-size:.85rem">
+              <label class="tg"><input type="checkbox" id="st-typing"/><span class="tg-slider"></span></label>
+              Auto Typing Indicator
+            </label>
+            <label class="check-item" style="gap:10px;font-size:.85rem">
+              <label class="tg"><input type="checkbox" id="st-nsfw"/><span class="tg-slider"></span></label>
+              NSFW Commands
+            </label>
+          </div>
+          <div class="mt-3">
+            <button class="btn btn-p" onclick="saveSettings()">💾 Save Settings</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LOGS ── -->
+      <div class="page" id="page-logs">
+        <div class="ph">
+          <div class="ph-title">Live Logs</div>
+          <div class="ph-actions">
+            <button class="btn btn-s btn-sm" onclick="loadLogs()">⟳ Load</button>
+            <button class="btn btn-d btn-sm" onclick="clearLogs()">🗑 Clear</button>
+          </div>
+        </div>
+        <div id="log-box"></div>
+      </div>
+
+    </div><!-- /content -->
   </div><!-- /main -->
 </div><!-- /app -->
 
-<div id="toast-c"></div>
+<div id="toast-wrap"></div>
 
 <script>
-// ──────────────────────────────────────────────────────────
-//  STATE
-// ──────────────────────────────────────────────────────────
-let TOKEN = localStorage.getItem('sup_tok') || '';
+'use strict';
+// ════════════════════════════════════════
+//  GLOBALS
+// ════════════════════════════════════════
+let TOKEN = localStorage.getItem('sp_tok') || '';
 let allUsers = [], allCmds = [];
-let netHistory = { rx:[], tx:[], labels:[] };
-let netChart, memChart;
-let statsTimer;
+let netHist = {rx:[],tx:[],labels:[]};
+let netChart, memChart, statsLoop;
+let qrExpiry = null, qrTimer = null;
+let socket;
 
-// ──────────────────────────────────────────────────────────
-//  API HELPER
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
+//  API
+// ════════════════════════════════════════
 async function api(method, path, body) {
-  const r = await fetch('/bot-api' + path, {
-    method,
-    headers:{ 'Content-Type':'application/json', Authorization:'Bearer '+TOKEN },
-    body: body ? JSON.stringify(body) : undefined
-  });
-  return r.json();
-}
-
-// ──────────────────────────────────────────────────────────
-//  TOAST
-// ──────────────────────────────────────────────────────────
-function toast(msg, type='info', icon) {
-  const icons = { success:'✅', error:'❌', info:'ℹ️' };
-  const t = document.createElement('div');
-  t.className = 'toast ' + type;
-  t.innerHTML = `<span class="toast-icon">${icon||icons[type]}</span><span>${msg}</span>`;
-  document.getElementById('toast-c').appendChild(t);
-  setTimeout(()=>t.style.opacity='0', 3200);
-  setTimeout(()=>t.remove(), 3500);
-}
-
-// ──────────────────────────────────────────────────────────
-//  AUTH
-// ──────────────────────────────────────────────────────────
-async function doLogin() {
-  const u = document.getElementById('l-user').value;
-  const p = document.getElementById('l-pass').value;
   try {
-    const d = await fetch('/bot-api/auth/login',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({username:u,password:p})
-    }).then(r=>r.json());
-    if (d.token) {
-      TOKEN = d.token;
-      localStorage.setItem('sup_tok', TOKEN);
-      localStorage.setItem('sup_user', u);
-      initApp();
-    } else {
-      document.getElementById('l-err').textContent = d.error||'Invalid credentials';
-    }
-  } catch { document.getElementById('l-err').textContent = 'Connection failed'; }
+    const r = await fetch('/bot-api' + path, {
+      method,
+      headers: { 'Content-Type':'application/json', Authorization:'Bearer '+TOKEN },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const text = await r.text();
+    try { return JSON.parse(text); } catch { return { error: text || 'Invalid response' }; }
+  } catch (e) { return { error: e.message }; }
 }
 
-document.getElementById('l-pass').addEventListener('keydown', e => e.key==='Enter'&&doLogin());
+// ════════════════════════════════════════
+//  TOAST
+// ════════════════════════════════════════
+const ICONS = { success:'✅', error:'❌', info:'ℹ️', warn:'⚠️' };
+function toast(msg, type='info') {
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.innerHTML = `<span class="toast-icon">${ICONS[type]||'💬'}</span><span>${msg}</span>`;
+  document.getElementById('toast-wrap').appendChild(el);
+  setTimeout(() => { el.style.opacity='0'; el.style.transition='.3s'; }, 3200);
+  setTimeout(() => el.remove(), 3500);
+}
+
+// ════════════════════════════════════════
+//  AUTH
+// ════════════════════════════════════════
+async function doLogin() {
+  const u = document.getElementById('l-u').value.trim();
+  const p = document.getElementById('l-p').value;
+  const btn = document.getElementById('l-btn');
+  const err = document.getElementById('l-err');
+  btn.textContent = 'Signing in...'; btn.disabled = true; err.textContent = '';
+  const d = await api('POST','/auth/login',{username:u,password:p});
+  btn.textContent = 'Sign In →'; btn.disabled = false;
+  if (d.token) {
+    TOKEN = d.token;
+    localStorage.setItem('sp_tok', TOKEN);
+    localStorage.setItem('sp_user', u);
+    initApp();
+  } else {
+    err.textContent = d.error || 'Invalid credentials';
+  }
+}
+document.getElementById('l-p').addEventListener('keydown', e => e.key==='Enter' && doLogin());
 
 function doLogout() {
-  localStorage.removeItem('sup_tok');
+  localStorage.removeItem('sp_tok');
   location.reload();
 }
 
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 //  INIT
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 function initApp() {
-  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('login-page').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  document.getElementById('sb-user').textContent = localStorage.getItem('sup_user')||'admin';
+  document.getElementById('sb-username').textContent = localStorage.getItem('sp_user') || 'admin';
   initCharts();
   initSocket();
-  loadStats();
-  statsTimer = setInterval(loadStats, 4000);
   initNav();
+  loadStats();
+  statsLoop = setInterval(loadStats, 4500);
 }
 
+// Auto-login if token exists
 if (TOKEN) {
-  api('GET','/stats').then(d=>{
-    if (!d.error) initApp();
-    else { TOKEN=''; localStorage.removeItem('sup_tok'); }
-  }).catch(()=>{});
+  api('GET','/stats').then(d => {
+    if (d && !d.error) initApp();
+    else { TOKEN = ''; localStorage.removeItem('sp_tok'); }
+  });
 }
 
-// ──────────────────────────────────────────────────────────
-//  NAVIGATION
-// ──────────────────────────────────────────────────────────
-const pageLoaders = {
+// ════════════════════════════════════════
+//  SOCKET
+// ════════════════════════════════════════
+function initSocket() {
+  socket = io();
+  socket.on('update', d => {
+    if (d.status !== undefined) setConnStatus(d.status, d.number);
+    if (d.pairCode) showPairCode(d.pairCode);
+    if (d.qr) showQR(d.qr);
+  });
+  socket.on('log', l => appendLog(l));
+  socket.on('disconnect', () => setConnStatus('Disconnected'));
+}
+
+function setConnStatus(status, number) {
+  const dot = document.getElementById('conn-dot');
+  const stat = document.getElementById('conn-stat');
+  const num = document.getElementById('conn-num');
+  dot.className = 'conn-dot ' + (status==='Connected'?'connected':status==='Connecting'?'connecting':'');
+  stat.textContent = status || 'Unknown';
+  if (number) num.textContent = '+' + number;
+  else if (status !== 'Connected') num.textContent = 'Tap to manage sessions';
+}
+
+// ════════════════════════════════════════
+//  NAV
+// ════════════════════════════════════════
+const PAGE_TITLES = {
+  overview:  ['Overview',  'Dashboard'],
+  sessions:  ['Sessions',  'WhatsApp Connections'],
+  users:     ['Users',     'User Management'],
+  groups:    ['Groups',    'Group Settings'],
+  commands:  ['Commands',  '88 Commands Loaded'],
+  broadcast: ['Broadcast', 'Mass Messaging'],
+  autoreply: ['Auto-Reply','Automation Rules'],
+  scheduler: ['Scheduler', 'Scheduled Messages'],
+  economy:   ['Economy',   'Balance Management'],
+  files:     ['Files',     'Downloaded Media'],
+  settings:  ['Settings',  'Bot Configuration'],
+  logs:      ['Logs',      'Live Activity Feed'],
+};
+
+const PAGE_LOADERS = {
   sessions: loadSessions,
   users: loadUsers,
   groups: loadGroups,
@@ -848,512 +879,528 @@ const pageLoaders = {
   logs: loadLogs,
 };
 
-const pageTitles = {
-  overview:  ['Overview',   'Dashboard'],
-  sessions:  ['Sessions',   'WhatsApp Connections'],
-  users:     ['Users',      'User Management'],
-  groups:    ['Groups',     'Group Management'],
-  commands:  ['Commands',   '88 Commands'],
-  broadcast: ['Broadcast',  'Mass Messaging'],
-  autoreply: ['Auto-Reply', 'Automation Rules'],
-  scheduler: ['Scheduler',  'Scheduled Messages'],
-  economy:   ['Economy',    'Balance Management'],
-  files:     ['Files',      'Downloaded Media'],
-  settings:  ['Settings',   'Bot Configuration'],
-  logs:      ['Logs',       'Live Activity'],
-};
-
 function initNav() {
-  document.querySelectorAll('.nav-item[data-page]').forEach(btn => {
-    btn.addEventListener('click', () => showPage(btn.dataset.page));
+  document.querySelectorAll('.nav-btn[data-page]').forEach(btn => {
+    btn.addEventListener('click', () => { showPage(btn.dataset.page); closeSidebar(); });
   });
 }
 
 function showPage(name) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  document.querySelector(`[data-page="${name}"]`).classList.add('active');
-  const [t,s] = pageTitles[name]||[name,''];
-  document.getElementById('topbar-title').innerHTML = `${t} <span>${s}</span>`;
-  if (pageLoaders[name]) pageLoaders[name]();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const page = document.getElementById('page-'+name);
+  const btn = document.querySelector(`[data-page="${name}"]`);
+  if (page) page.classList.add('active');
+  if (btn) btn.classList.add('active');
+  const [t, s] = PAGE_TITLES[name] || [name, ''];
+  document.getElementById('page-title').innerHTML = `${t} <small>${s}</small>`;
+  if (PAGE_LOADERS[name]) PAGE_LOADERS[name]();
+  document.querySelector('.content').scrollTo(0, 0);
 }
 
-// ──────────────────────────────────────────────────────────
-//  SOCKET
-// ──────────────────────────────────────────────────────────
-function initSocket() {
-  const sock = io();
-  sock.on('update', d => {
-    if (d.status) setStatus(d.status, d.number);
-    if (d.pairCode) {
-      document.getElementById('pair-code-val').textContent = d.pairCode;
-      document.getElementById('pair-code-wrap').style.display = 'block';
-      document.getElementById('qr-placeholder').style.display = 'none';
-    }
-  });
-  sock.on('log', l => appendLog(l));
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').style.display = document.getElementById('sidebar').classList.contains('open') ? 'block' : 'none';
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').style.display = 'none';
 }
 
-function setStatus(status, number) {
-  const dot = document.getElementById('sb-dot');
-  dot.className = 'status-dot ' + (status==='Connected'?'connected':status==='Connecting'?'connecting':'');
-  document.getElementById('sb-stat').textContent = status||'—';
-  if (number) document.getElementById('sb-num').textContent = '+'+number;
-}
-
-// ──────────────────────────────────────────────────────────
-//  CHARTS INIT
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
+//  CHARTS
+// ════════════════════════════════════════
 function initCharts() {
-  const netCtx = document.getElementById('net-chart').getContext('2d');
-  netChart = new Chart(netCtx, {
-    type:'line',
-    data:{
-      labels:[],
-      datasets:[
-        {label:'↓ Download',data:[],borderColor:'#00e676',backgroundColor:'rgba(0,230,118,.08)',tension:.4,fill:true,pointRadius:0,borderWidth:2},
-        {label:'↑ Upload',data:[],borderColor:'#4fc3f7',backgroundColor:'rgba(79,195,247,.06)',tension:.4,fill:true,pointRadius:0,borderWidth:2},
+  const gridColor = 'rgba(255,255,255,.04)';
+  const tickColor = '#3d5166';
+
+  netChart = new Chart(document.getElementById('net-chart').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [
+        { label:'↓ Download', data:[], borderColor:'#00e676', backgroundColor:'rgba(0,230,118,.07)', tension:.4, fill:true, pointRadius:0, borderWidth:2 },
+        { label:'↑ Upload',   data:[], borderColor:'#40c4ff', backgroundColor:'rgba(64,196,255,.05)', tension:.4, fill:true, pointRadius:0, borderWidth:2 },
       ]
     },
-    options:{
-      responsive:true,maintainAspectRatio:false,animation:{duration:300},
-      scales:{
-        x:{display:false},
-        y:{display:true,grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#4a5568',font:{size:10},callback:v=>fmtBytes(v)+'/s'}}
+    options: {
+      responsive:true, maintainAspectRatio:false, animation:{duration:300},
+      scales: {
+        x: { display:false },
+        y: { grid:{color:gridColor}, ticks:{color:tickColor,font:{size:10},callback:v=>fmtBps(v)} }
       },
-      plugins:{legend:{display:true,labels:{color:'#8b949e',boxWidth:12,font:{size:10}}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtBytes(c.parsed.y)+'/s'}}}
+      plugins: {
+        legend:{labels:{color:'#8899aa',boxWidth:10,font:{size:10}}},
+        tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtBps(c.parsed.y)}}
+      }
     }
   });
 
-  const memCtx = document.getElementById('mem-chart').getContext('2d');
-  memChart = new Chart(memCtx, {
-    type:'doughnut',
-    data:{
-      labels:['Used','Free'],
-      datasets:[{data:[0,1],backgroundColor:['rgba(0,230,118,.8)','rgba(255,255,255,.05)'],borderColor:['transparent'],borderWidth:0,hoverOffset:4}]
+  memChart = new Chart(document.getElementById('mem-chart').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Used','Free'],
+      datasets: [{ data:[0,1], backgroundColor:['rgba(0,230,118,.85)','rgba(255,255,255,.04)'], borderWidth:0, hoverOffset:4 }]
     },
-    options:{
-      responsive:true,maintainAspectRatio:false,cutout:'72%',
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed} MB`}}}
+    options: {
+      responsive:true, maintainAspectRatio:false, cutout:'75%',
+      plugins: {
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed} MB`}},
+        title:{display:true,text:'0% Used',color:'#8899aa',font:{size:12},padding:{top:10}}
+      }
     }
   });
 }
 
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 //  STATS
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 function fmtBytes(b) {
-  if (b<1024) return b+' B';
-  if (b<1024*1024) return (b/1024).toFixed(1)+' KB';
-  if (b<1024*1024*1024) return (b/1024/1024).toFixed(1)+' MB';
-  return (b/1024/1024/1024).toFixed(2)+' GB';
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+  if (b < 1073741824) return (b/1048576).toFixed(1) + ' MB';
+  return (b/1073741824).toFixed(2) + ' GB';
 }
-
+function fmtBps(b) { return fmtBytes(b) + '/s'; }
 function fmtUptime(s) {
-  const h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
-  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  s = s || 0;
+  return `${String(Math.floor(s/3600)).padStart(2,'0')}:${String(Math.floor((s%3600)/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
 }
-
 function fmtDate(s) {
   if (!s) return '—';
-  const d=new Date(s);
-  return isNaN(d)?s:d.toLocaleString();
+  try { return new Date(s).toLocaleString(); } catch { return s; }
 }
 
 async function loadStats() {
-  const d = await api('GET','/stats').catch(()=>null);
+  const d = await api('GET', '/stats');
   if (!d || d.error) return;
 
-  // sidebar
-  setStatus(d.status, d.number);
+  const g = id => document.getElementById(id);
+  setConnStatus(d.status, d.number);
 
-  // overview stats
-  const $=id=>document.getElementById(id);
-  $('ov-status').textContent = d.status||'—';
-  $('ov-status').style.color = d.status==='Connected'?'var(--g1)':d.status==='Connecting'?'var(--orange)':'var(--red)';
-  $('ov-number').textContent = d.number||'Not connected';
-  $('ov-uptime').textContent = fmtUptime(d.uptime||0);
-  $('ov-users').textContent = d.userCount||0;
-  $('ov-sessions').textContent = d.sessionCount||0;
-  $('ov-broadcasts').textContent = d.broadcastCount||0;
-  $('ov-mem').textContent = (d.memUsed||0)+' MB';
-  $('ov-mem-bar').style.width = (d.memPercent||0)+'%';
-  $('ov-cpu').textContent = d.cpuLoad||'—';
-  $('ov-files').textContent = d.fileCount||0;
-  $('ov-fsize').textContent = (d.fileSizeMB||0)+' MB total';
-  $('ov-platform').textContent = (d.platform||'—').charAt(0).toUpperCase()+(d.platform||'').slice(1);
-  $('ov-node').textContent = d.nodeVersion||'';
-  $('topbar-uptime').textContent = '⏱ '+fmtUptime(d.uptime||0);
+  // stat cards
+  const statusEl = g('s-status');
+  statusEl.textContent = d.status || '—';
+  statusEl.style.color = d.status==='Connected'?'var(--g1)':d.status==='Connecting'?'var(--orange)':'var(--red)';
+  g('s-number').textContent = d.number ? '+'+d.number : 'Not linked';
+  const ut = fmtUptime(d.uptime);
+  g('s-uptime').textContent = ut;
+  g('tb-uptime').textContent = ut;
+  g('s-users').textContent = d.userCount || 0;
+  g('s-sess').textContent = d.sessionCount || 0;
+  g('s-bc').textContent = d.broadcastCount || 0;
+  g('s-mem').textContent = (d.memUsed||0) + ' MB';
+  g('s-mem-bar').style.width = (d.memPercent||0) + '%';
+  g('s-cpu').textContent = d.cpuLoad || '0.00';
+  g('s-files').textContent = d.fileCount || 0;
+  g('s-fsize').textContent = (d.fileSizeMB||0) + ' MB';
+  g('s-plat').textContent = (d.platform||'—')[0].toUpperCase() + (d.platform||'').slice(1);
+  g('s-node').textContent = d.nodeVersion || '';
 
   // mem chart
   if (memChart) {
-    memChart.data.datasets[0].data = [d.memUsed||0, Math.max(0,(d.memTotal||0)-(d.memUsed||0))];
-    memChart.options.plugins.title = {display:true,text:`${d.memPercent||0}% of ${d.memTotal||0} MB`,color:'#8b949e',font:{size:11}};
+    const used = d.memUsed||0, total = d.memTotal||1;
+    memChart.data.datasets[0].data = [used, Math.max(0, total-used)];
+    memChart.options.plugins.title.text = `${d.memPercent||0}% Used (${used}/${total} MB)`;
     memChart.update('none');
   }
 
   // net chart
   if (d.net && netChart) {
-    const now = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    netHistory.labels.push(now);
-    netHistory.rx.push(d.net.speedRxRaw||0);
-    netHistory.tx.push(d.net.speedTxRaw||0);
-    if (netHistory.labels.length > 20) {
-      netHistory.labels.shift(); netHistory.rx.shift(); netHistory.tx.shift();
-    }
-    netChart.data.labels = [...netHistory.labels];
-    netChart.data.datasets[0].data = [...netHistory.rx];
-    netChart.data.datasets[1].data = [...netHistory.tx];
+    const t = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    netHist.labels.push(t);
+    netHist.rx.push(d.net.speedRxRaw||0);
+    netHist.tx.push(d.net.speedTxRaw||0);
+    if (netHist.labels.length > 25) { netHist.labels.shift(); netHist.rx.shift(); netHist.tx.shift(); }
+    netChart.data.labels = [...netHist.labels];
+    netChart.data.datasets[0].data = [...netHist.rx];
+    netChart.data.datasets[1].data = [...netHist.tx];
     netChart.update('none');
-    $('ov-rx').textContent = d.net.speedRx||'0 B/s';
-    $('ov-tx').textContent = d.net.speedTx||'0 B/s';
-    $('ov-rxT').textContent = d.net.totalRx||'—';
-    $('ov-txT').textContent = d.net.totalTx||'—';
+    g('n-rx').textContent = d.net.speedRx||'0 B/s';
+    g('n-tx').textContent = d.net.speedTx||'0 B/s';
+    g('n-rxT').textContent = d.net.totalRx||'—';
+    g('n-txT').textContent = d.net.totalTx||'—';
   }
 }
 
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 //  BOT CONTROL
-// ──────────────────────────────────────────────────────────
-function restartBot() {
-  api('POST','/admin/restart').then(()=>toast('Bot restart queued','info','↺'));
+// ════════════════════════════════════════
+async function restartBot() {
+  await api('POST', '/admin/restart');
+  toast('Bot restart queued — reconnecting in ~5s', 'info');
 }
 
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 //  SESSIONS
-// ──────────────────────────────────────────────────────────
-async function loadSessions() {
-  const s = await api('GET','/bot-api/bot/session');
-  document.getElementById('main-info').innerHTML = `
-    Status: <b style="color:${s.status==='Connected'?'var(--g1)':'var(--orange)'}">${s.status||'—'}</b>
-    &nbsp;|&nbsp; Number: <b>${s.number||'Not connected'}</b>
-    &nbsp;|&nbsp; Platform: ${s.platform||'—'}
-  `;
+// ════════════════════════════════════════
+function showQR(dataUrl) {
+  const img = document.getElementById('qr-img');
+  const hint = document.getElementById('qr-hint');
+  const pairShow = document.getElementById('pair-show');
+  img.src = dataUrl; img.style.display = 'block';
+  hint.style.display = 'none'; pairShow.style.display = 'none';
+  // 60-second expiry timer
+  clearInterval(qrTimer);
+  let secs = 60;
+  const timerEl = document.getElementById('qr-timer');
+  timerEl.textContent = `QR expires in ${secs}s`;
+  qrTimer = setInterval(() => {
+    secs--;
+    if (secs <= 0) { clearInterval(qrTimer); timerEl.textContent = 'QR expired — click ↺ to refresh'; }
+    else timerEl.textContent = `QR expires in ${secs}s`;
+  }, 1000);
+}
 
-  const list = await api('GET','/sessions');
-  const multi = list.filter(s=>!s.isMain);
+function showPairCode(code) {
+  document.getElementById('pair-val').textContent = code;
+  document.getElementById('pair-show').style.display = 'block';
+  document.getElementById('qr-img').style.display = 'none';
+  document.getElementById('qr-hint').style.display = 'none';
+}
+
+async function loadSessions() {
+  const s = await api('GET', '/bot-api/bot/session');
+  if (s && !s.error) {
+    document.getElementById('main-info').innerHTML =
+      `Status: <b style="color:${s.status==='Connected'?'var(--g1)':'var(--orange)'}">${s.status||'—'}</b> &nbsp;|&nbsp; Number: <b>${s.number||'Not connected'}</b> &nbsp;|&nbsp; Platform: ${s.platform||'—'}`;
+  }
+
+  const list = await api('GET', '/sessions');
+  if (!list || list.error) return;
+  const multi = list.filter(s => !s.isMain);
   const grid = document.getElementById('sess-grid');
   if (!multi.length) {
-    grid.innerHTML = '<div class="empty-state"><div class="e-icon">📱</div><p>No extra sessions</p></div>';
+    grid.innerHTML = '<div class="text-muted text-sm">No extra sessions. Add one above.</div>';
     return;
   }
-  grid.innerHTML = multi.map(s=>`
+  grid.innerHTML = multi.map(s => `
     <div class="sess-card">
-      <div class="sc-name">${s.label||s.id}</div>
-      <div class="sc-num">${s.number||'No number linked'}</div>
-      <div class="mb-2"><span class="badge ${s.status==='Connected'?'b-green':'b-orange'}">${s.status||'—'}</span></div>
+      <div class="sess-name">${s.label||s.id}</div>
+      <div class="sess-num">${s.number||'No number linked'}</div>
+      <div class="mb-2"><span class="badge ${s.status==='Connected'?'b-green':'b-orange'}">${s.status||'Unknown'}</span></div>
       <div class="flex gap-2">
-        <button class="btn btn-secondary btn-sm" style="flex:1" onclick="getSessQR('${s.id}')">QR</button>
-        <button class="btn btn-danger btn-sm" style="flex:1" onclick="removeSession('${s.id}')">Remove</button>
+        <button class="btn btn-s btn-sm" style="flex:1" onclick="getSessQR('${s.id}')">QR</button>
+        <button class="btn btn-d btn-sm" style="flex:1" onclick="removeSess('${s.id}')">Remove</button>
       </div>
     </div>`).join('');
 }
 
 async function loadMainQR() {
-  document.getElementById('qr-placeholder').style.display='none';
-  document.getElementById('pair-code-wrap').style.display='none';
-  document.getElementById('qr-img').style.display='none';
-  const d = await api('GET','/sessions/__main__/qr');
-  if (d.qrCode) {
-    const img = document.getElementById('qr-img');
-    img.src = d.qrCode; img.style.display='block';
-  } else toast(d.error||'No QR — bot may already be connected','info');
+  document.getElementById('qr-hint').style.display = 'none';
+  document.getElementById('pair-show').style.display = 'none';
+  document.getElementById('qr-img').style.display = 'none';
+  document.getElementById('qr-timer').textContent = 'Loading QR...';
+  const d = await api('GET', '/sessions/__main__/qr');
+  if (d && d.qrCode) { showQR(d.qrCode); }
+  else { document.getElementById('qr-hint').style.display = 'block'; document.getElementById('qr-timer').textContent = d.error||'No QR available — bot may already be connected'; toast(d.error||'No QR available', 'info'); }
 }
 
-async function reqMainPair() {
-  const phone = document.getElementById('main-phone').value.trim();
-  if (!phone) return toast('Enter phone number','error');
-  const d = await api('POST','/sessions/__main__/paircode',{phone});
-  if (d.code) {
-    document.getElementById('pair-code-val').textContent = d.code;
-    document.getElementById('pair-code-wrap').style.display='block';
-    document.getElementById('qr-placeholder').style.display='none';
-    document.getElementById('qr-img').style.display='none';
-  } else toast(d.error||'Failed','error');
+async function reqPairCode() {
+  const phone = document.getElementById('ph-input').value.trim();
+  if (!phone) return toast('Enter phone number first', 'warn');
+  const d = await api('POST', '/sessions/__main__/paircode', {phone});
+  if (d && d.code) { showPairCode(d.code); toast('Pair code: ' + d.code, 'success'); }
+  else toast(d.error||'Failed to get pair code', 'error');
 }
 
 async function mainLogout() {
-  if (!confirm('Logout main bot session?')) return;
-  const d = await api('POST','/bot/session/logout');
-  if (d.ok) toast('Logged out successfully','success');
-  else toast(d.error||'Failed','error');
+  if (!confirm('Logout main bot? You will need to re-scan QR.')) return;
+  const d = await api('POST', '/bot/session/logout');
+  if (d && d.ok) { toast('Logged out successfully', 'success'); loadSessions(); }
+  else toast(d?.error||'Failed', 'error');
 }
 
-async function createSession() {
+async function createSess() {
   const id = document.getElementById('ns-id').value.trim();
-  const phone = document.getElementById('ns-phone').value.trim();
-  if (!id) return toast('Enter session ID','error');
-  const d = await api('POST','/sessions',{id,pairMode:!!phone,phone});
-  if (d.error) toast(d.error,'error');
-  else { toast('Session created','success'); loadSessions(); }
+  const phone = document.getElementById('ns-ph').value.trim();
+  if (!id) return toast('Enter session ID', 'warn');
+  const d = await api('POST', '/sessions', {id, pairMode:!!phone, phone});
+  if (d && d.error) toast(d.error, 'error');
+  else { toast('Session created', 'success'); loadSessions(); document.getElementById('ns-id').value=''; }
 }
 
 async function getSessQR(id) {
-  const d = await api('GET',`/sessions/${id}/qr`);
-  if (d.qrCode) {
-    const w = window.open('','_blank','width=300,height=300');
-    w.document.write(`<img src="${d.qrCode}" style="width:100%;height:100%;object-fit:contain"/>`);
-  } else toast(d.error||'No QR available','error');
+  const d = await api('GET', `/sessions/${id}/qr`);
+  if (d && d.qrCode) {
+    const w = window.open('', '_blank', 'width=300,height=320');
+    w.document.write(`<body style="margin:0;background:#000"><img src="${d.qrCode}" style="width:300px;height:300px"/></body>`);
+  } else toast(d?.error||'No QR', 'error');
 }
 
-async function removeSession(id) {
-  if (!confirm('Remove session '+id+'?')) return;
-  await api('DELETE',`/sessions/${id}`);
-  toast('Session removed','success'); loadSessions();
+async function removeSess(id) {
+  if (!confirm(`Remove session "${id}"?`)) return;
+  await api('DELETE', `/sessions/${id}`);
+  toast('Session removed', 'success'); loadSessions();
 }
 
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 //  USERS
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 async function loadUsers() {
-  allUsers = await api('GET','/users');
-  document.getElementById('users-count').textContent = `(${allUsers.length})`;
+  allUsers = await api('GET', '/users') || [];
+  if (allUsers.error) { allUsers = []; }
+  document.getElementById('users-c').textContent = `(${allUsers.length})`;
   renderUsers(allUsers);
 }
 
 function filterUsers() {
-  const q = document.getElementById('usr-search').value.toLowerCase();
-  renderUsers(allUsers.filter(u=>u.number.includes(q)));
+  const q = document.getElementById('usr-q').value.toLowerCase();
+  renderUsers(allUsers.filter(u => u.number?.includes(q)));
 }
 
 function renderUsers(list) {
-  document.getElementById('users-tbody').innerHTML = list.length ? list.map(u=>`
+  document.getElementById('users-tb').innerHTML = list.length ? list.map(u => `
     <tr>
-      <td class="td-mono">${u.number}</td>
+      <td class="td-mono">${u.number||'—'}</td>
       <td>💰 <b>${u.balance||0}</b></td>
       <td><span class="badge ${u.premium?'b-blue':'b-gray'}">${u.premium?'⭐ Premium':'Free'}</span></td>
       <td><span class="badge ${u.banned?'b-red':'b-green'}">${u.banned?'🚫 Banned':'✅ OK'}</span></td>
       <td>${u.wins||0} / ${u.losses||0}</td>
       <td class="text-xs text-muted">${fmtDate(u.lastSeen)}</td>
       <td>
-        <div class="flex gap-2">
-          <button class="btn-icon-sm" title="${u.premium?'Revoke Premium':'Grant Premium'}" onclick="togglePremium('${u.jid}',${!u.premium})">${u.premium?'⭐':'☆'}</button>
-          <button class="btn-icon-sm" title="${u.banned?'Unban':'Ban'}" onclick="toggleBan('${u.jid}',${!u.banned})">${u.banned?'✅':'🚫'}</button>
-          <button class="btn-icon-sm" title="Delete user" onclick="delUser('${u.jid}')">🗑</button>
+        <div class="flex gap-1">
+          <button class="icon-btn edit" title="${u.premium?'Revoke Premium':'Grant Premium'}" onclick="togglePrem('${u.jid}',${!u.premium})">${u.premium?'⭐':'☆'}</button>
+          <button class="icon-btn" title="${u.banned?'Unban':'Ban'}" onclick="toggleBan('${u.jid}',${!u.banned})">${u.banned?'✅':'🚫'}</button>
+          <button class="icon-btn" title="Delete" onclick="delUser('${u.jid}')">🗑</button>
         </div>
       </td>
-    </tr>`).join('') : '<tr><td colspan="7" class="empty-state" style="padding:32px;text-align:center;color:var(--text3)">No users yet</td></tr>';
+    </tr>`).join('') : '<tr><td colspan="7" class="empty-row">No users registered yet</td></tr>';
 }
 
-async function togglePremium(jid, val) {
-  await api('POST',`/users/${encodeURIComponent(jid)}/premium`,{premium:val});
-  toast(val?'Premium granted':'Premium revoked','success'); loadUsers();
+async function togglePrem(jid, val) {
+  const d = await api('POST', `/users/${encodeURIComponent(jid)}/premium`, {premium:val});
+  if (d?.ok) { toast(val?'Premium granted':'Premium revoked', 'success'); loadUsers(); }
+  else toast(d?.error||'Failed', 'error');
 }
 async function toggleBan(jid, val) {
-  await api('POST',`/users/${encodeURIComponent(jid)}/ban`,{banned:val});
-  toast(val?'User banned':'User unbanned','success'); loadUsers();
+  const d = await api('POST', `/users/${encodeURIComponent(jid)}/ban`, {banned:val});
+  if (d?.ok) { toast(val?'User banned':'User unbanned', 'success'); loadUsers(); }
+  else toast(d?.error||'Failed', 'error');
 }
 async function delUser(jid) {
-  if (!confirm('Delete this user?')) return;
-  await api('DELETE',`/users/${encodeURIComponent(jid)}`);
-  toast('User deleted','success'); loadUsers();
+  if (!confirm('Permanently delete this user?')) return;
+  await api('DELETE', `/users/${encodeURIComponent(jid)}`);
+  toast('User deleted', 'success'); loadUsers();
 }
 
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 //  GROUPS
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 async function loadGroups() {
-  const list = await api('GET','/groups');
-  document.getElementById('groups-count').textContent = `(${list.length})`;
-  document.getElementById('groups-tbody').innerHTML = list.length ? list.map(g=>`
+  const list = await api('GET', '/groups') || [];
+  document.getElementById('grp-c').textContent = `(${list.length||0})`;
+  document.getElementById('grp-tb').innerHTML = (list.length && !list.error) ? list.map(g => `
     <tr>
-      <td><b>${g.name}</b><div class="text-xs text-muted">${g.jid.split('@')[0]}</div></td>
+      <td><b>${g.name}</b><div class="text-xs text-muted">${(g.jid||'').split('@')[0]}</div></td>
       <td>${g.memberCount||0}</td>
-      ${['isMuted','antiLink','antiSpam','welcomeEnabled','nsfw'].map(f=>`
-        <td><label class="toggle"><input type="checkbox" ${g[f]?'checked':''} onchange="patchGroup('${g.jid}','${f}',this.checked)"><span class="slider"></span></label></td>
+      ${['isMuted','antiLink','antiSpam','welcomeEnabled','nsfw'].map(f => `
+        <td><label class="tg"><input type="checkbox" ${g[f]?'checked':''} onchange="patchGrp('${g.jid}','${f}',this.checked)"><span class="tg-slider"></span></label></td>
       `).join('')}
-    </tr>`).join('') : '<tr><td colspan="7" class="empty-state" style="padding:32px;text-align:center;color:var(--text3)">No groups yet</td></tr>';
+    </tr>`).join('') : '<tr><td colspan="7" class="empty-row">No groups found. Bot must be in a group first.</td></tr>';
 }
 
-async function patchGroup(jid, field, val) {
-  await api('PATCH',`/groups/${encodeURIComponent(jid)}`,{[field]:val});
+async function patchGrp(jid, field, val) {
+  const d = await api('PATCH', `/groups/${encodeURIComponent(jid)}`, {[field]:val});
+  if (!d?.ok) toast('Failed to update', 'error');
 }
 
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 //  COMMANDS
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 async function loadCommands() {
-  allCmds = await api('GET','/commands');
-  document.getElementById('cmds-count').textContent = `(${allCmds.length})`;
+  allCmds = await api('GET', '/commands') || [];
+  document.getElementById('cmd-c').textContent = `(${allCmds.length})`;
   renderCmds(allCmds);
 }
 
 function filterCmds() {
-  const q = document.getElementById('cmd-search').value.toLowerCase();
-  renderCmds(allCmds.filter(c=>c.name.toLowerCase().includes(q)||(c.description||'').toLowerCase().includes(q)||(c.category||'').toLowerCase().includes(q)));
+  const q = document.getElementById('cmd-q').value.toLowerCase();
+  renderCmds(allCmds.filter(c => c.name?.toLowerCase().includes(q)||(c.description||'').toLowerCase().includes(q)||(c.category||'').toLowerCase().includes(q)));
 }
 
 function renderCmds(list) {
-  document.getElementById('cmds-tbody').innerHTML = list.map(c=>`
+  document.getElementById('cmd-tb').innerHTML = list.length ? list.map(c => `
     <tr>
-      <td><b>.${c.name}</b>${c.aliases.length?`<div class="text-xs text-muted">${c.aliases.map(a=>'.'+a).join(', ')}</div>`:''}</td>
+      <td><b>.${c.name}</b>${c.aliases?.length?`<div class="text-xs text-muted">${c.aliases.map(a=>'.'+a).join(', ')}</div>`:''}</td>
       <td><span class="badge b-blue">${c.category||'—'}</span></td>
       <td class="text-muted text-xs">${c.description||'—'}</td>
-      <td class="tag-list">
-        ${c.ownerOnly?'<span class="badge b-red">Owner</span>':''}
-        ${c.premiumOnly?'<span class="badge b-orange">Premium</span>':''}
-        ${c.groupOnly?'<span class="badge b-blue">Group</span>':''}
-        ${c.pmOnly?'<span class="badge b-green">PM</span>':''}
-        ${(!c.ownerOnly&&!c.premiumOnly&&!c.groupOnly&&!c.pmOnly)?'<span class="badge b-gray">All</span>':''}
+      <td>
+        <div class="flex gap-1 flex-wrap">
+          ${c.ownerOnly?'<span class="badge b-red">Owner</span>':''}
+          ${c.premiumOnly?'<span class="badge b-orange">Premium</span>':''}
+          ${c.groupOnly?'<span class="badge b-blue">Group</span>':''}
+          ${c.pmOnly?'<span class="badge b-green">PM</span>':''}
+          ${!c.ownerOnly&&!c.premiumOnly&&!c.groupOnly&&!c.pmOnly?'<span class="badge b-gray">All</span>':''}
+        </div>
       </td>
-      <td><label class="toggle"><input type="checkbox" ${c.enabled?'checked':''} onchange="toggleCmd('${c.name}',this.checked)"><span class="slider"></span></label></td>
-    </tr>`).join('');
+      <td class="text-muted text-xs">${c.usageCount||0}</td>
+      <td><label class="tg"><input type="checkbox" ${c.enabled?'checked':''} onchange="toggleCmd('${c.name}',this.checked)"><span class="tg-slider"></span></label></td>
+    </tr>`).join('') : '<tr><td colspan="6" class="empty-row">No commands loaded</td></tr>';
 }
 
 async function toggleCmd(name, enabled) {
-  await api('PATCH',`/commands/${encodeURIComponent(name)}`,{enabled});
+  await api('PATCH', `/commands/${encodeURIComponent(name)}`, {enabled});
 }
 
-async function toggleAllCmds(enabled) {
-  await api('POST','/commands/toggle-all',{enabled});
-  toast(enabled?'All commands enabled':'All commands disabled','success');
+async function toggleAll(enabled) {
+  await api('POST', '/commands/toggle-all', {enabled});
+  toast(enabled ? 'All commands enabled' : 'All commands disabled', 'success');
   loadCommands();
 }
 
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 //  BROADCAST
-// ──────────────────────────────────────────────────────────
-async function sendBroadcast() {
-  const message = document.getElementById('bc-msg').value.trim();
-  if (!message) return toast('Enter a message','error');
-  toast('Sending broadcast...','info','📢');
-  const d = await api('POST','/broadcast',{message});
-  toast(`Sent: ${d.sent} | Failed: ${d.failed}`, d.failed===0?'success':'info');
-  document.getElementById('bc-msg').value='';
+// ════════════════════════════════════════
+async function sendBC() {
+  const msg = document.getElementById('bc-msg').value.trim();
+  if (!msg) return toast('Enter a message', 'warn');
+  const btn = document.getElementById('bc-btn');
+  btn.disabled = true; btn.textContent = '📤 Sending...';
+  const d = await api('POST', '/broadcast', {message:msg});
+  btn.disabled = false; btn.textContent = '📢 Send to All Users';
+  if (d.error) { toast(d.error, 'error'); return; }
+  toast(`✅ Sent: ${d.sent} | ❌ Failed: ${d.failed}`, d.failed===0?'success':'warn');
+  document.getElementById('bc-msg').value = '';
   loadBcHistory();
 }
 
 async function loadBcHistory() {
-  const list = await api('GET','/broadcast/history');
-  document.getElementById('bc-tbody').innerHTML = list.length ? list.map(b=>`
+  const list = await api('GET', '/broadcast/history') || [];
+  document.getElementById('bc-tb').innerHTML = (list.length && !list.error) ? list.map(b => `
     <tr>
       <td class="text-xs">${(b.message||'').substring(0,70)}${(b.message||'').length>70?'…':''}</td>
-      <td><span style="color:var(--g1)">✓ ${b.sent}</span></td>
-      <td><span style="color:var(--red)">✗ ${b.failed}</span></td>
-      <td><span class="badge ${b.status==='success'?'b-green':b.status==='failed'?'b-red':'b-orange'}">${b.status}</span></td>
+      <td style="color:var(--g1);font-weight:700">${b.sent||0}</td>
+      <td style="color:var(--red);font-weight:700">${b.failed||0}</td>
+      <td><span class="badge ${b.status==='success'?'b-green':b.status==='failed'?'b-red':'b-orange'}">${b.status||'—'}</span></td>
       <td class="text-xs text-muted">${fmtDate(b.sentAt)}</td>
-    </tr>`).join('') : '<tr><td colspan="5" class="empty-state" style="padding:32px;text-align:center;color:var(--text3)">No broadcasts yet</td></tr>';
+    </tr>`).join('') : '<tr><td colspan="5" class="empty-row">No broadcasts sent yet</td></tr>';
 }
 
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 //  AUTO-REPLY
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 async function loadAR() {
-  const list = await api('GET','/auto-reply');
-  document.getElementById('ar-tbody').innerHTML = list.length ? list.map(r=>`
+  const list = await api('GET', '/auto-reply') || [];
+  document.getElementById('ar-c').textContent = `(${list.length||0})`;
+  document.getElementById('ar-tb').innerHTML = (list.length && !list.error) ? list.map(r => `
     <tr>
       <td><b>${r.trigger}</b></td>
       <td class="text-xs text-muted">${r.response}</td>
       <td><span class="badge b-blue">${r.matchType}</span></td>
       <td>${r.groupsOnly?'<span class="badge b-purple">Groups</span>':''}${r.pmOnly?'<span class="badge b-green">PM</span>':''}</td>
-      <td><label class="toggle"><input type="checkbox" ${r.enabled?'checked':''} onchange="api('PATCH','/auto-reply/${r.id}',{enabled:this.checked})"><span class="slider"></span></label></td>
-      <td><button class="btn-icon-sm" onclick="delAR('${r.id}')">🗑</button></td>
-    </tr>`).join('') : '<tr><td colspan="6" class="empty-state" style="padding:32px;text-align:center;color:var(--text3)">No rules yet</td></tr>';
+      <td><label class="tg"><input type="checkbox" ${r.enabled?'checked':''} onchange="api('PATCH','/auto-reply/${r.id}',{enabled:this.checked})"><span class="tg-slider"></span></label></td>
+      <td><button class="icon-btn" onclick="delAR('${r.id}')">🗑</button></td>
+    </tr>`).join('') : '<tr><td colspan="6" class="empty-row">No auto-reply rules yet</td></tr>';
 }
 
 async function addAR() {
   const trigger = document.getElementById('ar-trig').value.trim();
   const response = document.getElementById('ar-resp').value.trim();
-  if (!trigger||!response) return toast('Trigger and response required','error');
-  const d = await api('POST','/auto-reply',{trigger,response,matchType:document.getElementById('ar-match').value,caseSensitive:document.getElementById('ar-case').checked,groupsOnly:document.getElementById('ar-grp').checked,pmOnly:document.getElementById('ar-pm').checked});
-  if (d.error) toast(d.error,'error');
-  else { toast('Rule added','success'); document.getElementById('ar-trig').value=''; document.getElementById('ar-resp').value=''; loadAR(); }
+  if (!trigger||!response) return toast('Trigger and response are required', 'warn');
+  const d = await api('POST', '/auto-reply', {trigger, response, matchType:document.getElementById('ar-match').value, caseSensitive:document.getElementById('ar-case').checked, groupsOnly:document.getElementById('ar-grp').checked, pmOnly:document.getElementById('ar-pm').checked});
+  if (d?.error) toast(d.error, 'error');
+  else { toast('Rule added successfully', 'success'); ['ar-trig','ar-resp'].forEach(id=>document.getElementById(id).value=''); loadAR(); }
 }
 
 async function delAR(id) {
-  await api('DELETE',`/auto-reply/${id}`);
-  toast('Rule deleted','success'); loadAR();
+  await api('DELETE', `/auto-reply/${id}`);
+  toast('Rule deleted', 'success'); loadAR();
 }
 
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 //  SCHEDULER
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 async function loadSched() {
-  const list = await api('GET','/scheduler');
-  document.getElementById('sch-tbody').innerHTML = list.length ? list.map(s=>`
+  const list = await api('GET', '/scheduler') || [];
+  document.getElementById('sch-tb').innerHTML = (list.length && !list.error) ? list.map(s => `
     <tr>
-      <td class="text-xs">${(s.message||'').substring(0,60)}…</td>
+      <td class="text-xs">${(s.message||'').substring(0,70)}…</td>
       <td class="text-xs text-muted">${fmtDate(s.scheduledAt)}</td>
       <td><span class="badge ${s.sent?'b-green':'b-orange'}">${s.sent?'✓ Sent':'⏳ Pending'}</span></td>
-      <td><button class="btn-icon-sm" onclick="delSched('${s.id}')">🗑</button></td>
-    </tr>`).join('') : '<tr><td colspan="4" class="empty-state" style="padding:32px;text-align:center;color:var(--text3)">No scheduled messages</td></tr>';
+      <td><button class="icon-btn" onclick="delSched('${s.id}')">🗑</button></td>
+    </tr>`).join('') : '<tr><td colspan="4" class="empty-row">No scheduled messages</td></tr>';
 }
 
 async function addSched() {
   const message = document.getElementById('sch-msg').value.trim();
   const scheduledAt = document.getElementById('sch-at').value;
-  if (!message||!scheduledAt) return toast('Message and time required','error');
-  const d = await api('POST','/scheduler',{message,scheduledAt});
-  if (d.error) toast(d.error,'error');
-  else { toast('Scheduled successfully','success'); document.getElementById('sch-msg').value=''; loadSched(); }
+  if (!message||!scheduledAt) return toast('Message and date/time are required', 'warn');
+  const d = await api('POST', '/scheduler', {message, scheduledAt});
+  if (d?.error) toast(d.error, 'error');
+  else { toast('Message scheduled', 'success'); document.getElementById('sch-msg').value=''; loadSched(); }
 }
 
 async function delSched(id) {
-  await api('DELETE',`/scheduler/${id}`);
-  toast('Deleted','success'); loadSched();
+  await api('DELETE', `/scheduler/${id}`);
+  toast('Deleted', 'success'); loadSched();
 }
 
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 //  ECONOMY
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 async function loadEco() {
-  const list = await api('GET','/economy');
-  document.getElementById('eco-tbody').innerHTML = list.length ? list.map(u=>`
+  const list = await api('GET', '/economy') || [];
+  document.getElementById('eco-tb').innerHTML = (list.length && !list.error) ? list.map(u => `
     <tr>
-      <td class="td-mono">${u.number}</td>
+      <td class="td-mono">${u.number||'—'}</td>
       <td>💰 <b>${u.balance||0}</b></td>
       <td><span class="badge ${u.premium?'b-blue':'b-gray'}">${u.premium?'⭐ Premium':'Free'}</span></td>
       <td>${u.wins||0}</td>
       <td>
-        <div class="flex gap-2">
-          <input class="inp text-sm" id="bal-${u.jid.replace(/\W/g,'')}" type="number" value="${u.balance||0}" style="width:90px;padding:5px 8px"/>
-          <button class="btn btn-primary btn-sm" onclick="setBalance('${u.jid}')">Set</button>
+        <div class="flex gap-2 items-center">
+          <input class="inp text-sm" id="bal-${(u.jid||'').replace(/\W/g,'')}" type="number" value="${u.balance||0}" style="width:90px;padding:5px 8px"/>
+          <button class="btn btn-p btn-sm" onclick="setBalance('${u.jid}')">Set</button>
         </div>
       </td>
-    </tr>`).join('') : '<tr><td colspan="5" class="empty-state" style="padding:32px;text-align:center;color:var(--text3)">No users</td></tr>';
+    </tr>`).join('') : '<tr><td colspan="5" class="empty-row">No users in database</td></tr>';
 }
 
 async function setBalance(jid) {
-  const el = document.getElementById('bal-'+jid.replace(/\W/g,''));
-  await api('POST','/economy/edit',{jid,balance:Number(el.value)});
-  toast('Balance updated','success');
+  const el = document.getElementById('bal-'+(jid||'').replace(/\W/g,''));
+  const d = await api('POST', '/economy/edit', {jid, balance:Number(el?.value||0)});
+  if (d?.ok) toast('Balance updated', 'success');
+  else toast(d?.error||'Failed', 'error');
 }
 
 async function resetEco() {
-  if (!confirm('Reset ALL user balances to 0? This cannot be undone.')) return;
-  await api('POST','/economy/reset');
-  toast('All balances reset to 0','success'); loadEco();
+  if (!confirm('Reset ALL user balances to 0? This cannot be undone!')) return;
+  const d = await api('POST', '/economy/reset');
+  if (d?.ok) { toast('All balances reset', 'success'); loadEco(); }
+  else toast(d?.error||'Failed', 'error');
 }
 
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 //  FILES
-// ──────────────────────────────────────────────────────────
-const FILE_ICONS = {mp4:'🎬',mp3:'🎵',jpg:'🖼️',jpeg:'🖼️',png:'🖼️',gif:'🖼️',pdf:'📄',zip:'🗜️',webm:'🎬',ogg:'🎵'};
-
+// ════════════════════════════════════════
+const FI = {mp4:'🎬',mp3:'🎵',jpg:'🖼️',jpeg:'🖼️',png:'🖼️',gif:'🖼️',webm:'🎬',ogg:'🎵',pdf:'📄',zip:'🗜️',webp:'🖼️'};
 async function loadFiles() {
-  const list = await api('GET','/files');
-  document.getElementById('files-tbody').innerHTML = list.length ? list.map(f=>`
+  const list = await api('GET', '/files') || [];
+  document.getElementById('files-c').textContent = `(${list.length||0})`;
+  document.getElementById('files-tb').innerHTML = (list.length && !list.error) ? list.map(f => `
     <tr>
-      <td><b>${f.name}</b></td>
-      <td><span class="badge b-gray">${(FILE_ICONS[f.ext]||'📄')+' '+f.ext.toUpperCase()}</span></td>
+      <td class="fw7">${f.name}</td>
+      <td><span class="badge b-gray">${FI[f.ext]||'📄'} ${(f.ext||'file').toUpperCase()}</span></td>
       <td>${f.sizeMB} MB</td>
       <td class="text-xs text-muted">${fmtDate(f.modified)}</td>
-      <td><button class="btn-icon-sm" onclick="delFile('${f.name}')">🗑</button></td>
-    </tr>`).join('') : '<tr><td colspan="5" class="empty-state" style="padding:32px;text-align:center;color:var(--text3)">No files in downloads folder</td></tr>';
+      <td><button class="icon-btn" onclick="delFile('${f.name}')">🗑</button></td>
+    </tr>`).join('') : '<tr><td colspan="5" class="empty-row">No files in downloads folder</td></tr>';
 }
 
 async function delFile(name) {
-  if (!confirm('Delete '+name+'?')) return;
-  await api('DELETE',`/files/${encodeURIComponent(name)}`);
-  toast('File deleted','success'); loadFiles();
+  if (!confirm(`Delete "${name}"?`)) return;
+  const d = await api('DELETE', `/files/${encodeURIComponent(name)}`);
+  if (d?.ok) { toast('File deleted', 'success'); loadFiles(); }
+  else toast(d?.error||'Failed', 'error');
 }
 
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 //  SETTINGS
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 async function loadSettings() {
-  const s = await api('GET','/settings');
+  const s = await api('GET', '/settings');
+  if (!s || s.error) return;
   document.getElementById('st-name').value = s.botName||'';
   document.getElementById('st-prefix').value = s.prefix||'';
   document.getElementById('st-owner').value = s.ownerNumber||'';
@@ -1363,44 +1410,46 @@ async function loadSettings() {
 }
 
 async function saveSettings() {
-  const d = await api('POST','/settings',{
-    botName:document.getElementById('st-name').value,
-    prefix:document.getElementById('st-prefix').value,
-    autoRead:document.getElementById('st-read').checked,
-    autoTyping:document.getElementById('st-typing').checked,
-    nsfwEnabled:document.getElementById('st-nsfw').checked,
+  const d = await api('POST', '/settings', {
+    botName: document.getElementById('st-name').value,
+    prefix: document.getElementById('st-prefix').value,
+    autoRead: document.getElementById('st-read').checked,
+    autoTyping: document.getElementById('st-typing').checked,
+    nsfwEnabled: document.getElementById('st-nsfw').checked,
   });
-  if (d.ok) toast('Settings saved successfully','success');
-  else toast(d.error||'Failed to save','error');
+  if (d?.ok) toast('Settings saved successfully', 'success');
+  else toast(d?.error||'Failed to save', 'error');
 }
 
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 //  LOGS
-// ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════
 async function loadLogs() {
-  const list = await api('GET','/logs?limit=100');
+  const list = await api('GET', '/logs?limit=120') || [];
   const box = document.getElementById('log-box');
   box.innerHTML = '';
-  (list||[]).forEach(l => appendLog(l));
+  if (!list.error) (list||[]).forEach(l => appendLog(l));
 }
 
 function appendLog(l) {
   const box = document.getElementById('log-box');
   if (!box) return;
+  const lw = (l||'').toLowerCase();
+  let cls = '';
+  if (lw.includes('error')||lw.includes('err ')||lw.includes('❌')) cls = 'err';
+  else if (lw.includes('warn')) cls = 'warn';
+  else if (lw.includes('connected')||lw.includes('ready')||lw.includes('started')||lw.includes('✅')) cls = 'ok';
+  else if (lw.includes('qr')||lw.includes('scan')||lw.includes('pair')) cls = 'info';
+  const t = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
   const el = document.createElement('div');
-  const lower = (l||'').toLowerCase();
-  el.className = 'log-entry' + (lower.includes('error')||lower.includes('err')?' log-err':lower.includes('warn')?' log-warn':lower.includes('started')||lower.includes('connected')||lower.includes('ready')?' log-ok':'');
-  const now = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  el.innerHTML = `<span class="log-time">${now}</span><span class="log-msg">${l}</span>`;
+  el.className = 'le ' + cls;
+  el.innerHTML = `<span class="le-t">${t}</span><span class="le-m">${l}</span>`;
   box.appendChild(el);
   box.scrollTop = box.scrollHeight;
-  // limit log entries
-  while (box.children.length > 300) box.removeChild(box.firstChild);
+  while (box.children.length > 400) box.removeChild(box.firstChild);
 }
 
-function clearLogs() {
-  document.getElementById('log-box').innerHTML = '';
-}
+function clearLogs() { document.getElementById('log-box').innerHTML = ''; }
 </script>
 </body>
 </html>
