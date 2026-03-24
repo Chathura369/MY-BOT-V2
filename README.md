@@ -1,6 +1,4 @@
-# Supreme MD Bot
 
-A powerful multi-session WhatsApp bot with a cyberpunk-themed admin dashboard built on [Baileys](https://github.com/WhiskeySockets/Baileys).
 
 ## Features
 
