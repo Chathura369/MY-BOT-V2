@@ -11,760 +11,469 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#050810;--bg1:#090d14;--bg2:#0d1320;--bg3:#121a2a;--bg4:#1a2438;
-  --border:rgba(255,255,255,.055);--border2:rgba(255,255,255,.11);--border3:rgba(255,255,255,.18);
-  --accent:#00ff87;--accent2:#00d4ff;--accent3:#7c3aed;
+  --border:rgba(255,255,255,.055);--border2:rgba(255,255,255,.11);
+  --a:#00ff87;--a2:#00d4ff;
   --green:#00ff87;--blue:#00d4ff;--purple:#a78bfa;--orange:#fb923c;--red:#f87171;--pink:#f472b6;--yellow:#fbbf24;
-  --text:#e8f0fe;--text2:#7d8fa8;--text3:#334155;
-  --sb:240px;--hh:60px;
-  --r:14px;--r2:10px;--r3:7px;
-  --glow:0 0 20px rgba(0,255,135,.15);
-  --glow2:0 0 40px rgba(0,255,135,.08);
+  --text:#e8f0fe;--t2:#7d8fa8;--t3:#334155;
+  --sb:244px;--hh:60px;--r:14px;--r2:10px;
 }
 html,body{height:100%;overflow:hidden}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px}
-
-/* ══ SCROLLBAR ══ */
 ::-webkit-scrollbar{width:3px;height:3px}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:9px}
-::-webkit-scrollbar-track{background:transparent}
 
-/* ══ ANIMATED GRID BACKGROUND ══ */
-body::before{
-  content:'';position:fixed;inset:0;
-  background-image:linear-gradient(rgba(0,255,135,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,135,.025) 1px,transparent 1px);
-  background-size:48px 48px;
-  animation:gridPan 30s linear infinite;z-index:0;pointer-events:none;
-}
-@keyframes gridPan{from{background-position:0 0}to{background-position:48px 48px}}
+/* Grid BG */
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,135,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,135,.022) 1px,transparent 1px);background-size:48px 48px;animation:gp 40s linear infinite;z-index:0;pointer-events:none}
+@keyframes gp{from{background-position:0 0}to{background-position:48px 48px}}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 20% -10%,rgba(0,255,135,.065) 0%,transparent 55%),radial-gradient(ellipse 50% 40% at 80% 100%,rgba(0,212,255,.04) 0%,transparent 55%);z-index:0;pointer-events:none}
 
-body::after{
-  content:'';position:fixed;inset:0;
-  background:radial-gradient(ellipse 60% 50% at 20% -10%,rgba(0,255,135,.07) 0%,transparent 55%),
-             radial-gradient(ellipse 50% 40% at 80% 100%,rgba(0,212,255,.05) 0%,transparent 55%);
-  z-index:0;pointer-events:none;
-}
-
-/* ══════ LOGIN PAGE ══════ */
-#login-page{
-  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1000;
-}
-.lp-bg{position:absolute;inset:0;background:var(--bg);z-index:-1}
-.login-wrap{
-  width:min(440px,95vw);
-  background:linear-gradient(160deg,rgba(255,255,255,.04) 0%,rgba(255,255,255,.01) 100%);
-  border:1px solid var(--border2);border-radius:24px;padding:44px 40px;
-  backdrop-filter:blur(20px);
-  box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(0,255,135,.05);
-  animation:fadeUp .5s cubic-bezier(.22,1,.36,1);
-}
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-.lp-head{text-align:center;margin-bottom:36px}
-.lp-orb{
-  width:72px;height:72px;border-radius:20px;margin:0 auto 18px;
-  background:linear-gradient(135deg,var(--accent) 0%,#00b4d8 100%);
-  display:flex;align-items:center;justify-content:center;font-size:32px;
-  box-shadow:0 0 0 8px rgba(0,255,135,.1),0 0 60px rgba(0,255,135,.3),0 8px 32px rgba(0,0,0,.4);
-  position:relative;
-}
-.lp-orb::after{
-  content:'';position:absolute;inset:-12px;border-radius:28px;
-  border:1px solid rgba(0,255,135,.15);animation:orbPulse 3s ease-in-out infinite;
-}
-@keyframes orbPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.05)}}
-.lp-head h1{font-size:1.6rem;font-weight:900;letter-spacing:-.6px;background:linear-gradient(135deg,#fff 30%,rgba(255,255,255,.6));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.lp-head p{color:var(--text2);font-size:.82rem;margin-top:5px}
-.lp-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(0,255,135,.07);border:1px solid rgba(0,255,135,.2);color:var(--accent);font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:99px;margin-top:8px;letter-spacing:.05em}
-.lp-badge span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.5s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.fld{margin-bottom:14px}
-.fld label{display:block;font-size:.68rem;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
-.inp{
-  width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--border2);
-  background:rgba(255,255,255,.03);color:var(--text);
-  font-family:inherit;font-size:.9rem;outline:none;transition:.2s;
-}
-.inp:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(0,255,135,.08);background:rgba(255,255,255,.05)}
-.inp::placeholder{color:var(--text3)}
-.btn-login{
-  width:100%;padding:13px;border:none;border-radius:10px;cursor:pointer;
-  background:linear-gradient(135deg,var(--accent) 0%,#00b4d8 100%);
-  color:#020a06;font-family:inherit;font-size:.95rem;font-weight:800;
-  letter-spacing:.02em;margin-top:6px;transition:.2s;position:relative;overflow:hidden;
-}
-.btn-login::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.25),transparent);opacity:0;transition:.2s}
+/* LOGIN */
+#lp{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1000;background:var(--bg)}
+.lw{width:min(430px,94vw);background:linear-gradient(160deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid var(--border2);border-radius:24px;padding:44px 38px;backdrop-filter:blur(20px);box-shadow:0 30px 80px rgba(0,0,0,.6);animation:fu .45s cubic-bezier(.22,1,.36,1)}
+@keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.lh{text-align:center;margin-bottom:32px}
+.lorb{width:68px;height:68px;border-radius:20px;margin:0 auto 16px;background:linear-gradient(135deg,var(--a),var(--a2));display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 0 0 8px rgba(0,255,135,.1),0 0 50px rgba(0,255,135,.25);position:relative}
+.lorb::after{content:'';position:absolute;inset:-12px;border-radius:28px;border:1px solid rgba(0,255,135,.15);animation:op 3s ease-in-out infinite}
+@keyframes op{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(1.06)}}
+.lh h1{font-size:1.55rem;font-weight:900;letter-spacing:-.5px;background:linear-gradient(135deg,#fff 30%,rgba(255,255,255,.55));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.lh p{color:var(--t2);font-size:.82rem;margin-top:4px}
+.lbg{display:inline-flex;align-items:center;gap:5px;background:rgba(0,255,135,.07);border:1px solid rgba(0,255,135,.18);color:var(--a);font-size:.67rem;font-weight:800;padding:3px 10px;border-radius:99px;margin-top:8px;letter-spacing:.06em}
+.lbg i{width:5px;height:5px;border-radius:50%;background:var(--a);animation:bl 1.5s ease-in-out infinite;display:inline-block}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.15}}
+.fld{margin-bottom:13px}
+.fld label{display:block;font-size:.67rem;font-weight:800;color:var(--t2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.inp{width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid var(--border2);background:rgba(255,255,255,.03);color:var(--text);font-family:inherit;font-size:.9rem;outline:none;transition:.2s}
+.inp:focus{border-color:var(--a);box-shadow:0 0 0 4px rgba(0,255,135,.07);background:rgba(255,255,255,.05)}
+.inp::placeholder{color:var(--t3)}
+.inp:disabled{opacity:.5;cursor:not-allowed}
+.btn-login{width:100%;padding:13px;border:none;border-radius:10px;cursor:pointer;background:linear-gradient(135deg,var(--a),var(--a2));color:#020a06;font-family:inherit;font-size:.93rem;font-weight:900;margin-top:5px;transition:.2s;position:relative;overflow:hidden}
+.btn-login::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.22),transparent);opacity:0;transition:.2s}
 .btn-login:hover::before{opacity:1}
-.btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,255,135,.4)}
-.btn-login:active{transform:none}
-#l-err{color:var(--red);font-size:.78rem;margin-top:10px;text-align:center;min-height:16px;font-weight:600}
+.btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,255,135,.38)}
+#lerr{color:var(--red);font-size:.78rem;margin-top:10px;text-align:center;min-height:16px;font-weight:600}
 
-/* ══════ APP SHELL ══════ */
+/* APP */
 #app{display:none;height:100vh;overflow:hidden;position:relative;z-index:1}
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:199;backdrop-filter:blur(4px)}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:199;backdrop-filter:blur(4px)}
 
-/* ══ SIDEBAR ══ */
-.sidebar{
-  position:fixed;top:0;left:0;bottom:0;width:var(--sb);
-  background:rgba(9,13,20,.92);border-right:1px solid var(--border);
-  backdrop-filter:blur(24px);
-  display:flex;flex-direction:column;z-index:200;
-  transition:transform .3s cubic-bezier(.4,0,.2,1);
-}
-@media(max-width:960px){
-  .sidebar{transform:translateX(-100%)}
-  .sidebar.open{transform:none}
-  .overlay{display:block!important}
-  .main{margin-left:0!important}
-}
-.sb-brand{
-  padding:20px 16px 16px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;gap:12px;text-decoration:none;
-}
-.sb-brand-icon{
-  width:38px;height:38px;border-radius:11px;flex-shrink:0;
-  background:linear-gradient(135deg,var(--accent),#00b4d8);
-  display:flex;align-items:center;justify-content:center;font-size:18px;
-  box-shadow:0 0 16px rgba(0,255,135,.25);
-}
-.sb-brand-text{font-size:1rem;font-weight:900;letter-spacing:-.4px;color:var(--text)}
-.sb-brand-ver{font-size:.62rem;color:var(--accent);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-top:1px}
+/* SIDEBAR */
+.sb{position:fixed;top:0;left:0;bottom:0;width:var(--sb);background:rgba(9,13,20,.93);border-right:1px solid var(--border);backdrop-filter:blur(24px);display:flex;flex-direction:column;z-index:200;transition:transform .28s cubic-bezier(.4,0,.2,1)}
+@media(max-width:960px){.sb{transform:translateX(-100%)}.sb.open{transform:none}.ov{display:block!important}.main{margin-left:0!important}}
+.sb-brand{padding:18px 15px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px}
+.sb-ic{width:36px;height:36px;border-radius:11px;flex-shrink:0;background:linear-gradient(135deg,var(--a),var(--a2));display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 0 14px rgba(0,255,135,.22)}
+.sb-txt{font-size:.95rem;font-weight:900;letter-spacing:-.35px}
+.sb-ver{font-size:.6rem;color:var(--a);font-weight:800;text-transform:uppercase;letter-spacing:.09em;margin-top:1px}
 
-/* Status pill */
-.sb-status{
-  margin:10px 12px;padding:10px 12px;border-radius:10px;
-  background:rgba(255,255,255,.03);border:1px solid var(--border);
-  display:flex;align-items:center;gap:10px;cursor:pointer;transition:.2s;
-}
-.sb-status:hover{border-color:var(--border2);background:rgba(255,255,255,.05)}
-.st-dot{
-  width:9px;height:9px;border-radius:50%;background:var(--text3);
-  flex-shrink:0;position:relative;transition:.3s;
-}
-.st-dot.on{background:var(--accent);box-shadow:0 0 0 3px rgba(0,255,135,.18)}
-.st-dot.on::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--accent);opacity:.4;animation:ripple 1.8s ease-out infinite}
-@keyframes ripple{from{transform:scale(1);opacity:.4}to{transform:scale(2.4);opacity:0}}
-.st-dot.wait{background:var(--orange);animation:blink 1s ease-in-out infinite}
-.sb-status-info{flex:1;overflow:hidden}
-.sb-status-label{font-size:.8rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-status-num{font-size:.68rem;color:var(--text2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Status */
+.sb-conn{margin:9px 11px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);display:flex;align-items:center;gap:9px;cursor:pointer;transition:.18s}
+.sb-conn:hover{border-color:var(--border2);background:rgba(255,255,255,.05)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--t3);flex-shrink:0;transition:.3s;position:relative}
+.dot.on{background:var(--a);box-shadow:0 0 0 3px rgba(0,255,135,.18)}
+.dot.on::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--a);opacity:.4;animation:rp 1.8s ease-out infinite}
+@keyframes rp{from{transform:scale(1);opacity:.4}to{transform:scale(2.4);opacity:0}}
+.dot.wt{background:var(--orange);animation:bl 1s infinite}
+.ci{flex:1;overflow:hidden}
+.cl{font-size:.79rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cn{font-size:.68rem;color:var(--t2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* Nav groups */
-.sb-nav{flex:1;overflow-y:auto;padding:8px 10px}
-.nav-sep{font-size:.58rem;font-weight:900;color:var(--text3);text-transform:uppercase;letter-spacing:.14em;padding:14px 6px 5px;display:flex;align-items:center;gap:8px}
-.nav-sep::after{content:'';flex:1;height:1px;background:var(--border)}
-
-.nb{
-  display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;
-  border-radius:9px;border:none;background:none;color:var(--text2);
-  font-family:inherit;font-size:.82rem;cursor:pointer;transition:.15s;text-align:left;
-  margin-bottom:1px;position:relative;
-}
-.nb::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:0;background:var(--accent);border-radius:0 3px 3px 0;transition:.2s}
+/* Nav */
+.sb-nav{flex:1;overflow-y:auto;padding:6px 9px}
+.ns{font-size:.58rem;font-weight:900;color:var(--t3);text-transform:uppercase;letter-spacing:.14em;padding:13px 6px 5px;display:flex;align-items:center;gap:8px}
+.ns::after{content:'';flex:1;height:1px;background:var(--border)}
+.nb{display:flex;align-items:center;gap:9px;width:100%;padding:8px 10px;border-radius:9px;border:none;background:none;color:var(--t2);font-family:inherit;font-size:.81rem;cursor:pointer;transition:.14s;text-align:left;margin-bottom:1px;position:relative}
+.nb::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:0;background:var(--a);border-radius:0 3px 3px 0;transition:.18s}
 .nb:hover{background:rgba(255,255,255,.04);color:var(--text)}
-.nb.active{background:rgba(0,255,135,.07);color:var(--accent);font-weight:600}
-.nb.active::before{height:70%}
-.nb-icon{
-  width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;
-  font-size:.88rem;flex-shrink:0;background:rgba(255,255,255,.04);transition:.15s;
-}
-.nb.active .nb-icon{background:rgba(0,255,135,.1)}
-.nb-badge{margin-left:auto;background:rgba(0,255,135,.15);color:var(--accent);font-size:.6rem;font-weight:800;border-radius:99px;padding:1px 7px;letter-spacing:.03em}
-.nb-badge.red{background:rgba(248,113,113,.15);color:var(--red)}
+.nb.active{background:rgba(0,255,135,.07);color:var(--a);font-weight:700}
+.nb.active::before{height:68%}
+.ni{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.86rem;flex-shrink:0;background:rgba(255,255,255,.04);transition:.14s}
+.nb.active .ni{background:rgba(0,255,135,.1)}
+.nbd{margin-left:auto;background:rgba(0,255,135,.14);color:var(--a);font-size:.6rem;font-weight:800;border-radius:99px;padding:1px 7px}
 
-/* Sidebar footer */
-.sb-foot{
-  padding:12px;border-top:1px solid var(--border);
-  display:flex;align-items:center;gap:10px;
-}
-.sb-av{
-  width:32px;height:32px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,#667eea,#764ba2);
-  display:flex;align-items:center;justify-content:center;font-size:14px;
-  box-shadow:0 0 0 2px rgba(102,126,234,.3);
-}
-.sb-ui{flex:1}
-.sb-ui b{display:block;font-size:.8rem;font-weight:700}
-.sb-ui span{font-size:.66rem;color:var(--text3)}
-.btn-exit{
-  background:none;border:none;cursor:pointer;color:var(--text3);padding:6px;
-  border-radius:7px;font-size:1.05rem;transition:.15s;line-height:1;
-}
-.btn-exit:hover{color:var(--red);background:rgba(248,113,113,.1)}
+/* Sidebar foot */
+.sb-ft{padding:11px;border-top:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.av{width:30px;height:30px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:13px}
+.ui{flex:1}.ui b{display:block;font-size:.79rem;font-weight:700}.ui span{font-size:.65rem;color:var(--t3)}
+.bex{background:none;border:none;cursor:pointer;color:var(--t3);padding:6px;border-radius:7px;font-size:1rem;transition:.14s;line-height:1}
+.bex:hover{color:var(--red);background:rgba(248,113,113,.1)}
 
-/* ══ MAIN ══ */
+/* MAIN */
 .main{margin-left:var(--sb);height:100vh;display:flex;flex-direction:column;overflow:hidden;position:relative}
+.topbar{height:var(--hh);flex-shrink:0;background:rgba(9,13,20,.82);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);display:flex;align-items:center;padding:0 20px;gap:12px;position:sticky;top:0;z-index:100}
+.ham{display:none;background:none;border:none;cursor:pointer;color:var(--text);font-size:1.2rem;padding:4px;line-height:1}
+@media(max-width:960px){.ham{display:block}}
+.ttl{font-size:.97rem;font-weight:800;letter-spacing:-.35px;flex:1;display:flex;align-items:baseline;gap:7px}
+.ttl small{font-weight:400;color:var(--t2);font-size:.74rem}
+.tr{display:flex;align-items:center;gap:9px}
+.upt{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:99px;background:rgba(255,255,255,.04);border:1px solid var(--border);font-size:.72rem;color:var(--t2)}
+#tbut{font-weight:700;color:var(--text);font-family:'Courier New',monospace;font-variant-numeric:tabular-nums}
+.tba{padding:7px 13px;border-radius:8px;border:1px solid var(--border2);background:rgba(255,255,255,.04);color:var(--t2);font-family:inherit;font-size:.74rem;font-weight:700;cursor:pointer;transition:.16s;display:flex;align-items:center;gap:4px}
+.tba:hover{border-color:var(--a);color:var(--a);background:rgba(0,255,135,.05)}
+.tba.dr:hover{border-color:var(--red);color:var(--red);background:rgba(248,113,113,.05)}
 
-/* TOPBAR */
-.topbar{
-  height:var(--hh);flex-shrink:0;
-  background:rgba(9,13,20,.8);border-bottom:1px solid var(--border);
-  backdrop-filter:blur(20px);
-  display:flex;align-items:center;padding:0 22px;gap:14px;
-  position:sticky;top:0;z-index:100;
-}
-.tb-ham{display:none;background:none;border:none;cursor:pointer;color:var(--text);font-size:1.25rem;padding:4px;line-height:1}
-@media(max-width:960px){.tb-ham{display:block}}
-.tb-title{font-size:1rem;font-weight:800;letter-spacing:-.4px;flex:1;display:flex;align-items:baseline;gap:8px}
-.tb-title small{font-weight:400;color:var(--text2);font-size:.75rem;font-weight:normal}
-
-.topbar-right{display:flex;align-items:center;gap:10px}
-.uptime-pill{
-  display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  font-size:.72rem;color:var(--text2);font-variant-numeric:tabular-nums;
-}
-.uptime-pill .icon{font-size:.75rem}
-#tb-uptime-val{font-weight:700;color:var(--text);font-family:'Courier New',monospace}
-.tb-action{
-  padding:7px 15px;border-radius:8px;border:1px solid var(--border2);
-  background:rgba(255,255,255,.04);color:var(--text2);
-  font-family:inherit;font-size:.75rem;font-weight:700;cursor:pointer;transition:.17s;
-  display:flex;align-items:center;gap:5px;
-}
-.tb-action:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,255,135,.05)}
-.tb-action.danger:hover{border-color:var(--red);color:var(--red);background:rgba(248,113,113,.05)}
-
-/* ══ CONTENT ══ */
-.content{flex:1;overflow-y:auto;overflow-x:hidden;padding:22px 24px}
-.page{display:none;animation:pgIn .22s cubic-bezier(.22,1,.36,1)}
+/* Content */
+.cnt{flex:1;overflow-y:auto;overflow-x:hidden;padding:20px 22px}
+.page{display:none;animation:pi .2s cubic-bezier(.22,1,.36,1)}
 .page.active{display:block}
-@keyframes pgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes pi{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
 
-/* ══ PAGE HEADERS ══ */
-.ph{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:22px}
-.ph-left h2{font-size:1.35rem;font-weight:900;letter-spacing:-.5px}
-.ph-left p{font-size:.77rem;color:var(--text2);margin-top:2px;font-weight:500}
-.ph-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+/* Page header */
+.ph{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:11px;margin-bottom:20px}
+.phl h2{font-size:1.3rem;font-weight:900;letter-spacing:-.45px}
+.phl p{font-size:.76rem;color:var(--t2);margin-top:2px}
+.phr{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 
-/* ══ STAT CARDS ══ */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:14px;margin-bottom:20px}
-.sc{
-  background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.01));
-  border:1px solid var(--border);border-radius:var(--r);padding:18px;
-  position:relative;overflow:hidden;transition:.25s;cursor:default;
-}
-.sc:hover{border-color:rgba(var(--c),var(--ca),.3);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
-.sc-bg{position:absolute;top:-20px;right:-20px;width:90px;height:90px;border-radius:50%;background:var(--sc-clr,var(--accent));opacity:.04;filter:blur(10px)}
-.sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.sc-icon{
-  width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;
-  font-size:1rem;background:rgba(255,255,255,.06);border:1px solid var(--border);
-}
-.sc-trend{font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(0,255,135,.1);color:var(--accent)}
-.sc-val{font-size:1.85rem;font-weight:900;letter-spacing:-.6px;line-height:1;color:var(--text)}
-.sc-label{font-size:.68rem;color:var(--text2);margin-top:5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
-.sc-bar{height:3px;background:rgba(255,255,255,.06);border-radius:99px;margin-top:12px;overflow:hidden}
-.sc-bar-fill{height:100%;border-radius:99px;background:var(--sc-clr,var(--accent));transition:.6s ease;width:0}
+/* Stat Cards */
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:13px;margin-bottom:18px}
+.sc{background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid var(--border);border-radius:var(--r);padding:17px;position:relative;overflow:hidden;transition:.22s;cursor:default}
+.sc:hover{border-color:rgba(255,255,255,.12);transform:translateY(-2px);box-shadow:0 10px 34px rgba(0,0,0,.28)}
+.sc-glow{position:absolute;top:-18px;right:-18px;width:85px;height:85px;border-radius:50%;background:var(--sc-c,var(--a));opacity:.045;filter:blur(8px)}
+.sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sc-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95rem;background:rgba(255,255,255,.06);border:1px solid var(--border)}
+.sc-tag{font-size:.67rem;font-weight:800;padding:2px 7px;border-radius:99px;background:rgba(0,255,135,.1);color:var(--a)}
+.sc-val{font-size:1.8rem;font-weight:900;letter-spacing:-.55px;line-height:1}
+.sc-lbl{font-size:.66rem;color:var(--t2);margin-top:5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.sc-bar{height:3px;background:rgba(255,255,255,.06);border-radius:99px;margin-top:11px;overflow:hidden}
+.sc-fill{height:100%;border-radius:99px;background:var(--sc-c,var(--a));transition:.6s ease;width:0}
 
-/* ══ CHARTS ══ */
-.charts-grid{display:grid;grid-template-columns:1.8fr 1fr;gap:16px;margin-bottom:20px}
-@media(max-width:720px){.charts-grid{grid-template-columns:1fr}}
-.chart-card{
-  background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.01));
-  border:1px solid var(--border);border-radius:var(--r);padding:18px;
-}
-.cc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.cc-hd h4{font-size:.7rem;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.1em}
-.cc-hd .meta{font-size:.68rem;color:var(--text3)}
-.net-pills{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
-.np{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:9px 8px;text-align:center}
-.np-v{font-size:.85rem;font-weight:800;color:var(--text)}
-.np-l{font-size:.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+/* Charts */
+.cg{display:grid;grid-template-columns:1.8fr 1fr;gap:14px;margin-bottom:18px}
+@media(max-width:700px){.cg{grid-template-columns:1fr}}
+.cc{background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid var(--border);border-radius:var(--r);padding:17px}
+.cc h4{font-size:.67rem;font-weight:900;color:var(--t2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.cc h4 span{color:var(--t3);font-weight:500}
+.np-g{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:12px}
+.np{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center}
+.np-v{font-size:.83rem;font-weight:800}
+.np-l{font-size:.58rem;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
 
-/* ══ CARDS ══ */
-.card{
-  background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.015));
-  border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px;
-}
-.card-hd{
-  font-size:.65rem;font-weight:900;color:var(--text3);text-transform:uppercase;
-  letter-spacing:.14em;margin-bottom:16px;display:flex;align-items:center;gap:10px;
-}
-.card-hd::after{content:'';flex:1;height:1px;background:var(--border)}
-.card-hd .count{color:var(--accent);font-size:.7rem}
+/* Card */
+.card{background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.015));border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.chd{font-size:.63rem;font-weight:900;color:var(--t3);text-transform:uppercase;letter-spacing:.14em;margin-bottom:15px;display:flex;align-items:center;gap:9px}
+.chd::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* ══ TABLE ══ */
-.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
+/* Table */
+.tw{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
 table{width:100%;border-collapse:collapse}
-thead th{
-  padding:10px 14px;text-align:left;font-size:.63rem;font-weight:900;
-  color:var(--text3);text-transform:uppercase;letter-spacing:.1em;
-  background:rgba(255,255,255,.025);border-bottom:1px solid var(--border);white-space:nowrap;
-}
-tbody td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:.83rem}
+thead th{padding:9px 13px;text-align:left;font-size:.62rem;font-weight:900;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;background:rgba(255,255,255,.025);border-bottom:1px solid var(--border);white-space:nowrap}
+tbody td{padding:10px 13px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:.82rem}
 tbody tr:last-child td{border-bottom:none}
-tbody tr{transition:.12s}
 tbody tr:hover td{background:rgba(255,255,255,.02)}
-.empty-row td,.empty-row{text-align:center!important;padding:44px!important;color:var(--text3)!important;font-size:.82rem}
-.td-mono{font-family:'Courier New',monospace;color:var(--blue);font-size:.8rem}
+.er td{text-align:center!important;padding:40px!important;color:var(--t3)!important;font-size:.82rem!important}
+.mono{font-family:'Courier New',monospace;color:var(--blue);font-size:.79rem}
 
-/* ══ BADGES ══ */
-.badge{display:inline-flex;align-items:center;gap:4px;padding:2.5px 9px;border-radius:99px;font-size:.66rem;font-weight:800;white-space:nowrap;letter-spacing:.03em}
-.b-g{background:rgba(0,255,135,.1);color:var(--green);border:1px solid rgba(0,255,135,.2)}
-.b-r{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.2)}
-.b-o{background:rgba(251,146,60,.1);color:var(--orange);border:1px solid rgba(251,146,60,.2)}
-.b-b{background:rgba(0,212,255,.1);color:var(--blue);border:1px solid rgba(0,212,255,.2)}
-.b-p{background:rgba(167,139,250,.1);color:var(--purple);border:1px solid rgba(167,139,250,.2)}
-.b-y{background:rgba(251,191,36,.1);color:var(--yellow);border:1px solid rgba(251,191,36,.2)}
-.b-gr{background:rgba(255,255,255,.06);color:var(--text2);border:1px solid var(--border)}
-.b-pk{background:rgba(244,114,182,.1);color:var(--pink);border:1px solid rgba(244,114,182,.2)}
+/* Badges */
+.b{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:99px;font-size:.65rem;font-weight:800;white-space:nowrap}
+.bg{background:rgba(0,255,135,.1);color:var(--green);border:1px solid rgba(0,255,135,.2)}
+.br{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.2)}
+.bo{background:rgba(251,146,60,.1);color:var(--orange);border:1px solid rgba(251,146,60,.2)}
+.bb{background:rgba(0,212,255,.1);color:var(--blue);border:1px solid rgba(0,212,255,.2)}
+.bp{background:rgba(167,139,250,.1);color:var(--purple);border:1px solid rgba(167,139,250,.2)}
+.by{background:rgba(251,191,36,.1);color:var(--yellow);border:1px solid rgba(251,191,36,.2)}
+.bgr{background:rgba(255,255,255,.06);color:var(--t2);border:1px solid var(--border)}
 
-/* ══ BUTTONS ══ */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 18px;border-radius:9px;border:none;cursor:pointer;font-family:inherit;font-size:.8rem;font-weight:800;transition:.2s;white-space:nowrap;letter-spacing:.02em}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:none!important}
-.btn:active:not(:disabled){transform:scale(.97)}
-
-.btn-p{background:linear-gradient(135deg,var(--accent),#00b4d8);color:#020a06}
-.btn-p:hover:not(:disabled){opacity:.88;transform:translateY(-1px);box-shadow:0 6px 22px rgba(0,255,135,.35)}
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;border-radius:9px;border:none;cursor:pointer;font-family:inherit;font-size:.79rem;font-weight:800;transition:.18s;white-space:nowrap}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-p{background:linear-gradient(135deg,var(--a),var(--a2));color:#020a06}
+.btn-p:hover:not(:disabled){opacity:.86;transform:translateY(-1px);box-shadow:0 5px 20px rgba(0,255,135,.32)}
 .btn-s{background:rgba(255,255,255,.05);border:1px solid var(--border2);color:var(--text)}
-.btn-s:hover:not(:disabled){border-color:var(--accent);color:var(--accent);background:rgba(0,255,135,.05)}
+.btn-s:hover:not(:disabled){border-color:var(--a);color:var(--a);background:rgba(0,255,135,.05)}
 .btn-d{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.2);color:var(--red)}
-.btn-d:hover:not(:disabled){background:rgba(248,113,113,.15)}
-.btn-o{background:rgba(251,146,60,.07);border:1px solid rgba(251,146,60,.2);color:var(--orange)}
-.btn-sm{padding:6px 13px;font-size:.74rem}
-.btn-xs{padding:4px 9px;font-size:.68rem}
-.icon-btn{
-  padding:5px 9px;border-radius:7px;background:rgba(255,255,255,.04);
-  border:1px solid var(--border);color:var(--text2);cursor:pointer;font-size:.82rem;
-  transition:.15s;line-height:1;display:inline-flex;align-items:center;gap:4px;font-family:inherit;
-}
-.icon-btn:hover{border-color:var(--red);color:var(--red);background:rgba(248,113,113,.08)}
-.icon-btn.edit:hover{border-color:var(--blue);color:var(--blue);background:rgba(0,212,255,.07)}
-.icon-btn.prem:hover{border-color:var(--yellow);color:var(--yellow);background:rgba(251,191,36,.08)}
+.btn-d:hover:not(:disabled){background:rgba(248,113,113,.14)}
+.btn-sm{padding:5px 12px;font-size:.73rem}
+.btn-xs{padding:3px 8px;font-size:.67rem}
+.ib{padding:4px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--t2);cursor:pointer;font-size:.8rem;transition:.14s;line-height:1;display:inline-flex;align-items:center;font-family:inherit}
+.ib:hover{border-color:var(--red);color:var(--red);background:rgba(248,113,113,.08)}
+.ib.e:hover{border-color:var(--blue);color:var(--blue);background:rgba(0,212,255,.07)}
+.ib.y:hover{border-color:var(--yellow);color:var(--yellow);background:rgba(251,191,36,.08)}
 
-/* ══ FORM ══ */
-.field{margin-bottom:13px}
-.field label{display:block;font-size:.67rem;font-weight:800;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.08em}
-textarea.inp{resize:vertical;min-height:80px;line-height:1.55}
-select.inp option{background:var(--bg2);color:var(--text)}
-.row{display:flex;gap:12px;flex-wrap:wrap}
-.row .field{flex:1;min-width:140px}
-
-/* ══ TOGGLE ══ */
+/* Toggle */
 .tg{position:relative;display:inline-block;width:34px;height:18px;flex-shrink:0}
 .tg input{opacity:0;width:0;height:0}
-.ts{
-  position:absolute;inset:0;background:var(--bg4);border-radius:99px;cursor:pointer;
-  transition:.22s;border:1px solid var(--border2);
-}
-.ts::before{content:'';position:absolute;width:12px;height:12px;left:2px;bottom:2px;background:var(--text3);border-radius:50%;transition:.22s}
-.tg input:checked~.ts{background:rgba(0,255,135,.25);border-color:var(--accent)}
-.tg input:checked~.ts::before{transform:translateX(16px);background:var(--accent)}
+.ts{position:absolute;inset:0;background:var(--bg4);border-radius:99px;cursor:pointer;transition:.2s;border:1px solid var(--border2)}
+.ts::before{content:'';position:absolute;width:12px;height:12px;left:2px;bottom:2px;background:var(--t3);border-radius:50%;transition:.2s}
+.tg input:checked~.ts{background:rgba(0,255,135,.22);border-color:var(--a)}
+.tg input:checked~.ts::before{transform:translateX(16px);background:var(--a)}
 
-/* ══ QR ══ */
-.qr-panel{
-  background:rgba(255,255,255,.02);border:1px dashed var(--border2);border-radius:var(--r);
-  padding:28px;display:flex;flex-direction:column;align-items:center;gap:16px;min-height:240px;
-  justify-content:center;position:relative;
-}
-#qr-img{width:220px;height:220px;border-radius:14px;display:none;border:3px solid var(--accent);box-shadow:0 0 0 8px rgba(0,255,135,.07),0 0 50px rgba(0,255,135,.2)}
-.qr-hint-icon{font-size:2.8rem;margin-bottom:4px}
-.qr-hint-txt{color:var(--text2);font-size:.83rem;text-align:center;line-height:1.6}
-.pair-code{font-size:2.6rem;font-weight:900;letter-spacing:.45em;color:var(--accent);font-family:'Courier New',monospace;text-shadow:0 0 40px rgba(0,255,135,.4)}
-.qr-timer-bar{height:2px;background:var(--border);border-radius:99px;overflow:hidden;width:220px;margin-top:-8px}
-#qr-timer-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--blue));border-radius:99px;transition:width 1s linear;width:100%}
-.qr-timer-txt{font-size:.68rem;color:var(--text3);font-variant-numeric:tabular-nums}
-.qr-refresh{
-  position:absolute;top:12px;right:12px;
-  background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:7px;
-  color:var(--text2);cursor:pointer;padding:4px 9px;font-size:.73rem;transition:.15s;
-}
-.qr-refresh:hover{border-color:var(--accent);color:var(--accent)}
+/* Form */
+.fd{margin-bottom:12px}
+.fd label{display:block;font-size:.66rem;font-weight:800;color:var(--t2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.08em}
+textarea.inp{resize:vertical;min-height:76px;line-height:1.55}
+select.inp option{background:var(--bg2)}
+.row{display:flex;gap:11px;flex-wrap:wrap}
+.row .fd{flex:1;min-width:130px}
 
-/* ══ SESSIONS GRID ══ */
-.sess-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
-.sess-card{
-  background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:var(--r2);
-  padding:16px;transition:.2s;
-}
-.sess-card:hover{border-color:var(--border2);background:rgba(255,255,255,.04)}
-.sess-card-name{font-weight:800;font-size:.9rem}
-.sess-card-num{font-size:.73rem;color:var(--text2);margin:3px 0 12px}
+/* QR Panel */
+.qr-pan{background:rgba(255,255,255,.02);border:1px dashed var(--border2);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;align-items:center;gap:14px;min-height:220px;justify-content:center;position:relative}
+#qr-img{width:210px;height:210px;border-radius:13px;display:none;border:3px solid var(--a);box-shadow:0 0 0 8px rgba(0,255,135,.07),0 0 44px rgba(0,255,135,.18)}
+.qr-hi{text-align:center;color:var(--t2);font-size:.82rem}
+.qr-hi .qic{font-size:2.6rem;margin-bottom:6px;display:block}
+.pc{font-size:2.5rem;font-weight:900;letter-spacing:.4em;color:var(--a);font-family:'Courier New',monospace;text-shadow:0 0 35px rgba(0,255,135,.4)}
+.qr-tbar{width:210px;height:3px;background:var(--border);border-radius:99px;overflow:hidden}
+#qr-tf{height:100%;background:linear-gradient(90deg,var(--a),var(--a2));border-radius:99px;transition:width 1s linear;width:100%}
+.qr-tx{font-size:.68rem;color:var(--t3);font-variant-numeric:tabular-nums;margin-top:-6px}
+.qr-rb{position:absolute;top:11px;right:11px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:7px;color:var(--t2);cursor:pointer;padding:4px 9px;font-size:.72rem;transition:.14s}
+.qr-rb:hover{border-color:var(--a);color:var(--a)}
 
-/* ══ SKELETON LOADER ══ */
-.skel{background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.08) 50%,rgba(255,255,255,.04) 75%);background-size:400% 100%;animation:shimmer 1.4s ease-in-out infinite;border-radius:6px}
-@keyframes shimmer{from{background-position:100% 0}to{background-position:-100% 0}}
+/* Sessions */
+.ssg{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:11px}
+.ssc{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:var(--r2);padding:15px;transition:.18s}
+.ssc:hover{border-color:var(--border2)}
+.ssn{font-weight:800;font-size:.88rem}
+.ssm{font-size:.72rem;color:var(--t2);margin:3px 0 10px}
 
-/* ══ SEARCH ══ */
-.search-wrap{position:relative}
-.search-wrap input{padding-left:32px;min-width:190px}
-.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:.8rem;pointer-events:none}
-
-/* ══ LOGS ══ */
-#log-box{
-  background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:var(--r2);
-  padding:14px;height:460px;overflow-y:auto;
-  font-family:'Courier New',monospace;font-size:.74rem;line-height:1.8;
-}
-.le{display:flex;gap:9px;padding:1px 4px;border-radius:5px}
+/* Logs */
+#logbox{background:rgba(0,0,0,.45);border:1px solid var(--border);border-radius:var(--r2);padding:13px;height:460px;overflow-y:auto;font-family:'Courier New',monospace;font-size:.73rem;line-height:1.8}
+.le{display:flex;gap:8px;padding:1px 4px;border-radius:4px}
 .le:hover{background:rgba(255,255,255,.02)}
-.le-t{color:var(--text3);white-space:nowrap;flex-shrink:0}
-.le-m{flex:1;word-break:break-all}
-.le.err .le-m{color:var(--red)}
-.le.warn .le-m{color:var(--orange)}
-.le.ok .le-m{color:var(--accent)}
-.le.info .le-m{color:var(--blue)}
-.le.info2 .le-m{color:var(--purple)}
+.lt{color:var(--t3);white-space:nowrap;flex-shrink:0}
+.lm{flex:1;word-break:break-all}
+.le.er .lm{color:var(--red)}.le.wn .lm{color:var(--orange)}.le.ok .lm{color:var(--a)}.le.in .lm{color:var(--blue)}.le.pn .lm{color:var(--purple)}
 
-/* ══ TOAST ══ */
-#toast-area{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;max-width:340px;min-width:260px}
-.toast{
-  display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;
-  background:rgba(13,19,32,.95);border:1px solid var(--border2);color:var(--text);
-  font-size:.82rem;font-weight:500;pointer-events:all;
-  box-shadow:0 12px 40px rgba(0,0,0,.5);
-  animation:toastIn .25s cubic-bezier(.22,1,.36,1);
-  backdrop-filter:blur(16px);
-}
-.toast.success{border-color:rgba(0,255,135,.3)}
-.toast.error{border-color:rgba(248,113,113,.3)}
-.toast.warn{border-color:rgba(251,146,60,.3)}
-.toast.info{border-color:rgba(0,212,255,.3)}
-.toast-icon{font-size:1rem;flex-shrink:0}
-.toast-msg{flex:1}
-@keyframes toastIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+/* Toast */
+#ta{position:fixed;bottom:22px;right:22px;z-index:9999;display:flex;flex-direction:column;gap:7px;pointer-events:none;max-width:330px}
+.toast{display:flex;align-items:center;gap:9px;padding:11px 15px;border-radius:11px;background:rgba(13,19,32,.96);border:1px solid var(--border2);color:var(--text);font-size:.81rem;font-weight:500;pointer-events:all;box-shadow:0 10px 36px rgba(0,0,0,.5);animation:ti .22s cubic-bezier(.22,1,.36,1);backdrop-filter:blur(16px)}
+.toast.success{border-color:rgba(0,255,135,.28)}.toast.error{border-color:rgba(248,113,113,.28)}.toast.warn{border-color:rgba(251,146,60,.28)}.toast.info{border-color:rgba(0,212,255,.28)}
+@keyframes ti{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
 
-/* ══ MISC ══ */
-.divider{height:1px;background:var(--border);margin:16px 0}
-.flex{display:flex}
-.flex-wrap{flex-wrap:wrap}
-.items-center{align-items:center}
-.gap-1{gap:4px}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}
-.ml-auto{margin-left:auto}
-.w-full{width:100%}
-.mt-1{margin-top:4px}.mt-2{margin-top:8px}.mt-3{margin-top:14px}
-.mb-1{margin-bottom:4px}.mb-2{margin-bottom:8px}.mb-3{margin-bottom:14px}
-.text-muted{color:var(--text2)}
-.text-xs{font-size:.72rem}.text-sm{font-size:.82rem}
+/* Search */
+.sw{position:relative}
+.sw input{padding-left:30px;min-width:180px}
+.sw::before{content:'🔍';position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:.75rem;pointer-events:none;opacity:.5}
+
+/* Misc */
+.dv{height:1px;background:var(--border);margin:14px 0}
+.flex{display:flex}.fw{flex-wrap:wrap}.ic{align-items:center}
+.g1{gap:4px}.g2{gap:8px}.g3{gap:12px}.g4{gap:16px}
+.mla{margin-left:auto}
+.mt2{margin-top:8px}.mt3{margin-top:13px}.mb2{margin-bottom:8px}.mb3{margin-bottom:13px}
+.tm{color:var(--t2)}.txs{font-size:.72rem}.tsm{font-size:.81rem}
 .fw7{font-weight:700}.fw8{font-weight:800}.fw9{font-weight:900}
-.accent{color:var(--accent)}
-.mono{font-family:'Courier New',monospace}
-
-/* ══ COUNTER ANIMATION ══ */
-@keyframes countUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.count-anim{animation:countUp .4s ease}
+.ac{color:var(--a)}
 </style>
 </head>
 <body>
 
-<!-- ════════════ LOGIN ════════════ -->
-<div id="login-page">
-  <div class="lp-bg"></div>
-  <div class="login-wrap">
-    <div class="lp-head">
-      <div class="lp-orb">🤖</div>
+<!-- LOGIN -->
+<div id="lp">
+  <div class="lw">
+    <div class="lh">
+      <div class="lorb">🤖</div>
       <h1>Supreme MD Bot</h1>
       <p>Ultra-Premium Control Panel</p>
-      <div class="lp-badge"><span></span>LIVE SYSTEM</div>
+      <div class="lbg"><i></i> LIVE SYSTEM</div>
     </div>
-    <div class="fld"><label>Username</label><input class="inp" id="l-u" type="text" value="admin" autocomplete="username" spellcheck="false"/></div>
-    <div class="fld"><label>Password</label><input class="inp" id="l-p" type="password" placeholder="••••••••••" autocomplete="current-password"/></div>
-    <button class="btn-login" id="l-btn" onclick="doLogin()">Sign In →</button>
-    <div id="l-err"></div>
+    <div class="fld"><label>Username</label><input class="inp" id="lu" type="text" value="admin" autocomplete="username" spellcheck="false"/></div>
+    <div class="fld"><label>Password</label><input class="inp" id="lpw" type="password" placeholder="••••••••••" autocomplete="current-password"/></div>
+    <button class="btn-login" id="lbtn" onclick="doLogin()">Sign In →</button>
+    <div id="lerr"></div>
   </div>
 </div>
 
-<!-- ════════════ APP ════════════ -->
+<!-- APP -->
 <div id="app">
-  <div class="overlay" id="overlay" onclick="closeSb()"></div>
+  <div class="ov" id="ov" onclick="closeSb()"></div>
 
-  <!-- ── SIDEBAR ── -->
-  <aside class="sidebar" id="sidebar">
-    <a class="sb-brand" href="#">
-      <div class="sb-brand-icon">🤖</div>
-      <div>
-        <div class="sb-brand-text">Supreme MD</div>
-        <div class="sb-brand-ver">v2.0 Pro Panel</div>
-      </div>
-    </a>
-
-    <div class="sb-status" onclick="nav('sessions')">
-      <div class="st-dot" id="st-dot"></div>
-      <div class="sb-status-info">
-        <div class="sb-status-label" id="st-label">Connecting...</div>
-        <div class="sb-status-num" id="st-num">Tap to manage sessions</div>
+  <!-- SIDEBAR -->
+  <aside class="sb" id="sb">
+    <div class="sb-brand">
+      <div class="sb-ic">🤖</div>
+      <div><div class="sb-txt">Supreme MD</div><div class="sb-ver">Pro Panel v3</div></div>
+    </div>
+    <div class="sb-conn" onclick="nav('sessions')">
+      <div class="dot" id="dot"></div>
+      <div class="ci">
+        <div class="cl" id="cl">Connecting...</div>
+        <div class="cn" id="cn">Tap to manage sessions</div>
       </div>
     </div>
-
     <nav class="sb-nav">
-      <div class="nav-sep">Dashboard</div>
-      <button class="nb active" data-p="overview"><span class="nb-icon">📊</span>Overview</button>
-      <button class="nb" data-p="sessions"><span class="nb-icon">📱</span>Sessions</button>
-
-      <div class="nav-sep">Management</div>
-      <button class="nb" data-p="users"><span class="nb-icon">👥</span>Users</button>
-      <button class="nb" data-p="groups"><span class="nb-icon">🏘️</span>Groups</button>
-      <button class="nb" data-p="commands"><span class="nb-icon">⚡</span>Commands <span class="nb-badge" id="cmd-badge">88</span></button>
-
-      <div class="nav-sep">Messaging</div>
-      <button class="nb" data-p="broadcast"><span class="nb-icon">📢</span>Broadcast</button>
-      <button class="nb" data-p="autoreply"><span class="nb-icon">🔁</span>Auto-Reply</button>
-      <button class="nb" data-p="scheduler"><span class="nb-icon">🕐</span>Scheduler</button>
-
-      <div class="nav-sep">System</div>
-      <button class="nb" data-p="economy"><span class="nb-icon">💰</span>Economy</button>
-      <button class="nb" data-p="files"><span class="nb-icon">📁</span>Files</button>
-      <button class="nb" data-p="settings"><span class="nb-icon">⚙️</span>Settings</button>
-      <button class="nb" data-p="logs"><span class="nb-icon">📋</span>Logs</button>
+      <div class="ns">Dashboard</div>
+      <button class="nb active" data-p="overview"><span class="ni">📊</span>Overview</button>
+      <button class="nb" data-p="sessions"><span class="ni">📱</span>Sessions</button>
+      <div class="ns">Management</div>
+      <button class="nb" data-p="users"><span class="ni">👥</span>Users</button>
+      <button class="nb" data-p="groups"><span class="ni">🏘️</span>Groups</button>
+      <button class="nb" data-p="commands"><span class="ni">⚡</span>Commands <span class="nbd" id="cbd">88</span></button>
+      <div class="ns">Messaging</div>
+      <button class="nb" data-p="broadcast"><span class="ni">📢</span>Broadcast</button>
+      <button class="nb" data-p="autoreply"><span class="ni">🔁</span>Auto-Reply</button>
+      <button class="nb" data-p="scheduler"><span class="ni">🕐</span>Scheduler</button>
+      <div class="ns">System</div>
+      <button class="nb" data-p="economy"><span class="ni">💰</span>Economy</button>
+      <button class="nb" data-p="files"><span class="ni">📁</span>Files</button>
+      <button class="nb" data-p="settings"><span class="ni">⚙️</span>Settings</button>
+      <button class="nb" data-p="logs"><span class="ni">📋</span>Logs</button>
     </nav>
-
-    <div class="sb-foot">
-      <div class="sb-av">👤</div>
-      <div class="sb-ui">
-        <b id="sb-user">admin</b>
-        <span>Administrator</span>
-      </div>
-      <button class="btn-exit" onclick="doLogout()" title="Logout">⏻</button>
+    <div class="sb-ft">
+      <div class="av">👤</div>
+      <div class="ui"><b id="sbu">admin</b><span>Administrator</span></div>
+      <button class="bex" onclick="doLogout()" title="Logout">⏻</button>
     </div>
   </aside>
 
-  <!-- ── MAIN ── -->
+  <!-- MAIN -->
   <div class="main">
     <div class="topbar">
-      <button class="tb-ham" onclick="toggleSb()">☰</button>
-      <div class="tb-title" id="tb-title">Overview <small>Dashboard</small></div>
-      <div class="topbar-right">
-        <div class="uptime-pill"><span class="icon">⏱</span><span id="tb-uptime-val">00:00:00</span></div>
-        <button class="tb-action" onclick="restartBot()">↺ Restart</button>
-        <button class="tb-action danger" onclick="doLogout()">Exit</button>
+      <button class="ham" onclick="toggleSb()">☰</button>
+      <div class="ttl" id="ttl">Overview <small>Dashboard</small></div>
+      <div class="tr">
+        <div class="upt">⏱ <span id="tbut">00:00:00</span></div>
+        <button class="tba" onclick="restartBot()">↺ Restart</button>
+        <button class="tba dr" onclick="doLogout()">Exit</button>
       </div>
     </div>
 
-    <div class="content">
+    <div class="cnt">
 
-      <!-- ──────── OVERVIEW ──────── -->
+      <!-- OVERVIEW -->
       <div class="page active" id="page-overview">
         <div class="ph">
-          <div class="ph-left">
-            <h2>Overview</h2>
-            <p>Real-time bot performance &amp; statistics</p>
-          </div>
-          <div class="ph-right">
-            <span class="badge b-g" id="hdr-status">● Connecting</span>
-          </div>
+          <div class="phl"><h2>Overview</h2><p>Real-time performance &amp; statistics</p></div>
+          <div class="phr"><span class="b bgr" id="hbadge">● Connecting</span></div>
         </div>
-
-        <div class="stats-grid">
-          <div class="sc" style="--sc-clr:var(--accent)">
-            <div class="sc-bg"></div>
-            <div class="sc-top"><div class="sc-icon">📡</div><div class="sc-trend" id="sc-status-badge">—</div></div>
-            <div class="sc-val" id="s-status">—</div>
-            <div class="sc-label">Connection</div>
-          </div>
-          <div class="sc" style="--sc-clr:var(--blue)">
-            <div class="sc-bg" style="background:var(--blue)"></div>
-            <div class="sc-top"><div class="sc-icon">📞</div></div>
-            <div class="sc-val" id="s-number" style="font-size:1.1rem;padding-top:3px">—</div>
-            <div class="sc-label">Linked Number</div>
-          </div>
-          <div class="sc" style="--sc-clr:var(--orange)">
-            <div class="sc-bg" style="background:var(--orange)"></div>
-            <div class="sc-top"><div class="sc-icon">⏱</div></div>
-            <div class="sc-val mono" id="s-uptime" style="font-size:1.4rem;letter-spacing:.03em">00:00:00</div>
-            <div class="sc-label">Uptime</div>
-          </div>
-          <div class="sc" style="--sc-clr:var(--purple)">
-            <div class="sc-bg" style="background:var(--purple)"></div>
-            <div class="sc-top"><div class="sc-icon">👥</div></div>
-            <div class="sc-val" id="s-users">0</div>
-            <div class="sc-label">Total Users</div>
-          </div>
-          <div class="sc" style="--sc-clr:var(--pink)">
-            <div class="sc-bg" style="background:var(--pink)"></div>
-            <div class="sc-top"><div class="sc-icon">📲</div></div>
-            <div class="sc-val" id="s-sess">0</div>
-            <div class="sc-label">Sessions</div>
-          </div>
-          <div class="sc" style="--sc-clr:var(--yellow)">
-            <div class="sc-bg" style="background:var(--yellow)"></div>
-            <div class="sc-top"><div class="sc-icon">📢</div></div>
-            <div class="sc-val" id="s-bc">0</div>
-            <div class="sc-label">Broadcasts</div>
-          </div>
-          <div class="sc" style="--sc-clr:var(--blue)">
-            <div class="sc-bg" style="background:var(--blue)"></div>
-            <div class="sc-top"><div class="sc-icon">🧠</div><div id="s-mem-pct" class="sc-trend">0%</div></div>
-            <div class="sc-val" id="s-mem">0 MB</div>
-            <div class="sc-label">Memory</div>
-            <div class="sc-bar"><div class="sc-bar-fill" id="s-mem-fill" style="background:var(--blue)"></div></div>
-          </div>
-          <div class="sc" style="--sc-clr:var(--orange)">
-            <div class="sc-bg" style="background:var(--orange)"></div>
-            <div class="sc-top"><div class="sc-icon">⚙️</div></div>
-            <div class="sc-val" id="s-cpu">0.00</div>
-            <div class="sc-label">CPU Load</div>
-          </div>
-          <div class="sc" style="--sc-clr:var(--green)">
-            <div class="sc-bg"></div>
-            <div class="sc-top"><div class="sc-icon">📂</div></div>
-            <div class="sc-val" id="s-files">0</div>
-            <div class="sc-label">Cached Files <span id="s-fsize" class="text-xs text-muted"></span></div>
-          </div>
-          <div class="sc" style="--sc-clr:var(--purple)">
-            <div class="sc-bg" style="background:var(--purple)"></div>
-            <div class="sc-top"><div class="sc-icon">🖥️</div></div>
-            <div class="sc-val" id="s-plat" style="font-size:1.1rem;padding-top:3px">—</div>
-            <div class="sc-label">Platform <span id="s-node" class="text-xs text-muted"></span></div>
-          </div>
+        <div class="sg">
+          <div class="sc" style="--sc-c:var(--a)"><div class="sc-glow"></div><div class="sc-top"><div class="sc-ic">📡</div><div class="sc-tag" id="stag">—</div></div><div class="sc-val" id="ss">—</div><div class="sc-lbl">Connection</div></div>
+          <div class="sc" style="--sc-c:var(--blue)"><div class="sc-glow" style="background:var(--blue)"></div><div class="sc-top"><div class="sc-ic">📞</div></div><div class="sc-val" id="sn" style="font-size:1.05rem;padding-top:4px">—</div><div class="sc-lbl">Linked Number</div></div>
+          <div class="sc" style="--sc-c:var(--orange)"><div class="sc-glow" style="background:var(--orange)"></div><div class="sc-top"><div class="sc-ic">⏱</div></div><div class="sc-val" id="su" style="font-size:1.35rem;font-family:'Courier New',monospace;letter-spacing:.03em">00:00:00</div><div class="sc-lbl">Uptime</div></div>
+          <div class="sc" style="--sc-c:var(--purple)"><div class="sc-glow" style="background:var(--purple)"></div><div class="sc-top"><div class="sc-ic">👥</div></div><div class="sc-val" id="suc">0</div><div class="sc-lbl">Total Users</div></div>
+          <div class="sc" style="--sc-c:var(--pink)"><div class="sc-glow" style="background:var(--pink)"></div><div class="sc-top"><div class="sc-ic">📲</div></div><div class="sc-val" id="ssc">0</div><div class="sc-lbl">Sessions</div></div>
+          <div class="sc" style="--sc-c:var(--yellow)"><div class="sc-glow" style="background:var(--yellow)"></div><div class="sc-top"><div class="sc-ic">📢</div></div><div class="sc-val" id="sbc">0</div><div class="sc-lbl">Broadcasts</div></div>
+          <div class="sc" style="--sc-c:var(--blue)"><div class="sc-glow" style="background:var(--blue)"></div><div class="sc-top"><div class="sc-ic">🧠</div><div id="smp" class="sc-tag">0%</div></div><div class="sc-val" id="sm">0 MB</div><div class="sc-lbl">Memory</div><div class="sc-bar"><div class="sc-fill" id="smf" style="background:var(--blue)"></div></div></div>
+          <div class="sc" style="--sc-c:var(--orange)"><div class="sc-glow" style="background:var(--orange)"></div><div class="sc-top"><div class="sc-ic">⚙️</div></div><div class="sc-val" id="scpu">0.00</div><div class="sc-lbl">CPU Load</div></div>
+          <div class="sc" style="--sc-c:var(--a)"><div class="sc-glow"></div><div class="sc-top"><div class="sc-ic">📂</div></div><div class="sc-val" id="sfc">0</div><div class="sc-lbl">Files <span id="sfsz" class="txs tm"></span></div></div>
+          <div class="sc" style="--sc-c:var(--purple)"><div class="sc-glow" style="background:var(--purple)"></div><div class="sc-top"><div class="sc-ic">🖥️</div></div><div class="sc-val" id="spl" style="font-size:1rem;padding-top:4px">—</div><div class="sc-lbl">Platform <span id="snv" class="txs tm"></span></div></div>
         </div>
-
-        <div class="charts-grid">
-          <div class="chart-card">
-            <div class="cc-hd">
-              <h4>📶 Network Throughput (Live)</h4>
-              <span class="meta" id="net-live-label">—</span>
-            </div>
-            <canvas id="net-chart" height="140"></canvas>
-            <div class="net-pills">
-              <div class="np"><div class="np-v" id="n-rx">—</div><div class="np-l">↓ Down</div></div>
-              <div class="np"><div class="np-v" id="n-tx">—</div><div class="np-l">↑ Up</div></div>
-              <div class="np"><div class="np-v" id="n-rxT" style="font-size:.78rem">—</div><div class="np-l">Total ↓</div></div>
-              <div class="np"><div class="np-v" id="n-txT" style="font-size:.78rem">—</div><div class="np-l">Total ↑</div></div>
+        <div class="cg">
+          <div class="cc">
+            <h4>📶 Network Throughput <span id="nlbl">—</span></h4>
+            <canvas id="nchart" height="140"></canvas>
+            <div class="np-g">
+              <div class="np"><div class="np-v" id="nrx">—</div><div class="np-l">↓ Down</div></div>
+              <div class="np"><div class="np-v" id="ntx">—</div><div class="np-l">↑ Up</div></div>
+              <div class="np"><div class="np-v" id="nrxt" style="font-size:.77rem">—</div><div class="np-l">Total ↓</div></div>
+              <div class="np"><div class="np-v" id="ntxt" style="font-size:.77rem">—</div><div class="np-l">Total ↑</div></div>
             </div>
           </div>
-          <div class="chart-card">
-            <div class="cc-hd"><h4>🧠 Memory Usage</h4></div>
-            <canvas id="mem-chart" height="200"></canvas>
-          </div>
+          <div class="cc"><h4>🧠 Memory Usage</h4><canvas id="mchart" height="200"></canvas></div>
         </div>
       </div>
 
-      <!-- ──────── SESSIONS ──────── -->
+      <!-- SESSIONS -->
       <div class="page" id="page-sessions">
-        <div class="ph">
-          <div class="ph-left"><h2>Sessions</h2><p>Manage WhatsApp connections</p></div>
-          <button class="btn btn-s btn-sm" onclick="loadSessions()">⟳ Refresh</button>
-        </div>
-
+        <div class="ph"><div class="phl"><h2>Sessions</h2><p>Manage WhatsApp connections</p></div><button class="btn btn-s btn-sm" onclick="loadSessions()">⟳ Refresh</button></div>
         <div class="card">
-          <div class="card-hd">🤖 Main Bot Connection</div>
-          <div id="main-conn-info" class="text-sm text-muted mb-3">Loading...</div>
-
-          <div class="qr-panel" id="qr-panel">
-            <button class="qr-refresh" onclick="fetchQR()">↺ Refresh</button>
-            <img id="qr-img" src="" alt="QR"/>
-            <div id="pair-show" style="display:none;text-align:center">
-              <div class="text-xs text-muted mb-1">PAIRING CODE</div>
-              <div class="pair-code" id="pair-val">— — — —</div>
-              <div class="text-xs text-muted mt-2">WhatsApp → Linked Devices → Link with Phone Number</div>
+          <div class="chd">🤖 Main Bot</div>
+          <div id="mci" class="tsm tm mb3">Loading...</div>
+          <div class="qr-pan" id="qrpan">
+            <button class="qr-rb" onclick="fetchQR()">↺ Refresh</button>
+            <img id="qr-img" src="" alt="QR Code"/>
+            <div id="pcshow" style="display:none;text-align:center">
+              <div class="txs tm mb2">PAIRING CODE — valid 60s</div>
+              <div class="pc" id="pcval">— — — —</div>
+              <div class="txs tm mt2">WhatsApp → Linked Devices → Link with Phone Number</div>
             </div>
-            <div id="qr-hint" style="text-align:center">
-              <div class="qr-hint-icon">📲</div>
-              <div class="qr-hint-txt">Click <b>Show QR</b> to scan with WhatsApp<br/>or enter a number to get a <b>Pair Code</b></div>
-            </div>
-            <div class="qr-timer-bar" id="qr-timer-wrap" style="display:none">
-              <div id="qr-timer-fill"></div>
-            </div>
-            <div id="qr-timer-txt" class="qr-timer-txt"></div>
+            <div id="qrhi" class="qr-hi"><span class="qic">📲</span><div>Click <b>Show QR</b> to connect<br/>or enter a number for a <b>Pair Code</b></div></div>
+            <div class="qr-tbar" id="qtb" style="display:none"><div id="qr-tf"></div></div>
+            <div id="qtx" class="qr-tx"></div>
           </div>
-
-          <div class="flex gap-3 mt-3 flex-wrap items-center">
+          <div class="flex g3 mt3 fw ic">
             <button class="btn btn-p" onclick="fetchQR()">📷 Show QR Code</button>
-            <input class="inp" id="ph-input" type="tel" placeholder="Phone: 94712345678" style="flex:1;min-width:200px;max-width:280px"/>
+            <input class="inp" id="phi" type="tel" placeholder="Phone: 94712345678" style="flex:1;min-width:195px;max-width:275px"/>
             <button class="btn btn-s" onclick="reqPair()">🔑 Pair Code</button>
-            <button class="btn btn-d ml-auto" onclick="mainLogout()">⏻ Logout</button>
+            <button class="btn btn-d mla" onclick="mainLogout()">⏻ Logout Main</button>
           </div>
         </div>
-
         <div class="card">
-          <div class="card-hd">📲 Multi-Sessions</div>
-          <div class="flex gap-3 mb-3 flex-wrap">
-            <input class="inp" id="ns-id" placeholder="Session ID (e.g. bot2)" style="flex:1;min-width:140px"/>
-            <input class="inp" id="ns-ph" placeholder="Phone (optional)" style="flex:1;min-width:180px"/>
-            <button class="btn btn-p" onclick="createSess()">+ Add Session</button>
+          <div class="chd">📲 Multi-Sessions</div>
+          <div class="flex g3 mb3 fw">
+            <input class="inp" id="nsid" placeholder="Session ID (e.g. bot2)" style="flex:1;min-width:130px"/>
+            <input class="inp" id="nsph" placeholder="Phone (optional for pair mode)" style="flex:1;min-width:170px"/>
+            <button class="btn btn-p" onclick="createSess()">+ Add</button>
           </div>
-          <div class="sess-grid" id="sess-grid"><div class="text-muted text-sm">No extra sessions yet.</div></div>
+          <div class="ssg" id="ssg"><div class="tm tsm">No extra sessions yet.</div></div>
         </div>
       </div>
 
-      <!-- ──────── USERS ──────── -->
+      <!-- USERS -->
       <div class="page" id="page-users">
         <div class="ph">
-          <div class="ph-left"><h2>Users</h2><p id="users-sub">Loading users...</p></div>
-          <div class="ph-right">
-            <div class="search-wrap"><span class="search-icon">🔍</span><input class="inp" id="usr-q" placeholder="Search number..." oninput="filterUsers()"/></div>
+          <div class="phl"><h2>Users</h2><p id="usub">Loading...</p></div>
+          <div class="phr">
+            <div class="sw"><input class="inp" id="uq" placeholder="Search number..." oninput="filterUsers()"/></div>
             <button class="btn btn-s btn-sm" onclick="loadUsers()">⟳ Refresh</button>
           </div>
         </div>
         <div class="card">
-          <div class="tbl-wrap">
-            <table>
-              <thead><tr><th>Number</th><th>Balance</th><th>Plan</th><th>Status</th><th>W / L</th><th>Last Seen</th><th>Actions</th></tr></thead>
-              <tbody id="users-tb"><tr class="empty-row"><td colspan="7">Loading users...</td></tr></tbody>
-            </table>
-          </div>
+          <div class="tw"><table>
+            <thead><tr><th>Number</th><th>Balance</th><th>Plan</th><th>Status</th><th>W / L</th><th>Last Seen</th><th>Actions</th></tr></thead>
+            <tbody id="utb"><tr class="er"><td colspan="7">Loading users...</td></tr></tbody>
+          </table></div>
         </div>
       </div>
 
-      <!-- ──────── GROUPS ──────── -->
+      <!-- GROUPS -->
       <div class="page" id="page-groups">
         <div class="ph">
-          <div class="ph-left"><h2>Groups</h2><p id="grp-sub">Bot group configurations</p></div>
+          <div class="phl"><h2>Groups</h2><p id="gsub">Group configurations</p></div>
           <button class="btn btn-s btn-sm" onclick="loadGroups()">⟳ Refresh</button>
         </div>
         <div class="card">
-          <div class="tbl-wrap">
-            <table>
-              <thead><tr><th>Name / JID</th><th>Members</th><th>Muted</th><th>Anti-Link</th><th>Anti-Spam</th><th>Welcome</th><th>NSFW</th></tr></thead>
-              <tbody id="grp-tb"><tr class="empty-row"><td colspan="7">Loading groups...</td></tr></tbody>
-            </table>
-          </div>
+          <div class="tw"><table>
+            <thead><tr><th>Name / JID</th><th>Members</th><th>Muted</th><th>Anti-Link</th><th>Anti-Spam</th><th>Welcome</th><th>NSFW</th></tr></thead>
+            <tbody id="gtb"><tr class="er"><td colspan="7">Loading groups...</td></tr></tbody>
+          </table></div>
         </div>
       </div>
 
-      <!-- ──────── COMMANDS ──────── -->
+      <!-- COMMANDS -->
       <div class="page" id="page-commands">
         <div class="ph">
-          <div class="ph-left"><h2>Commands</h2><p id="cmd-sub">Manage all bot commands</p></div>
-          <div class="ph-right">
-            <div class="search-wrap"><span class="search-icon">🔍</span><input class="inp" id="cmd-q" placeholder="Search command..." oninput="filterCmds()"/></div>
+          <div class="phl"><h2>Commands</h2><p id="csub">All bot commands</p></div>
+          <div class="phr">
+            <div class="sw"><input class="inp" id="cq" placeholder="Search..." oninput="filterCmds()"/></div>
             <button class="btn btn-s btn-sm" onclick="toggleAll(true)">✅ Enable All</button>
             <button class="btn btn-d btn-sm" onclick="toggleAll(false)">🚫 Disable All</button>
           </div>
         </div>
         <div class="card">
-          <div class="tbl-wrap">
-            <table>
-              <thead><tr><th>Command</th><th>Category</th><th>Description</th><th>Access</th><th>Uses</th><th>Active</th></tr></thead>
-              <tbody id="cmd-tb"><tr class="empty-row"><td colspan="6">Loading commands...</td></tr></tbody>
-            </table>
-          </div>
+          <div class="tw"><table>
+            <thead><tr><th>Command</th><th>Category</th><th>Description</th><th>Access</th><th>Uses</th><th>On/Off</th></tr></thead>
+            <tbody id="ctb"><tr class="er"><td colspan="6">Loading commands...</td></tr></tbody>
+          </table></div>
         </div>
       </div>
 
-      <!-- ──────── BROADCAST ──────── -->
+      <!-- BROADCAST -->
       <div class="page" id="page-broadcast">
-        <div class="ph"><div class="ph-left"><h2>Broadcast</h2><p>Send mass messages to all users</p></div></div>
+        <div class="ph"><div class="phl"><h2>Broadcast</h2><p>Send mass messages to all users</p></div></div>
         <div class="card">
-          <div class="card-hd">📢 Compose Message</div>
-          <div class="field"><label>Message</label><textarea class="inp" id="bc-msg" placeholder="Type your broadcast message here..."></textarea></div>
-          <div class="flex gap-3 items-center flex-wrap">
-            <button class="btn btn-p" id="bc-btn" onclick="sendBC()">📢 Send to All Users</button>
-            <span class="text-xs text-muted">Sends to all registered users in queue</span>
+          <div class="chd">📢 Compose</div>
+          <div class="fd"><label>Message</label><textarea class="inp" id="bcmsg" placeholder="Type your broadcast message..."></textarea></div>
+          <div class="flex g3 ic fw">
+            <button class="btn btn-p" id="bcbtn" onclick="sendBC()">📢 Send to All Users</button>
+            <span class="txs tm">Max 50 users per send</span>
           </div>
         </div>
         <div class="card">
-          <div class="card-hd">📜 Broadcast History</div>
-          <div class="tbl-wrap">
-            <table>
-              <thead><tr><th>Message Preview</th><th>✓ Sent</th><th>✗ Failed</th><th>Status</th><th>Date</th></tr></thead>
-              <tbody id="bc-tb"><tr class="empty-row"><td colspan="5">No broadcasts yet</td></tr></tbody>
-            </table>
-          </div>
+          <div class="chd">📜 History</div>
+          <div class="tw"><table>
+            <thead><tr><th>Message</th><th>✓ Sent</th><th>✗ Failed</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody id="bctb"><tr class="er"><td colspan="5">No broadcasts yet</td></tr></tbody>
+          </table></div>
         </div>
       </div>
 
-      <!-- ──────── AUTO-REPLY ──────── -->
+      <!-- AUTO-REPLY -->
       <div class="page" id="page-autoreply">
-        <div class="ph">
-          <div class="ph-left"><h2>Auto-Reply</h2><p id="ar-sub">Automated message rules</p></div>
-        </div>
+        <div class="ph"><div class="phl"><h2>Auto-Reply</h2><p id="arsub">Automated message rules</p></div></div>
         <div class="card">
-          <div class="card-hd">➕ New Rule</div>
+          <div class="chd">➕ New Rule</div>
           <div class="row">
-            <div class="field"><label>Trigger Keyword</label><input class="inp" id="ar-trig" placeholder="hello, hi, help..."/></div>
-            <div class="field"><label>Bot Response</label><input class="inp" id="ar-resp" placeholder="Automated reply..."/></div>
-            <div class="field" style="flex:0 0 160px"><label>Match Type</label>
-              <select class="inp" id="ar-match">
+            <div class="fd"><label>Trigger</label><input class="inp" id="artrig" placeholder="hello, hi, help..."/></div>
+            <div class="fd"><label>Response</label><input class="inp" id="arresp" placeholder="Bot reply..."/></div>
+            <div class="fd" style="flex:0 0 150px"><label>Match Type</label>
+              <select class="inp" id="armt">
                 <option value="exact">Exact Match</option>
                 <option value="contains">Contains</option>
                 <option value="startsWith">Starts With</option>
@@ -772,465 +481,399 @@ select.inp option{background:var(--bg2);color:var(--text)}
               </select>
             </div>
           </div>
-          <div class="flex gap-4 mb-3 flex-wrap">
-            <label class="flex items-center gap-2 text-sm" style="cursor:pointer"><input type="checkbox" id="ar-grp" style="accent-color:var(--accent)"/> Groups Only</label>
-            <label class="flex items-center gap-2 text-sm" style="cursor:pointer"><input type="checkbox" id="ar-pm" style="accent-color:var(--accent)"/> PM Only</label>
-            <label class="flex items-center gap-2 text-sm" style="cursor:pointer"><input type="checkbox" id="ar-case" style="accent-color:var(--accent)"/> Case Sensitive</label>
+          <div class="flex g4 fw mb3">
+            <label class="flex ic g2 tsm" style="cursor:pointer"><input type="checkbox" id="argrp" style="accent-color:var(--a)"/> Groups Only</label>
+            <label class="flex ic g2 tsm" style="cursor:pointer"><input type="checkbox" id="arpm" style="accent-color:var(--a)"/> PM Only</label>
+            <label class="flex ic g2 tsm" style="cursor:pointer"><input type="checkbox" id="arcs" style="accent-color:var(--a)"/> Case Sensitive</label>
           </div>
           <button class="btn btn-p" onclick="addAR()">+ Add Rule</button>
         </div>
         <div class="card">
-          <div class="card-hd">📋 Active Rules</div>
-          <div class="tbl-wrap">
-            <table>
-              <thead><tr><th>Trigger</th><th>Response</th><th>Match</th><th>Scope</th><th>On/Off</th><th>Delete</th></tr></thead>
-              <tbody id="ar-tb"><tr class="empty-row"><td colspan="6">No auto-reply rules yet</td></tr></tbody>
-            </table>
-          </div>
+          <div class="chd">📋 Active Rules</div>
+          <div class="tw"><table>
+            <thead><tr><th>Trigger</th><th>Response</th><th>Match</th><th>Scope</th><th>On/Off</th><th>Del</th></tr></thead>
+            <tbody id="artb"><tr class="er"><td colspan="6">No rules yet</td></tr></tbody>
+          </table></div>
         </div>
       </div>
 
-      <!-- ──────── SCHEDULER ──────── -->
+      <!-- SCHEDULER -->
       <div class="page" id="page-scheduler">
-        <div class="ph"><div class="ph-left"><h2>Scheduler</h2><p>Schedule future messages</p></div></div>
+        <div class="ph"><div class="phl"><h2>Scheduler</h2><p>Schedule future messages</p></div></div>
         <div class="card">
-          <div class="card-hd">⏰ Schedule a Message</div>
+          <div class="chd">⏰ New Scheduled Message</div>
           <div class="row">
-            <div class="field" style="flex:2"><label>Message Content</label><textarea class="inp" id="sch-msg" style="min-height:60px" placeholder="Your scheduled message..."></textarea></div>
-            <div class="field"><label>Send Date &amp; Time</label><input class="inp" id="sch-at" type="datetime-local"/></div>
+            <div class="fd" style="flex:2"><label>Message</label><textarea class="inp" id="schmsg" style="min-height:60px" placeholder="Scheduled message..."></textarea></div>
+            <div class="fd"><label>Send At</label><input class="inp" id="schat" type="datetime-local"/></div>
           </div>
-          <button class="btn btn-p" onclick="addSched()">+ Schedule Message</button>
+          <button class="btn btn-p" onclick="addSched()">+ Schedule</button>
         </div>
         <div class="card">
-          <div class="card-hd">📋 Scheduled Messages</div>
-          <div class="tbl-wrap">
-            <table>
-              <thead><tr><th>Message</th><th>Scheduled At</th><th>Status</th><th>Delete</th></tr></thead>
-              <tbody id="sch-tb"><tr class="empty-row"><td colspan="4">No scheduled messages</td></tr></tbody>
-            </table>
-          </div>
+          <div class="chd">📋 Scheduled Messages</div>
+          <div class="tw"><table>
+            <thead><tr><th>Message</th><th>Scheduled At</th><th>Status</th><th>Del</th></tr></thead>
+            <tbody id="schtb"><tr class="er"><td colspan="4">No scheduled messages</td></tr></tbody>
+          </table></div>
         </div>
       </div>
 
-      <!-- ──────── ECONOMY ──────── -->
+      <!-- ECONOMY -->
       <div class="page" id="page-economy">
         <div class="ph">
-          <div class="ph-left"><h2>Economy</h2><p>User balance &amp; plan management</p></div>
+          <div class="phl"><h2>Economy</h2><p>Balance &amp; plan management</p></div>
           <button class="btn btn-d btn-sm" onclick="resetEco()">⚠️ Reset All Balances</button>
         </div>
         <div class="card">
-          <div class="tbl-wrap">
-            <table>
-              <thead><tr><th>Number</th><th>Balance</th><th>Plan</th><th>Wins</th><th>Set Balance</th></tr></thead>
-              <tbody id="eco-tb"><tr class="empty-row"><td colspan="5">Loading economy data...</td></tr></tbody>
-            </table>
-          </div>
+          <div class="tw"><table>
+            <thead><tr><th>Number</th><th>Balance</th><th>Plan</th><th>Wins</th><th>Set Balance</th></tr></thead>
+            <tbody id="ecotb"><tr class="er"><td colspan="5">Loading economy...</td></tr></tbody>
+          </table></div>
         </div>
       </div>
 
-      <!-- ──────── FILES ──────── -->
+      <!-- FILES -->
       <div class="page" id="page-files">
         <div class="ph">
-          <div class="ph-left"><h2>Files</h2><p id="files-sub">Downloaded &amp; cached media</p></div>
+          <div class="phl"><h2>Files</h2><p id="fsub">Downloaded &amp; cached media</p></div>
           <button class="btn btn-s btn-sm" onclick="loadFiles()">⟳ Refresh</button>
         </div>
         <div class="card">
-          <div class="tbl-wrap">
-            <table>
-              <thead><tr><th>File Name</th><th>Type</th><th>Size</th><th>Modified</th><th>Delete</th></tr></thead>
-              <tbody id="files-tb"><tr class="empty-row"><td colspan="5">Loading files...</td></tr></tbody>
-            </table>
-          </div>
+          <div class="tw"><table>
+            <thead><tr><th>File Name</th><th>Type</th><th>Size</th><th>Modified</th><th>Del</th></tr></thead>
+            <tbody id="ftb"><tr class="er"><td colspan="5">Loading files...</td></tr></tbody>
+          </table></div>
         </div>
       </div>
 
-      <!-- ──────── SETTINGS ──────── -->
+      <!-- SETTINGS -->
       <div class="page" id="page-settings">
-        <div class="ph"><div class="ph-left"><h2>Settings</h2><p>Bot configuration &amp; preferences</p></div></div>
+        <div class="ph"><div class="phl"><h2>Settings</h2><p>Bot configuration</p></div></div>
         <div class="card">
-          <div class="card-hd">🤖 Bot Configuration</div>
+          <div class="chd">🤖 Configuration</div>
           <div class="row">
-            <div class="field"><label>Bot Name</label><input class="inp" id="st-name" type="text" placeholder="Supreme MD Bot"/></div>
-            <div class="field" style="flex:0 0 120px"><label>Prefix</label><input class="inp" id="st-prefix" type="text" placeholder="."/></div>
-            <div class="field"><label>Owner Number (read-only)</label><input class="inp" id="st-owner" type="text" disabled/></div>
+            <div class="fd"><label>Bot Name</label><input class="inp" id="stname" type="text" placeholder="Supreme MD Bot"/></div>
+            <div class="fd" style="flex:0 0 110px"><label>Prefix</label><input class="inp" id="stpfx" type="text" placeholder="."/></div>
+            <div class="fd"><label>Owner Number (read-only)</label><input class="inp" id="stown" type="text" disabled/></div>
           </div>
-          <div class="divider"></div>
-          <div class="flex gap-4 flex-wrap mb-3" style="gap:24px">
-            <label class="flex items-center gap-3" style="cursor:pointer;font-size:.85rem;font-weight:600">
-              <label class="tg"><input type="checkbox" id="st-read"/><span class="ts"></span></label>Auto Read Messages
-            </label>
-            <label class="flex items-center gap-3" style="cursor:pointer;font-size:.85rem;font-weight:600">
-              <label class="tg"><input type="checkbox" id="st-typing"/><span class="ts"></span></label>Auto Typing Indicator
-            </label>
-            <label class="flex items-center gap-3" style="cursor:pointer;font-size:.85rem;font-weight:600">
-              <label class="tg"><input type="checkbox" id="st-nsfw"/><span class="ts"></span></label>NSFW Commands
-            </label>
+          <div class="dv"></div>
+          <div class="flex g4 fw mb3" style="gap:22px">
+            <label class="flex ic g3 tsm fw7" style="cursor:pointer"><label class="tg"><input type="checkbox" id="strd"/><span class="ts"></span></label> Auto Read</label>
+            <label class="flex ic g3 tsm fw7" style="cursor:pointer"><label class="tg"><input type="checkbox" id="stty"/><span class="ts"></span></label> Auto Typing</label>
+            <label class="flex ic g3 tsm fw7" style="cursor:pointer"><label class="tg"><input type="checkbox" id="stns"/><span class="ts"></span></label> NSFW Commands</label>
           </div>
           <button class="btn btn-p" onclick="saveSettings()">💾 Save Settings</button>
         </div>
       </div>
 
-      <!-- ──────── LOGS ──────── -->
+      <!-- LOGS -->
       <div class="page" id="page-logs">
         <div class="ph">
-          <div class="ph-left"><h2>Live Logs</h2><p>Real-time bot activity feed</p></div>
-          <div class="ph-right">
+          <div class="phl"><h2>Live Logs</h2><p>Real-time bot activity</p></div>
+          <div class="phr">
             <button class="btn btn-s btn-sm" onclick="loadLogs()">⟳ Load</button>
-            <button class="btn btn-d btn-sm" onclick="document.getElementById('log-box').innerHTML=''">🗑 Clear</button>
+            <button class="btn btn-d btn-sm" onclick="clearLogs()">🗑 Clear</button>
           </div>
         </div>
-        <div id="log-box"></div>
+        <div id="logbox"></div>
       </div>
 
-    </div><!-- /content -->
+    </div><!-- /cnt -->
   </div><!-- /main -->
 </div><!-- /app -->
 
-<div id="toast-area"></div>
+<div id="ta"></div>
 
 <script>
 'use strict';
-// ══════════════════════════════════════════
-//  STATE
-// ══════════════════════════════════════════
-let TOKEN = localStorage.getItem('_sp_tok') || '';
-let allUsers = [], allCmds = [];
-let netRx = [], netTx = [], netLbl = [];
-let netChart, memChart;
-let statsInterval;
-let qrCountdown = null, qrSecs = 0;
+// ═══ STATE ═══
+let TOK = localStorage.getItem('_spt') || '';
+let allU = [], allC = [];
+let nrx = [], ntx = [], nlbl = [];
+let nchart, mchart, sloop;
+let qrtimer = null, qrsec = 0;
 let sock;
 
-// ══════════════════════════════════════════
-//  API
-// ══════════════════════════════════════════
+// ═══ API — all routes are prefixed with /bot-api here ═══
 async function api(method, path, body) {
   try {
     const r = await fetch('/bot-api' + path, {
       method,
-      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + TOKEN },
-      body: body ? JSON.stringify(body) : undefined,
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + TOK },
+      body: body != null ? JSON.stringify(body) : undefined,
     });
     const txt = await r.text();
     try { return JSON.parse(txt); } catch { return { error: txt || 'Empty response' }; }
   } catch (e) { return { error: e.message }; }
 }
 
-// ══════════════════════════════════════════
-//  TOAST
-// ══════════════════════════════════════════
-const TI = { success: '✅', error: '❌', warn: '⚠️', info: 'ℹ️' };
+// ═══ TOAST ═══
+const TI = { success:'✅', error:'❌', warn:'⚠️', info:'ℹ️' };
 function toast(msg, type = 'info') {
   const el = document.createElement('div');
   el.className = 'toast ' + type;
-  el.innerHTML = `<span class="toast-icon">${TI[type]||'💬'}</span><span class="toast-msg">${msg}</span>`;
-  const area = document.getElementById('toast-area');
-  area.appendChild(el);
-  setTimeout(() => { el.style.opacity='0'; el.style.transition='.3s'; }, 3400);
-  setTimeout(() => el.remove(), 3700);
+  el.innerHTML = `<span>${TI[type]||'💬'}</span><span>${msg}</span>`;
+  document.getElementById('ta').appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; el.style.transition = '.3s'; }, 3300);
+  setTimeout(() => el.remove(), 3600);
 }
 
-// ══════════════════════════════════════════
-//  AUTH
-// ══════════════════════════════════════════
+// ═══ AUTH ═══
 async function doLogin() {
-  const u = document.getElementById('l-u').value.trim();
-  const p = document.getElementById('l-p').value;
-  const btn = document.getElementById('l-btn');
-  const err = document.getElementById('l-err');
-  btn.textContent = 'Authenticating...'; btn.disabled = true; err.textContent = '';
+  const u = document.getElementById('lu').value.trim();
+  const p = document.getElementById('lpw').value;
+  const btn = document.getElementById('lbtn');
+  const err = document.getElementById('lerr');
+  btn.textContent = 'Signing in...'; btn.disabled = true; err.textContent = '';
+  // Route: POST /bot-api/auth/login
   const d = await api('POST', '/auth/login', { username: u, password: p });
   btn.textContent = 'Sign In →'; btn.disabled = false;
   if (d && d.token) {
-    TOKEN = d.token;
-    localStorage.setItem('_sp_tok', TOKEN);
-    localStorage.setItem('_sp_user', u);
+    TOK = d.token;
+    localStorage.setItem('_spt', TOK);
+    localStorage.setItem('_spu', u);
     bootApp();
   } else {
-    err.textContent = d?.error || 'Invalid credentials — try admin / chathura123';
+    err.textContent = d?.error || 'Invalid credentials. Try: admin / chathura123';
   }
 }
-document.getElementById('l-p').addEventListener('keydown', e => e.key === 'Enter' && doLogin());
+document.getElementById('lpw').addEventListener('keydown', e => e.key === 'Enter' && doLogin());
 
 function doLogout() {
-  clearInterval(statsInterval);
-  localStorage.removeItem('_sp_tok');
+  clearInterval(sloop);
+  localStorage.removeItem('_spt');
   location.reload();
 }
 
-// ══════════════════════════════════════════
-//  BOOT
-// ══════════════════════════════════════════
+// ═══ BOOT ═══
 function bootApp() {
-  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('lp').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  document.getElementById('sb-user').textContent = localStorage.getItem('_sp_user') || 'admin';
+  document.getElementById('sbu').textContent = localStorage.getItem('_spu') || 'admin';
   initCharts();
   initSocket();
   initNav();
   loadStats();
-  statsInterval = setInterval(loadStats, 5000);
+  sloop = setInterval(loadStats, 5000);
 }
 
-// Auto-login check
-if (TOKEN) {
+if (TOK) {
+  // Route: GET /bot-api/stats
   api('GET', '/stats').then(d => {
     if (d && !d.error) bootApp();
-    else { TOKEN = ''; localStorage.removeItem('_sp_tok'); }
+    else { TOK = ''; localStorage.removeItem('_spt'); }
   }).catch(() => {});
 }
 
-// ══════════════════════════════════════════
-//  SOCKET.IO
-// ══════════════════════════════════════════
+// ═══ SOCKET ═══
 function initSocket() {
   sock = io();
   sock.on('update', d => {
-    if (d.status != null) updateConnStatus(d.status, d.number);
-    if (d.qr) displayQR(d.qr);
-    if (d.pairCode) displayPairCode(d.pairCode);
+    if (d.status != null) setConn(d.status, d.number);
+    if (d.qr) showQR(d.qr);
+    if (d.pairCode) showPC(d.pairCode);
   });
-  sock.on('log', line => appendLog(line));
-  sock.on('disconnect', () => updateConnStatus('Disconnected'));
+  sock.on('log', l => appendLog(l));
+  sock.on('disconnect', () => setConn('Disconnected'));
 }
 
-function updateConnStatus(status, number) {
-  const dot = document.getElementById('st-dot');
-  const lbl = document.getElementById('st-label');
-  const num = document.getElementById('st-num');
-  const hdr = document.getElementById('hdr-status');
-  dot.className = 'st-dot' + (status === 'Connected' ? ' on' : status === 'Connecting' ? ' wait' : '');
-  lbl.textContent = status || 'Unknown';
-  if (number) num.textContent = '+' + number;
-  else if (status !== 'Connected') num.textContent = 'Tap to manage sessions';
-  if (hdr) {
-    hdr.textContent = '● ' + (status || 'Unknown');
-    hdr.className = 'badge ' + (status === 'Connected' ? 'b-g' : status === 'Connecting' ? 'b-o' : 'b-r');
+function setConn(status, number) {
+  const dot = document.getElementById('dot');
+  dot.className = 'dot' + (status === 'Connected' ? ' on' : status === 'Connecting' ? ' wt' : '');
+  document.getElementById('cl').textContent = status || 'Unknown';
+  if (number) document.getElementById('cn').textContent = '+' + number;
+  else if (status !== 'Connected') document.getElementById('cn').textContent = 'Tap to manage sessions';
+  const hb = document.getElementById('hbadge');
+  if (hb) {
+    hb.textContent = '● ' + (status || '—');
+    hb.className = 'b ' + (status === 'Connected' ? 'bg' : status === 'Connecting' ? 'bo' : 'br');
   }
 }
 
-// ══════════════════════════════════════════
-//  NAVIGATION
-// ══════════════════════════════════════════
-const PAGE_TITLES = {
-  overview:  ['Overview', 'Dashboard'],
-  sessions:  ['Sessions', 'WhatsApp Connections'],
-  users:     ['Users', 'User Management'],
-  groups:    ['Groups', 'Group Settings'],
-  commands:  ['Commands', '88 Commands Loaded'],
-  broadcast: ['Broadcast', 'Mass Messaging'],
-  autoreply: ['Auto-Reply', 'Automation Rules'],
-  scheduler: ['Scheduler', 'Scheduled Messages'],
-  economy:   ['Economy', 'Balance Management'],
-  files:     ['Files', 'Downloaded Media'],
-  settings:  ['Settings', 'Bot Configuration'],
-  logs:      ['Logs', 'Live Activity Feed'],
+// ═══ NAV ═══
+const PT = {
+  overview: ['Overview','Dashboard'], sessions: ['Sessions','WhatsApp Connections'],
+  users: ['Users','User Management'], groups: ['Groups','Group Settings'],
+  commands: ['Commands','88 Handlers'], broadcast: ['Broadcast','Mass Messaging'],
+  autoreply: ['Auto-Reply','Automation Rules'], scheduler: ['Scheduler','Scheduled Messages'],
+  economy: ['Economy','Balance Management'], files: ['Files','Downloaded Media'],
+  settings: ['Settings','Bot Configuration'], logs: ['Logs','Live Activity'],
 };
-const PAGE_LOAD = {
+const PL = {
   sessions: loadSessions, users: loadUsers, groups: loadGroups,
-  commands: loadCmds, broadcast: loadBcHistory, autoreply: loadAR,
+  commands: loadCmds, broadcast: loadBcH, autoreply: loadAR,
   scheduler: loadSched, economy: loadEco, files: loadFiles,
   settings: loadSettings, logs: loadLogs,
 };
 
 function initNav() {
-  document.querySelectorAll('.nb[data-p]').forEach(b => {
-    b.addEventListener('click', () => { nav(b.dataset.p); closeSb(); });
-  });
+  document.querySelectorAll('.nb[data-p]').forEach(b =>
+    b.addEventListener('click', () => { nav(b.dataset.p); closeSb(); })
+  );
 }
 
 function nav(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
-  const page = document.getElementById('page-' + name);
+  const pg = document.getElementById('page-' + name);
   const btn = document.querySelector(`[data-p="${name}"]`);
-  if (page) page.classList.add('active');
+  if (pg) pg.classList.add('active');
   if (btn) btn.classList.add('active');
-  const [t, s] = PAGE_TITLES[name] || [name, ''];
-  document.getElementById('tb-title').innerHTML = `${t} <small>${s}</small>`;
-  if (PAGE_LOAD[name]) PAGE_LOAD[name]();
-  document.querySelector('.content').scrollTo(0, 0);
+  const [t, s] = PT[name] || [name, ''];
+  document.getElementById('ttl').innerHTML = `${t} <small>${s}</small>`;
+  if (PL[name]) PL[name]();
+  document.querySelector('.cnt').scrollTo(0, 0);
 }
 
 function toggleSb() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('overlay').style.display =
-    document.getElementById('sidebar').classList.contains('open') ? 'block' : 'none';
+  document.getElementById('sb').classList.toggle('open');
+  document.getElementById('ov').style.display = document.getElementById('sb').classList.contains('open') ? 'block' : 'none';
 }
 function closeSb() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('overlay').style.display = 'none';
+  document.getElementById('sb').classList.remove('open');
+  document.getElementById('ov').style.display = 'none';
 }
 
-// ══════════════════════════════════════════
-//  CHARTS
-// ══════════════════════════════════════════
+// ═══ CHARTS ═══
 function initCharts() {
-  const gc = 'rgba(255,255,255,.04)', tc = '#334155';
-
-  netChart = new Chart(document.getElementById('net-chart').getContext('2d'), {
+  nchart = new Chart(document.getElementById('nchart').getContext('2d'), {
     type: 'line',
-    data: {
-      labels: [],
-      datasets: [
-        { label: '↓ Download', data: [], borderColor: '#00ff87', backgroundColor: 'rgba(0,255,135,.06)', tension: .42, fill: true, pointRadius: 0, borderWidth: 2 },
-        { label: '↑ Upload', data: [], borderColor: '#00d4ff', backgroundColor: 'rgba(0,212,255,.04)', tension: .42, fill: true, pointRadius: 0, borderWidth: 2 },
-      ]
-    },
+    data: { labels: [], datasets: [
+      { label:'↓ Down', data:[], borderColor:'#00ff87', backgroundColor:'rgba(0,255,135,.06)', tension:.42, fill:true, pointRadius:0, borderWidth:2 },
+      { label:'↑ Up',   data:[], borderColor:'#00d4ff', backgroundColor:'rgba(0,212,255,.04)', tension:.42, fill:true, pointRadius:0, borderWidth:2 },
+    ]},
     options: {
-      responsive: true, maintainAspectRatio: false, animation: { duration: 250 },
+      responsive:true, maintainAspectRatio:false, animation:{duration:220},
       scales: {
-        x: { display: false },
-        y: { grid: { color: gc, lineWidth: .7 }, ticks: { color: tc, font: { size: 10 }, callback: v => fmtBps(v) } }
+        x:{display:false},
+        y:{grid:{color:'rgba(255,255,255,.04)',lineWidth:.7},ticks:{color:'#334155',font:{size:10},callback:v=>fmtBps(v)}}
       },
-      plugins: {
-        legend: { labels: { color: '#7d8fa8', boxWidth: 10, font: { size: 10 }, padding: 12 } },
-        tooltip: { callbacks: { label: c => c.dataset.label + ': ' + fmtBps(c.parsed.y) } }
+      plugins:{
+        legend:{labels:{color:'#7d8fa8',boxWidth:9,font:{size:10},padding:10}},
+        tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtBps(c.parsed.y)}}
       }
     }
   });
-
-  memChart = new Chart(document.getElementById('mem-chart').getContext('2d'), {
+  mchart = new Chart(document.getElementById('mchart').getContext('2d'), {
     type: 'doughnut',
-    data: {
-      labels: ['Used', 'Free'],
-      datasets: [{ data: [0, 1], backgroundColor: ['rgba(0,212,255,.85)', 'rgba(255,255,255,.05)'], borderWidth: 0, hoverOffset: 6 }]
-    },
+    data: { labels:['Used','Free'], datasets:[{data:[0,1],backgroundColor:['rgba(0,212,255,.85)','rgba(255,255,255,.05)'],borderWidth:0,hoverOffset:5}] },
     options: {
-      responsive: true, maintainAspectRatio: false, cutout: '74%',
-      plugins: {
-        legend: { display: false },
-        tooltip: { callbacks: { label: c => `${c.label}: ${c.parsed} MB` } },
-        title: { display: true, text: '0% Used', color: '#7d8fa8', font: { size: 12 }, padding: { top: 8 } }
+      responsive:true, maintainAspectRatio:false, cutout:'75%',
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed} MB`}},
+        title:{display:true,text:'0% Used',color:'#7d8fa8',font:{size:12},padding:{top:8}}
       }
     }
   });
 }
 
-// ══════════════════════════════════════════
-//  FORMAT HELPERS
-// ══════════════════════════════════════════
-function fmtBytes(b) {
-  if (b < 1024) return b + ' B';
-  if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
-  if (b < 1073741824) return (b / 1048576).toFixed(1) + ' MB';
-  return (b / 1073741824).toFixed(2) + ' GB';
-}
-function fmtBps(b) { return fmtBytes(b) + '/s'; }
-function fmtUT(s) {
-  s = s || 0;
-  return [Math.floor(s / 3600), Math.floor((s % 3600) / 60), s % 60].map(n => String(n).padStart(2, '0')).join(':');
-}
-function fmtDate(v) {
-  if (!v) return '—';
-  try { return new Date(v).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }); } catch { return v; }
-}
+// ═══ FORMAT ═══
+function fmtB(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';if(b<1073741824)return(b/1048576).toFixed(1)+' MB';return(b/1073741824).toFixed(2)+' GB'}
+function fmtBps(b){return fmtB(b)+'/s'}
+function fmtUT(s){s=s||0;return[Math.floor(s/3600),Math.floor((s%3600)/60),s%60].map(n=>String(n).padStart(2,'0')).join(':')}
+function fmtD(v){if(!v)return'—';try{return new Date(v).toLocaleString([],{dateStyle:'medium',timeStyle:'short'})}catch{return v}}
+function g(id){return document.getElementById(id)}
 
-// ══════════════════════════════════════════
-//  STATS POLL
-// ══════════════════════════════════════════
+// ═══ STATS ═══
 async function loadStats() {
+  // Route: GET /bot-api/stats
   const d = await api('GET', '/stats');
   if (!d || d.error) return;
 
-  updateConnStatus(d.status, d.number);
+  setConn(d.status, d.number);
 
   const ut = fmtUT(d.uptime);
-  document.getElementById('s-uptime').textContent = ut;
-  document.getElementById('tb-uptime-val').textContent = ut;
-  document.getElementById('s-status').textContent = d.status || '—';
-  document.getElementById('s-status').style.color = d.status === 'Connected' ? 'var(--accent)' : d.status === 'Connecting' ? 'var(--orange)' : 'var(--red)';
-  document.getElementById('sc-status-badge').textContent = d.status || '—';
-  document.getElementById('s-number').textContent = d.number ? '+' + d.number : '—';
-  document.getElementById('s-users').textContent = d.userCount || 0;
-  document.getElementById('s-sess').textContent = d.sessionCount || 0;
-  document.getElementById('s-bc').textContent = d.broadcastCount || 0;
-  document.getElementById('s-mem').textContent = (d.memUsed || 0) + ' MB';
-  document.getElementById('s-mem-pct').textContent = (d.memPercent || 0) + '%';
-  document.getElementById('s-mem-fill').style.width = (d.memPercent || 0) + '%';
-  document.getElementById('s-cpu').textContent = d.cpuLoad || '0.00';
-  document.getElementById('s-files').textContent = d.fileCount || 0;
-  document.getElementById('s-fsize').textContent = d.fileSizeMB ? d.fileSizeMB + ' MB' : '';
-  document.getElementById('s-plat').textContent = d.platform ? d.platform[0].toUpperCase() + d.platform.slice(1) : '—';
-  document.getElementById('s-node').textContent = d.nodeVersion || '';
+  g('su').textContent = ut;
+  g('tbut').textContent = ut;
+  g('ss').textContent = d.status || '—';
+  g('ss').style.color = d.status === 'Connected' ? 'var(--a)' : d.status === 'Connecting' ? 'var(--orange)' : 'var(--red)';
+  g('stag').textContent = d.status || '—';
+  g('sn').textContent = d.number ? '+' + d.number : '—';
+  g('suc').textContent = d.userCount || 0;
+  g('ssc').textContent = d.sessionCount || 0;
+  g('sbc').textContent = d.broadcastCount || 0;
+  g('sm').textContent = (d.memUsed || 0) + ' MB';
+  g('smp').textContent = (d.memPercent || 0) + '%';
+  g('smf').style.width = (d.memPercent || 0) + '%';
+  g('scpu').textContent = d.cpuLoad || '0.00';
+  g('sfc').textContent = d.fileCount || 0;
+  g('sfsz').textContent = d.fileSizeMB ? d.fileSizeMB + ' MB' : '';
+  g('spl').textContent = d.platform ? d.platform[0].toUpperCase() + d.platform.slice(1) : '—';
+  g('snv').textContent = d.nodeVersion || '';
 
-  if (memChart && d.memUsed != null) {
-    const used = d.memUsed, total = d.memTotal || 1;
-    memChart.data.datasets[0].data = [used, Math.max(0, total - used)];
-    memChart.options.plugins.title.text = `${d.memPercent || 0}% — ${used} / ${total} MB`;
-    memChart.update('none');
+  if (mchart) {
+    const used = d.memUsed || 0, total = d.memTotal || 1;
+    mchart.data.datasets[0].data = [used, Math.max(0, total - used)];
+    mchart.options.plugins.title.text = `${d.memPercent||0}% — ${used}/${total} MB`;
+    mchart.update('none');
   }
-
-  if (netChart && d.net) {
-    const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    netLbl.push(t); netRx.push(d.net.speedRxRaw || 0); netTx.push(d.net.speedTxRaw || 0);
-    if (netLbl.length > 30) { netLbl.shift(); netRx.shift(); netTx.shift(); }
-    netChart.data.labels = [...netLbl];
-    netChart.data.datasets[0].data = [...netRx];
-    netChart.data.datasets[1].data = [...netTx];
-    netChart.update('none');
-    document.getElementById('n-rx').textContent = d.net.speedRx || '0 B/s';
-    document.getElementById('n-tx').textContent = d.net.speedTx || '0 B/s';
-    document.getElementById('n-rxT').textContent = d.net.totalRx || '—';
-    document.getElementById('n-txT').textContent = d.net.totalTx || '—';
-    document.getElementById('net-live-label').textContent = `↓ ${d.net.speedRx || '0 B/s'} · ↑ ${d.net.speedTx || '0 B/s'}`;
+  if (nchart && d.net) {
+    const t = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    nlbl.push(t); nrx.push(d.net.speedRxRaw || 0); ntx.push(d.net.speedTxRaw || 0);
+    if (nlbl.length > 28) { nlbl.shift(); nrx.shift(); ntx.shift(); }
+    nchart.data.labels = [...nlbl];
+    nchart.data.datasets[0].data = [...nrx];
+    nchart.data.datasets[1].data = [...ntx];
+    nchart.update('none');
+    g('nrx').textContent = d.net.speedRx || '0 B/s';
+    g('ntx').textContent = d.net.speedTx || '0 B/s';
+    g('nrxt').textContent = d.net.totalRx || '—';
+    g('ntxt').textContent = d.net.totalTx || '—';
+    g('nlbl').textContent = `↓${d.net.speedRx} · ↑${d.net.speedTx}`;
   }
 }
 
 async function restartBot() {
+  // Route: POST /bot-api/admin/restart
   await api('POST', '/admin/restart');
-  toast('Bot restart triggered — may take a few seconds', 'info');
+  toast('Bot restart triggered — reconnecting in ~5s', 'info');
 }
 
-// ══════════════════════════════════════════
-//  SESSIONS
-// ══════════════════════════════════════════
-function displayQR(dataUrl) {
-  const img = document.getElementById('qr-img');
-  img.src = dataUrl; img.style.display = 'block';
-  document.getElementById('qr-hint').style.display = 'none';
-  document.getElementById('pair-show').style.display = 'none';
-  document.getElementById('qr-timer-wrap').style.display = 'block';
+// ═══ SESSIONS ═══
+function showQR(dataUrl) {
+  g('qr-img').src = dataUrl;
+  g('qr-img').style.display = 'block';
+  g('qrhi').style.display = 'none';
+  g('pcshow').style.display = 'none';
+  g('qtb').style.display = 'block';
   startQRTimer(60);
 }
-
-function displayPairCode(code) {
-  document.getElementById('pair-val').textContent = code;
-  document.getElementById('pair-show').style.display = 'block';
-  document.getElementById('qr-img').style.display = 'none';
-  document.getElementById('qr-hint').style.display = 'none';
+function showPC(code) {
+  g('pcval').textContent = code;
+  g('pcshow').style.display = 'block';
+  g('qr-img').style.display = 'none';
+  g('qrhi').style.display = 'none';
 }
-
 function startQRTimer(total) {
-  clearInterval(qrCountdown); qrSecs = total;
-  const fill = document.getElementById('qr-timer-fill');
-  const txt = document.getElementById('qr-timer-txt');
-  txt.textContent = `QR valid for ${qrSecs}s`;
-  qrCountdown = setInterval(() => {
-    qrSecs--;
-    fill.style.width = ((qrSecs / total) * 100) + '%';
-    txt.textContent = qrSecs > 0 ? `QR valid for ${qrSecs}s` : 'QR expired — click ↺ to refresh';
-    if (qrSecs <= 0) clearInterval(qrCountdown);
+  clearInterval(qrtimer); qrsec = total;
+  const fill = g('qr-tf'), txt = g('qtx');
+  txt.textContent = `QR valid for ${qrsec}s`;
+  qrtimer = setInterval(() => {
+    qrsec--;
+    fill.style.width = ((qrsec / total) * 100) + '%';
+    if (qrsec <= 0) { clearInterval(qrtimer); txt.textContent = 'QR expired — click ↺ to refresh'; }
+    else txt.textContent = `QR valid for ${qrsec}s`;
   }, 1000);
 }
 
 async function loadSessions() {
-  const s = await api('GET', '/bot-api/bot/session');
+  // Route: GET /bot-api/bot/session (main bot info)
+  const s = await api('GET', '/bot/session');
   if (s && !s.error) {
-    document.getElementById('main-conn-info').innerHTML =
-      `Status: <b style="color:${s.status==='Connected'?'var(--accent)':'var(--orange)'}">${s.status||'—'}</b> &nbsp;&bull;&nbsp; Number: <b>${s.number||'Not connected'}</b> &nbsp;&bull;&nbsp; Platform: ${s.platform||'—'}`;
+    g('mci').innerHTML = `Status: <b style="color:${s.status==='Connected'?'var(--a)':'var(--orange)'}">${s.status||'—'}</b> &nbsp;·&nbsp; Number: <b>${s.number||'Not connected'}</b> &nbsp;·&nbsp; Platform: ${s.platform||'—'}`;
   }
+  // Route: GET /bot-api/sessions
   const list = await api('GET', '/sessions');
   if (!list || list.error) return;
   const multi = list.filter(x => !x.isMain);
-  const grid = document.getElementById('sess-grid');
-  if (!multi.length) { grid.innerHTML = '<div class="text-muted text-sm">No extra sessions. Add one above.</div>'; return; }
+  const grid = g('ssg');
+  if (!multi.length) { grid.innerHTML = '<div class="tm tsm">No extra sessions. Add one above.</div>'; return; }
   grid.innerHTML = multi.map(s => `
-    <div class="sess-card">
-      <div class="sess-card-name">${s.label || s.id}</div>
-      <div class="sess-card-num">${s.number || 'No number linked'}</div>
-      <div class="mb-3"><span class="badge ${s.status==='Connected'?'b-g':'b-o'}">${s.status||'Unknown'}</span></div>
-      <div class="flex gap-2">
+    <div class="ssc">
+      <div class="ssn">${s.label || s.id}</div>
+      <div class="ssm">${s.number || 'No number linked'}</div>
+      <div class="mb2"><span class="b ${s.status==='Connected'?'bg':'bo'}">${s.status||'Unknown'}</span></div>
+      <div class="flex g2">
         <button class="btn btn-s btn-sm" style="flex:1" onclick="getSessQR('${s.id}')">QR</button>
         <button class="btn btn-d btn-sm" style="flex:1" onclick="removeSess('${s.id}')">Remove</button>
       </div>
@@ -1238,398 +881,382 @@ async function loadSessions() {
 }
 
 async function fetchQR() {
-  document.getElementById('qr-img').style.display = 'none';
-  document.getElementById('qr-hint').style.display = 'none';
-  document.getElementById('pair-show').style.display = 'none';
-  document.getElementById('qr-timer-txt').textContent = 'Generating QR...';
-  document.getElementById('qr-timer-wrap').style.display = 'none';
+  g('qr-img').style.display = 'none';
+  g('pcshow').style.display = 'none';
+  g('qrhi').style.display = 'none';
+  g('qtb').style.display = 'none';
+  g('qtx').textContent = 'Generating QR...';
+  // Route: GET /bot-api/sessions/__main__/qr
   const d = await api('GET', '/sessions/__main__/qr');
-  if (d && d.qrCode) displayQR(d.qrCode);
+  if (d && d.qrCode) showQR(d.qrCode);
   else {
-    document.getElementById('qr-hint').style.display = 'block';
-    document.getElementById('qr-timer-txt').textContent = d?.error || 'No QR available — bot may already be connected';
+    g('qrhi').style.display = 'block';
+    g('qtx').textContent = d?.error || 'No QR — bot may already be connected';
     toast(d?.error || 'No QR available', 'info');
   }
 }
 
 async function reqPair() {
-  const phone = document.getElementById('ph-input').value.trim();
-  if (!phone) return toast('Enter a phone number first', 'warn');
+  const phone = g('phi').value.trim();
+  if (!phone) return toast('Enter phone number first', 'warn');
+  // Route: POST /bot-api/sessions/__main__/paircode
   const d = await api('POST', '/sessions/__main__/paircode', { phone });
-  if (d && d.code) { displayPairCode(d.code); toast('Pair code ready: ' + d.code, 'success'); }
+  if (d && d.code) { showPC(d.code); toast('Pair code: ' + d.code, 'success'); }
   else toast(d?.error || 'Failed to get pair code', 'error');
 }
 
 async function mainLogout() {
-  if (!confirm('Logout main bot? You will need to re-scan the QR code.')) return;
+  if (!confirm('Logout main bot? Need to re-scan QR after.')) return;
+  // Route: POST /bot-api/bot/session/logout
   const d = await api('POST', '/bot/session/logout');
   if (d?.ok) { toast('Logged out', 'success'); loadSessions(); }
   else toast(d?.error || 'Failed', 'error');
 }
 
 async function createSess() {
-  const id = document.getElementById('ns-id').value.trim();
-  const phone = document.getElementById('ns-ph').value.trim();
+  const id = g('nsid').value.trim();
+  const phone = g('nsph').value.trim();
   if (!id) return toast('Enter a session ID', 'warn');
+  // Route: POST /bot-api/sessions
   const d = await api('POST', '/sessions', { id, pairMode: !!phone, phone });
   if (d?.error) toast(d.error, 'error');
-  else { toast('Session created', 'success'); loadSessions(); document.getElementById('ns-id').value = ''; }
+  else { toast('Session "' + id + '" created', 'success'); g('nsid').value = ''; loadSessions(); }
 }
 
 async function getSessQR(id) {
-  const d = await api('GET', `/sessions/${id}/qr`);
+  // Route: GET /bot-api/sessions/:id/qr
+  const d = await api('GET', '/sessions/' + id + '/qr');
   if (d?.qrCode) {
     const w = window.open('', '_blank', 'width=300,height=320');
-    w.document.write(`<body style="margin:0;background:#050810"><img src="${d.qrCode}" style="width:300px;height:300px"/></body>`);
-  } else toast(d?.error || 'No QR available', 'error');
+    w.document.write(`<body style="margin:0;background:#050810"><img src="${d.qrCode}" style="width:300px"/></body>`);
+  } else toast(d?.error || 'No QR', 'error');
 }
 
 async function removeSess(id) {
-  if (!confirm(`Remove session "${id}"?`)) return;
-  await api('DELETE', `/sessions/${id}`);
+  if (!confirm('Remove session "' + id + '"?')) return;
+  // Route: DELETE /bot-api/sessions/:id
+  await api('DELETE', '/sessions/' + id);
   toast('Session removed', 'success'); loadSessions();
 }
 
-// ══════════════════════════════════════════
-//  USERS
-// ══════════════════════════════════════════
+// ═══ USERS ═══
 async function loadUsers() {
-  document.getElementById('users-tb').innerHTML = '<tr><td colspan="7" class="empty-row">Loading...</td></tr>';
-  allUsers = await api('GET', '/users') || [];
-  if (allUsers.error) allUsers = [];
-  document.getElementById('users-sub').textContent = `${allUsers.length} registered users`;
-  renderUsers(allUsers);
+  g('utb').innerHTML = '<tr class="er"><td colspan="7">Loading...</td></tr>';
+  // Route: GET /bot-api/users
+  allU = await api('GET', '/users') || [];
+  if (allU.error) allU = [];
+  g('usub').textContent = allU.length + ' registered users';
+  renderU(allU);
 }
-
 function filterUsers() {
-  const q = document.getElementById('usr-q').value.toLowerCase();
-  renderUsers(allUsers.filter(u => (u.number || '').includes(q)));
+  const q = g('uq').value.toLowerCase();
+  renderU(allU.filter(u => (u.number || '').includes(q)));
 }
-
-function renderUsers(list) {
-  document.getElementById('users-tb').innerHTML = list.length ? list.map(u => `
+function renderU(list) {
+  g('utb').innerHTML = list.length ? list.map(u => `
     <tr>
-      <td class="td-mono">${u.number || '—'}</td>
-      <td>💰 <b>${u.balance || 0}</b></td>
-      <td><span class="badge ${u.premium?'b-y':'b-gr'}">${u.premium?'⭐ Premium':'Free'}</span></td>
-      <td><span class="badge ${u.banned?'b-r':'b-g'}">${u.banned?'🚫 Banned':'✅ OK'}</span></td>
-      <td class="text-muted text-sm">${u.wins||0} / ${u.losses||0}</td>
-      <td class="text-xs text-muted">${fmtDate(u.lastSeen)}</td>
-      <td>
-        <div class="flex gap-1">
-          <button class="icon-btn prem" title="${u.premium?'Revoke':'Premium'}" onclick="togglePrem('${u.jid}',${!u.premium})">${u.premium?'⭐':'☆'}</button>
-          <button class="icon-btn edit" title="${u.banned?'Unban':'Ban'}" onclick="toggleBan('${u.jid}',${!u.banned})">${u.banned?'✅':'🚫'}</button>
-          <button class="icon-btn" title="Delete" onclick="delUser('${u.jid}')">🗑</button>
-        </div>
-      </td>
-    </tr>`).join('') : '<tr class="empty-row"><td colspan="7">No users registered yet</td></tr>';
+      <td class="mono">${u.number||'—'}</td>
+      <td>💰 <b>${u.balance||0}</b></td>
+      <td><span class="b ${u.premium?'by':'bgr'}">${u.premium?'⭐ Premium':'Free'}</span></td>
+      <td><span class="b ${u.banned?'br':'bg'}">${u.banned?'🚫 Banned':'✅ OK'}</span></td>
+      <td class="tm tsm">${u.wins||0} / ${u.losses||0}</td>
+      <td class="txs tm">${fmtD(u.lastSeen)}</td>
+      <td><div class="flex g1">
+        <button class="ib y" title="${u.premium?'Revoke':'Premium'}" onclick="tPrem('${u.jid}',${!u.premium})">${u.premium?'⭐':'☆'}</button>
+        <button class="ib e" title="${u.banned?'Unban':'Ban'}" onclick="tBan('${u.jid}',${!u.banned})">${u.banned?'✅':'🚫'}</button>
+        <button class="ib" title="Delete" onclick="delU('${u.jid}')">🗑</button>
+      </div></td>
+    </tr>`).join('') : '<tr class="er"><td colspan="7">No users yet</td></tr>';
 }
-
-async function togglePrem(jid, v) {
-  const d = await api('POST', `/users/${encodeURIComponent(jid)}/premium`, { premium: v });
-  if (d?.ok) { toast(v ? 'Premium granted' : 'Premium revoked', 'success'); loadUsers(); }
+async function tPrem(jid, v) {
+  // Route: POST /bot-api/users/:jid/premium
+  const d = await api('POST', '/users/' + encodeURIComponent(jid) + '/premium', { premium: v });
+  if (d?.ok) { toast(v ? 'Premium granted' : 'Revoked', 'success'); loadUsers(); }
   else toast(d?.error || 'Failed', 'error');
 }
-async function toggleBan(jid, v) {
-  const d = await api('POST', `/users/${encodeURIComponent(jid)}/ban`, { banned: v });
-  if (d?.ok) { toast(v ? 'User banned' : 'User unbanned', 'success'); loadUsers(); }
+async function tBan(jid, v) {
+  // Route: POST /bot-api/users/:jid/ban
+  const d = await api('POST', '/users/' + encodeURIComponent(jid) + '/ban', { banned: v });
+  if (d?.ok) { toast(v ? 'User banned' : 'Unbanned', 'success'); loadUsers(); }
   else toast(d?.error || 'Failed', 'error');
 }
-async function delUser(jid) {
-  if (!confirm('Delete this user permanently?')) return;
-  await api('DELETE', `/users/${encodeURIComponent(jid)}`);
-  toast('User deleted', 'success'); loadUsers();
+async function delU(jid) {
+  if (!confirm('Permanently delete this user?')) return;
+  // Route: DELETE /bot-api/users/:jid
+  await api('DELETE', '/users/' + encodeURIComponent(jid));
+  toast('Deleted', 'success'); loadUsers();
 }
 
-// ══════════════════════════════════════════
-//  GROUPS
-// ══════════════════════════════════════════
+// ═══ GROUPS ═══
 async function loadGroups() {
-  document.getElementById('grp-tb').innerHTML = '<tr><td colspan="7" class="empty-row">Loading...</td></tr>';
+  g('gtb').innerHTML = '<tr class="er"><td colspan="7">Loading...</td></tr>';
+  // Route: GET /bot-api/groups
   const list = await api('GET', '/groups') || [];
-  document.getElementById('grp-sub').textContent = `${list.length || 0} groups`;
-  document.getElementById('grp-tb').innerHTML = (list.length && !list.error) ? list.map(g => `
+  g('gsub').textContent = (list.length || 0) + ' groups';
+  g('gtb').innerHTML = (list.length && !list.error) ? list.map(gr => `
     <tr>
-      <td>
-        <div class="fw7 text-sm">${g.name || 'Unknown'}</div>
-        <div class="text-xs text-muted mono">${(g.jid || '').split('@')[0]}</div>
-      </td>
-      <td><span class="badge b-b">${g.memberCount || 0}</span></td>
-      ${['isMuted','antiLink','antiSpam','welcomeEnabled','nsfw'].map(f => `
-        <td><label class="tg"><input type="checkbox" ${g[f]?'checked':''} onchange="patchGrp('${g.jid}','${f}',this.checked)"><span class="ts"></span></label></td>
-      `).join('')}
+      <td><div class="fw7 tsm">${gr.name||'Unknown'}</div><div class="txs tm mono">${(gr.jid||'').split('@')[0]}</div></td>
+      <td><span class="b bb">${gr.memberCount||0}</span></td>
+      ${['isMuted','antiLink','antiSpam','welcomeEnabled','nsfw'].map(f =>
+        `<td><label class="tg"><input type="checkbox" ${gr[f]?'checked':''} onchange="patchGrp('${gr.jid}','${f}',this.checked)"><span class="ts"></span></label></td>`
+      ).join('')}
     </tr>`).join('')
-  : '<tr class="empty-row"><td colspan="7">No groups — bot must be added to a group first</td></tr>';
+  : '<tr class="er"><td colspan="7">No groups — add bot to a group first</td></tr>';
 }
-
 async function patchGrp(jid, field, val) {
-  const d = await api('PATCH', `/groups/${encodeURIComponent(jid)}`, { [field]: val });
+  // Route: PATCH /bot-api/groups/:jid
+  const d = await api('PATCH', '/groups/' + encodeURIComponent(jid), { [field]: val });
   if (!d?.ok) toast('Update failed', 'error');
 }
 
-// ══════════════════════════════════════════
-//  COMMANDS
-// ══════════════════════════════════════════
+// ═══ COMMANDS ═══
 async function loadCmds() {
-  document.getElementById('cmd-tb').innerHTML = '<tr><td colspan="6" class="empty-row">Loading...</td></tr>';
-  allCmds = await api('GET', '/commands') || [];
-  document.getElementById('cmd-sub').textContent = `${allCmds.length} commands loaded`;
-  document.getElementById('cmd-badge').textContent = allCmds.length || 88;
-  renderCmds(allCmds);
+  g('ctb').innerHTML = '<tr class="er"><td colspan="6">Loading...</td></tr>';
+  // Route: GET /bot-api/commands
+  allC = await api('GET', '/commands') || [];
+  if (allC.error) allC = [];
+  g('csub').textContent = allC.length + ' commands loaded';
+  g('cbd').textContent = allC.length || 88;
+  renderC(allC);
 }
-
 function filterCmds() {
-  const q = document.getElementById('cmd-q').value.toLowerCase();
-  renderCmds(allCmds.filter(c =>
+  const q = g('cq').value.toLowerCase();
+  renderC(allC.filter(c =>
     (c.name||'').toLowerCase().includes(q) ||
     (c.description||'').toLowerCase().includes(q) ||
     (c.category||'').toLowerCase().includes(q)
   ));
 }
-
-function renderCmds(list) {
-  document.getElementById('cmd-tb').innerHTML = list.length ? list.map(c => `
+function renderC(list) {
+  g('ctb').innerHTML = list.length ? list.map(c => `
     <tr>
-      <td>
-        <div class="fw7 accent">.${c.name}</div>
-        ${c.aliases?.length ? `<div class="text-xs text-muted">${c.aliases.map(a=>'.'+a).join(', ')}</div>` : ''}
-      </td>
-      <td><span class="badge b-b">${c.category || '—'}</span></td>
-      <td class="text-xs text-muted" style="max-width:200px">${c.description || '—'}</td>
-      <td>
-        <div class="flex gap-1 flex-wrap">
-          ${c.ownerOnly?'<span class="badge b-r">Owner</span>':''}
-          ${c.premiumOnly?'<span class="badge b-y">Premium</span>':''}
-          ${c.groupOnly?'<span class="badge b-b">Group</span>':''}
-          ${c.pmOnly?'<span class="badge b-g">PM</span>':''}
-          ${!c.ownerOnly&&!c.premiumOnly&&!c.groupOnly&&!c.pmOnly?'<span class="badge b-gr">All</span>':''}
-        </div>
-      </td>
-      <td class="text-muted text-sm">${c.usageCount || 0}</td>
+      <td><div class="fw7 ac">.${c.name}</div>${c.aliases?.length?`<div class="txs tm">${c.aliases.map(a=>'.'+a).join(', ')}</div>`:''}</td>
+      <td><span class="b bb">${c.category||'—'}</span></td>
+      <td class="txs tm" style="max-width:190px">${c.description||'—'}</td>
+      <td><div class="flex g1 fw">
+        ${c.ownerOnly?'<span class="b br">Owner</span>':''}
+        ${c.premiumOnly?'<span class="b by">Premium</span>':''}
+        ${c.groupOnly?'<span class="b bb">Group</span>':''}
+        ${c.pmOnly?'<span class="b bg">PM</span>':''}
+        ${!c.ownerOnly&&!c.premiumOnly&&!c.groupOnly&&!c.pmOnly?'<span class="b bgr">All</span>':''}
+      </div></td>
+      <td class="tm tsm">${c.usageCount||0}</td>
       <td><label class="tg"><input type="checkbox" ${c.enabled?'checked':''} onchange="toggleCmd('${c.name}',this.checked)"><span class="ts"></span></label></td>
-    </tr>`).join('') : '<tr class="empty-row"><td colspan="6">No commands match your search</td></tr>';
+    </tr>`).join('')
+  : '<tr class="er"><td colspan="6">No commands match</td></tr>';
 }
-
 async function toggleCmd(name, enabled) {
-  await api('PATCH', `/commands/${encodeURIComponent(name)}`, { enabled });
+  // Route: PATCH /bot-api/commands/:name
+  await api('PATCH', '/commands/' + encodeURIComponent(name), { enabled });
 }
 async function toggleAll(enabled) {
+  // Route: POST /bot-api/commands/toggle-all
   await api('POST', '/commands/toggle-all', { enabled });
-  toast(enabled ? 'All commands enabled' : 'All commands disabled', enabled ? 'success' : 'warn');
+  toast(enabled ? 'All commands enabled' : 'All disabled', enabled ? 'success' : 'warn');
   loadCmds();
 }
 
-// ══════════════════════════════════════════
-//  BROADCAST
-// ══════════════════════════════════════════
+// ═══ BROADCAST ═══
 async function sendBC() {
-  const msg = document.getElementById('bc-msg').value.trim();
-  if (!msg) return toast('Type a message first', 'warn');
-  const btn = document.getElementById('bc-btn');
+  const msg = g('bcmsg').value.trim();
+  if (!msg) return toast('Write a message first', 'warn');
+  const btn = g('bcbtn');
   btn.disabled = true; btn.textContent = '📤 Sending...';
+  // Route: POST /bot-api/broadcast
   const d = await api('POST', '/broadcast', { message: msg });
   btn.disabled = false; btn.textContent = '📢 Send to All Users';
   if (d?.error) { toast(d.error, 'error'); return; }
-  toast(`Sent: ${d.sent} ✅ · Failed: ${d.failed} ❌`, d.failed === 0 ? 'success' : 'warn');
-  document.getElementById('bc-msg').value = '';
-  loadBcHistory();
+  toast(`✅ Sent: ${d.sent} · ❌ Failed: ${d.failed}`, d.failed === 0 ? 'success' : 'warn');
+  g('bcmsg').value = '';
+  loadBcH();
 }
-
-async function loadBcHistory() {
+async function loadBcH() {
+  // Route: GET /bot-api/broadcast/history
   const list = await api('GET', '/broadcast/history') || [];
-  document.getElementById('bc-tb').innerHTML = (list.length && !list.error) ? list.map(b => `
+  g('bctb').innerHTML = (list.length && !list.error) ? list.map(b => `
     <tr>
-      <td class="text-xs" style="max-width:260px">${(b.message||'').substring(0,80)}${(b.message||'').length>80?'…':''}</td>
-      <td style="color:var(--accent);font-weight:800">${b.sent||0}</td>
+      <td class="txs" style="max-width:240px">${(b.message||'').substring(0,75)}${(b.message||'').length>75?'…':''}</td>
+      <td style="color:var(--a);font-weight:800">${b.sent||0}</td>
       <td style="color:var(--red);font-weight:800">${b.failed||0}</td>
-      <td><span class="badge ${b.status==='success'?'b-g':b.status==='failed'?'b-r':'b-o'}">${b.status||'—'}</span></td>
-      <td class="text-xs text-muted">${fmtDate(b.sentAt)}</td>
+      <td><span class="b ${b.status==='success'?'bg':b.status==='failed'?'br':'bo'}">${b.status||'—'}</span></td>
+      <td class="txs tm">${fmtD(b.sentAt)}</td>
     </tr>`).join('')
-  : '<tr class="empty-row"><td colspan="5">No broadcasts sent yet</td></tr>';
+  : '<tr class="er"><td colspan="5">No broadcasts yet</td></tr>';
 }
 
-// ══════════════════════════════════════════
-//  AUTO-REPLY
-// ══════════════════════════════════════════
+// ═══ AUTO-REPLY ═══
 async function loadAR() {
+  // Route: GET /bot-api/auto-reply
   const list = await api('GET', '/auto-reply') || [];
-  document.getElementById('ar-sub').textContent = `${list.length || 0} active rules`;
-  document.getElementById('ar-tb').innerHTML = (list.length && !list.error) ? list.map(r => `
+  g('arsub').textContent = (list.length || 0) + ' active rules';
+  g('artb').innerHTML = (list.length && !list.error) ? list.map(r => `
     <tr>
-      <td class="fw7 accent">${r.trigger}</td>
-      <td class="text-xs text-muted" style="max-width:200px">${r.response}</td>
-      <td><span class="badge b-b">${r.matchType}</span></td>
-      <td>${r.groupsOnly?'<span class="badge b-p">Groups</span>':''}${r.pmOnly?'<span class="badge b-g">PM</span>':''}</td>
-      <td><label class="tg"><input type="checkbox" ${r.enabled?'checked':''} onchange="api('PATCH','/auto-reply/${r.id}',{enabled:this.checked})"><span class="ts"></span></label></td>
-      <td><button class="icon-btn" onclick="delAR('${r.id}')">🗑</button></td>
+      <td class="fw7 ac">${r.trigger}</td>
+      <td class="txs tm" style="max-width:180px">${r.response}</td>
+      <td><span class="b bb">${r.matchType}</span></td>
+      <td>${r.groupsOnly?'<span class="b bp">Groups</span>':''}${r.pmOnly?'<span class="b bg">PM</span>':''}</td>
+      <td><label class="tg"><input type="checkbox" ${r.enabled?'checked':''} onchange="patchAR('${r.id}',this.checked)"><span class="ts"></span></label></td>
+      <td><button class="ib" onclick="delAR('${r.id}')">🗑</button></td>
     </tr>`).join('')
-  : '<tr class="empty-row"><td colspan="6">No auto-reply rules yet</td></tr>';
+  : '<tr class="er"><td colspan="6">No auto-reply rules yet</td></tr>';
 }
-
+async function patchAR(id, enabled) {
+  // Route: PATCH /bot-api/auto-reply/:id
+  await api('PATCH', '/auto-reply/' + id, { enabled });
+}
 async function addAR() {
-  const trigger = document.getElementById('ar-trig').value.trim();
-  const response = document.getElementById('ar-resp').value.trim();
-  if (!trigger || !response) return toast('Trigger and response are required', 'warn');
+  const trigger = g('artrig').value.trim();
+  const response = g('arresp').value.trim();
+  if (!trigger || !response) return toast('Trigger and response required', 'warn');
+  // Route: POST /bot-api/auto-reply
   const d = await api('POST', '/auto-reply', {
     trigger, response,
-    matchType: document.getElementById('ar-match').value,
-    caseSensitive: document.getElementById('ar-case').checked,
-    groupsOnly: document.getElementById('ar-grp').checked,
-    pmOnly: document.getElementById('ar-pm').checked,
+    matchType: g('armt').value,
+    caseSensitive: g('arcs').checked,
+    groupsOnly: g('argrp').checked,
+    pmOnly: g('arpm').checked,
   });
   if (d?.error) toast(d.error, 'error');
-  else {
-    toast('Rule added', 'success');
-    document.getElementById('ar-trig').value = '';
-    document.getElementById('ar-resp').value = '';
-    loadAR();
-  }
+  else { toast('Rule added', 'success'); g('artrig').value = ''; g('arresp').value = ''; loadAR(); }
 }
-
 async function delAR(id) {
-  await api('DELETE', `/auto-reply/${id}`);
+  // Route: DELETE /bot-api/auto-reply/:id
+  await api('DELETE', '/auto-reply/' + id);
   toast('Rule deleted', 'success'); loadAR();
 }
 
-// ══════════════════════════════════════════
-//  SCHEDULER
-// ══════════════════════════════════════════
+// ═══ SCHEDULER ═══
 async function loadSched() {
+  // Route: GET /bot-api/scheduler
   const list = await api('GET', '/scheduler') || [];
-  document.getElementById('sch-tb').innerHTML = (list.length && !list.error) ? list.map(s => `
+  g('schtb').innerHTML = (list.length && !list.error) ? list.map(s => `
     <tr>
-      <td class="text-sm" style="max-width:280px">${(s.message||'').substring(0,80)}${(s.message||'').length>80?'…':''}</td>
-      <td class="text-xs text-muted">${fmtDate(s.scheduledAt)}</td>
-      <td><span class="badge ${s.sent?'b-g':'b-o'}">${s.sent?'✓ Sent':'⏳ Pending'}</span></td>
-      <td><button class="icon-btn" onclick="delSched('${s.id}')">🗑</button></td>
+      <td class="tsm" style="max-width:260px">${(s.message||'').substring(0,70)}${(s.message||'').length>70?'…':''}</td>
+      <td class="txs tm">${fmtD(s.scheduledAt)}</td>
+      <td><span class="b ${s.sent?'bg':'bo'}">${s.sent?'✓ Sent':'⏳ Pending'}</span></td>
+      <td><button class="ib" onclick="delSched('${s.id}')">🗑</button></td>
     </tr>`).join('')
-  : '<tr class="empty-row"><td colspan="4">No scheduled messages</td></tr>';
+  : '<tr class="er"><td colspan="4">No scheduled messages</td></tr>';
 }
-
 async function addSched() {
-  const message = document.getElementById('sch-msg').value.trim();
-  const scheduledAt = document.getElementById('sch-at').value;
-  if (!message || !scheduledAt) return toast('Message and time are required', 'warn');
+  const message = g('schmsg').value.trim();
+  const scheduledAt = g('schat').value;
+  if (!message || !scheduledAt) return toast('Message and time required', 'warn');
+  // Route: POST /bot-api/scheduler
   const d = await api('POST', '/scheduler', { message, scheduledAt });
   if (d?.error) toast(d.error, 'error');
-  else { toast('Message scheduled', 'success'); document.getElementById('sch-msg').value = ''; loadSched(); }
+  else { toast('Scheduled', 'success'); g('schmsg').value = ''; loadSched(); }
 }
-
 async function delSched(id) {
-  await api('DELETE', `/scheduler/${id}`);
+  // Route: DELETE /bot-api/scheduler/:id
+  await api('DELETE', '/scheduler/' + id);
   toast('Deleted', 'success'); loadSched();
 }
 
-// ══════════════════════════════════════════
-//  ECONOMY
-// ══════════════════════════════════════════
+// ═══ ECONOMY ═══
 async function loadEco() {
+  // Route: GET /bot-api/economy
   const list = await api('GET', '/economy') || [];
-  document.getElementById('eco-tb').innerHTML = (list.length && !list.error) ? list.map(u => `
+  g('ecotb').innerHTML = (list.length && !list.error) ? list.map(u => `
     <tr>
-      <td class="td-mono">${u.number || '—'}</td>
-      <td>💰 <b>${u.balance || 0}</b></td>
-      <td><span class="badge ${u.premium?'b-y':'b-gr'}">${u.premium?'⭐ Premium':'Free'}</span></td>
-      <td class="text-muted">${u.wins || 0}</td>
-      <td>
-        <div class="flex gap-2 items-center">
-          <input class="inp text-sm" id="b-${(u.jid||'').replace(/\W/g,'')}" type="number" value="${u.balance||0}" style="width:90px;padding:6px 9px;"/>
-          <button class="btn btn-p btn-xs" onclick="setBal('${u.jid}')">Set</button>
-        </div>
-      </td>
+      <td class="mono">${u.number||'—'}</td>
+      <td>💰 <b>${u.balance||0}</b></td>
+      <td><span class="b ${u.premium?'by':'bgr'}">${u.premium?'⭐ Premium':'Free'}</span></td>
+      <td class="tm">${u.wins||0}</td>
+      <td><div class="flex g2 ic">
+        <input class="inp txs" id="eb${(u.jid||'').replace(/\W/g,'')}" type="number" value="${u.balance||0}" style="width:85px;padding:5px 8px"/>
+        <button class="btn btn-p btn-xs" onclick="setBal('${u.jid}')">Set</button>
+      </div></td>
     </tr>`).join('')
-  : '<tr class="empty-row"><td colspan="5">No economy data</td></tr>';
+  : '<tr class="er"><td colspan="5">No economy data</td></tr>';
 }
-
 async function setBal(jid) {
-  const el = document.getElementById('b-' + (jid || '').replace(/\W/g, ''));
+  const el = g('eb' + (jid || '').replace(/\W/g, ''));
+  // Route: POST /bot-api/economy/edit
   const d = await api('POST', '/economy/edit', { jid, balance: Number(el?.value || 0) });
   if (d?.ok) toast('Balance updated', 'success'); else toast(d?.error || 'Failed', 'error');
 }
-
 async function resetEco() {
-  if (!confirm('Reset ALL balances to 0? This cannot be undone!')) return;
+  if (!confirm('Reset ALL balances to 0? Cannot be undone!')) return;
+  // Route: POST /bot-api/economy/reset
   const d = await api('POST', '/economy/reset');
   if (d?.ok) { toast('All balances reset', 'success'); loadEco(); } else toast(d?.error || 'Failed', 'error');
 }
 
-// ══════════════════════════════════════════
-//  FILES
-// ══════════════════════════════════════════
-const FICONS = { mp4:'🎬', mp3:'🎵', jpg:'🖼️', jpeg:'🖼️', png:'🖼️', gif:'🎞️', webm:'🎬', ogg:'🎵', pdf:'📄', zip:'🗜️', webp:'🖼️' };
+// ═══ FILES ═══
+const FI = {mp4:'🎬',mp3:'🎵',jpg:'🖼️',jpeg:'🖼️',png:'🖼️',gif:'🎞️',webm:'🎬',ogg:'🎵',pdf:'📄',zip:'🗜️',webp:'🖼️'};
 async function loadFiles() {
+  // Route: GET /bot-api/files
   const list = await api('GET', '/files') || [];
-  document.getElementById('files-sub').textContent = `${list.length || 0} files in downloads folder`;
-  document.getElementById('files-tb').innerHTML = (list.length && !list.error) ? list.map(f => `
+  g('fsub').textContent = (list.length || 0) + ' files in downloads';
+  g('ftb').innerHTML = (list.length && !list.error) ? list.map(f => `
     <tr>
-      <td class="fw7 text-sm">${f.name}</td>
-      <td><span class="badge b-gr">${FICONS[f.ext]||'📄'} ${(f.ext||'file').toUpperCase()}</span></td>
-      <td class="text-muted text-sm">${f.sizeMB} MB</td>
-      <td class="text-xs text-muted">${fmtDate(f.modified)}</td>
-      <td><button class="icon-btn" onclick="delFile('${f.name}')">🗑</button></td>
+      <td class="fw7 tsm">${f.name}</td>
+      <td><span class="b bgr">${FI[f.ext]||'📄'} ${(f.ext||'file').toUpperCase()}</span></td>
+      <td class="tm tsm">${f.sizeMB} MB</td>
+      <td class="txs tm">${fmtD(f.modified)}</td>
+      <td><button class="ib" onclick="delFile('${f.name}')">🗑</button></td>
     </tr>`).join('')
-  : '<tr class="empty-row"><td colspan="5">No files in downloads folder</td></tr>';
+  : '<tr class="er"><td colspan="5">No files</td></tr>';
 }
-
 async function delFile(name) {
-  if (!confirm(`Delete "${name}"?`)) return;
-  const d = await api('DELETE', `/files/${encodeURIComponent(name)}`);
-  if (d?.ok) { toast('File deleted', 'success'); loadFiles(); } else toast(d?.error || 'Failed', 'error');
+  if (!confirm('Delete "' + name + '"?')) return;
+  // Route: DELETE /bot-api/files/:name
+  const d = await api('DELETE', '/files/' + encodeURIComponent(name));
+  if (d?.ok) { toast('Deleted', 'success'); loadFiles(); } else toast(d?.error || 'Failed', 'error');
 }
 
-// ══════════════════════════════════════════
-//  SETTINGS
-// ══════════════════════════════════════════
+// ═══ SETTINGS ═══
 async function loadSettings() {
+  // Route: GET /bot-api/settings
   const s = await api('GET', '/settings');
   if (!s || s.error) return;
-  document.getElementById('st-name').value = s.botName || '';
-  document.getElementById('st-prefix').value = s.prefix || '';
-  document.getElementById('st-owner').value = s.ownerNumber || '';
-  document.getElementById('st-read').checked = !!s.autoRead;
-  document.getElementById('st-typing').checked = !!s.autoTyping;
-  document.getElementById('st-nsfw').checked = !!s.nsfwEnabled;
+  g('stname').value = s.botName || '';
+  g('stpfx').value = s.prefix || '';
+  g('stown').value = s.ownerNumber || '';
+  g('strd').checked = !!s.autoRead;
+  g('stty').checked = !!s.autoTyping;
+  g('stns').checked = !!s.nsfwEnabled;
 }
-
 async function saveSettings() {
+  // Route: POST /bot-api/settings
   const d = await api('POST', '/settings', {
-    botName: document.getElementById('st-name').value,
-    prefix: document.getElementById('st-prefix').value,
-    autoRead: document.getElementById('st-read').checked,
-    autoTyping: document.getElementById('st-typing').checked,
-    nsfwEnabled: document.getElementById('st-nsfw').checked,
+    botName: g('stname').value,
+    prefix: g('stpfx').value,
+    autoRead: g('strd').checked,
+    autoTyping: g('stty').checked,
+    nsfwEnabled: g('stns').checked,
   });
-  if (d?.ok) toast('Settings saved', 'success'); else toast(d?.error || 'Failed', 'error');
+  if (d?.ok) toast('Settings saved ✓', 'success'); else toast(d?.error || 'Failed', 'error');
 }
 
-// ══════════════════════════════════════════
-//  LOGS
-// ══════════════════════════════════════════
+// ═══ LOGS ═══
 async function loadLogs() {
+  // Route: GET /bot-api/logs?limit=150
   const list = await api('GET', '/logs?limit=150') || [];
-  const box = document.getElementById('log-box');
-  box.innerHTML = '';
-  if (!list.error) (list || []).forEach(l => appendLog(l));
+  g('logbox').innerHTML = '';
+  // API returns logs reversed (newest first), reverse again for chronological display
+  if (!list.error) [...list].reverse().forEach(l => appendLog(l));
 }
-
 function appendLog(l) {
-  const box = document.getElementById('log-box');
+  const box = g('logbox');
   if (!box) return;
   const lw = (l || '').toLowerCase();
-  const cls = lw.includes('error')||lw.includes('❌') ? 'err'
-    : lw.includes('warn') ? 'warn'
-    : lw.includes('connected')||lw.includes('✅')||lw.includes('ready') ? 'ok'
-    : lw.includes('qr')||lw.includes('scan')||lw.includes('pair') ? 'info'
-    : lw.includes('loading')||lw.includes('started') ? 'info2'
+  const cls = lw.includes('error') || lw.includes('❌') ? 'er'
+    : lw.includes('warn') ? 'wn'
+    : lw.includes('connected') || lw.includes('✅') || lw.includes('ready') ? 'ok'
+    : lw.includes('qr') || lw.includes('scan') || lw.includes('pair') ? 'in'
+    : lw.includes('loading') || lw.includes('started') ? 'pn'
     : '';
   const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   const el = document.createElement('div');
   el.className = 'le ' + cls;
-  el.innerHTML = `<span class="le-t">${t}</span><span class="le-m">${l}</span>`;
+  el.innerHTML = `<span class="lt">${t}</span><span class="lm">${l}</span>`;
   box.appendChild(el);
   box.scrollTop = box.scrollHeight;
   while (box.children.length > 500) box.removeChild(box.firstChild);
 }
+function clearLogs() { g('logbox').innerHTML = ''; }
 </script>
 </body>
 </html>
